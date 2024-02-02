@@ -11,5 +11,15 @@ namespace LogInPage
         {
             InitializeComponent();
         }
+
+        private void Button_Click_Hide(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void Button_Click_Close(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

@@ -5,32 +5,98 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LogInPage"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="364" 
-        ResizeMode="NoResize" >
-    <Grid>
-        <Grid.Background>
+        Title="MainWindow" Height="500" Width="350" 
+        ResizeMode="NoResize" 
+        WindowStartupLocation="CenterScreen" 
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
+
+    <Window.Resources>
+        <Style TargetType="Rectangle">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver"
+                         Value="True">
+                    <Setter Property="Opacity" 
+                            Value="0.5"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Border CornerRadius="0 0 16 16">
+        <Border.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="#FF00ACFF"/>
                 <GradientStop Color="White" Offset="1"/>
                 <GradientStop Color="#FF6CFAFF" Offset="0.439"/>
             </LinearGradientBrush>
-        </Grid.Background>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Canvas Grid.Column="0" Width="Auto" Height="Auto">
-            <Polygon Points="310,0 330,25 330,80 340,100 340,280 350,300 350,0">
-                <Polygon.Fill>
-                    <SolidColorBrush Color="#FF00ACFF" Opacity="0.2"/>
-                </Polygon.Fill>
-            </Polygon>
-            <Polygon Points="0,0 0,300 10,280 10,100 20,80 20,25 40,0">
-                <Polygon.Fill>
-                    <SolidColorBrush Color="#FF00ACFF" Opacity="0.2"/>
-                </Polygon.Fill>
-            </Polygon>
-        </Canvas>
-    </Grid>
+        </Border.Background>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Canvas Grid.Column="0" 
+                    Width="Auto" 
+                    Height="Auto">
+                <Polygon Points="310,0 330,25 330,80 340,100 340,280 350,300 350,0">
+                    <Polygon.Fill>
+                        <SolidColorBrush Color="White"
+                                         Opacity="0.5"/>
+                    </Polygon.Fill>
+                </Polygon>
+                <Polygon Points="0,0 0,300 10,280 10,100 20,80 20,25 40,0">
+                    <Polygon.Fill>
+                        <SolidColorBrush Color="White" Opacity="0.5"/>
+                    </Polygon.Fill>
+                </Polygon>
+                <Polygon Points="100,0 125,25 225,25 250,0">
+                    <Polygon.Fill>
+                        <SolidColorBrush Color="White" 
+                                         Opacity="0.5"/>
+                    </Polygon.Fill>
+                </Polygon>
+                <Grid Margin="125 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Rectangle Grid.Column="0" 
+                               Width="40"
+                               Height="10"
+                               Fill="#FF1491FF"
+                               RadiusX="5"
+                               RadiusY="5"
+                               Margin="5 5"
+                               MouseLeftButtonDown="Button_Click_Hide"/>
+
+
+                    <Rectangle Grid.Column="2"
+                               Width="40"
+                               Height="10"
+                               Fill="#FF145DFF"
+                               RadiusX="5"
+                               RadiusY="5"
+                               Margin="5 0 0 0"
+                               MouseLeftButtonDown="Button_Click_Close"/>
+
+                </Grid>
+            </Canvas>
+
+            <TextBlock Grid.Row="1" Margin="0 45" 
+                       Text="Sisi&amp;Popki" 
+                       FontFamily="Constantia" 
+                       FontSize="60" 
+                       Foreground="AliceBlue" 
+                       HorizontalAlignment="Center"/>
+            
+            
+        </Grid>
+    </Border>
 </Window>
