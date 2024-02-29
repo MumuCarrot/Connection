@@ -22,6 +22,24 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <ControlTemplate x:Key="RoundButtonTemplate" TargetType="{x:Type Button}">
+            <Grid>
+                <Border x:Name="border" 
+                        CornerRadius="16"
+                        BorderBrush="DarkGray"
+                        BorderThickness="2"
+                        Background="{TemplateBinding Background}"/>
+                <ContentPresenter HorizontalAlignment="Center" 
+                                  VerticalAlignment="Center"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="border" 
+                            Property="BorderBrush" 
+                            Value="#FF9CFCFF"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
     </Window.Resources>
 
     <Border x:Name="MainBorder"
@@ -36,7 +54,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="25"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="163"/>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
@@ -92,98 +110,54 @@
                 </Grid>
             </Canvas>
 
-            <TextBlock Grid.Row="1" Margin="0 45" 
-                       Text="TextLogo" 
+            <TextBlock x:Name="LogoBar"
+                       Grid.Row="1" Margin="0 45" 
+                       Text="Connect" 
                        FontFamily="Constantia" 
                        FontSize="60" 
                        Foreground="AliceBlue" 
-                       HorizontalAlignment="Center"/>
+                       HorizontalAlignment="Center"
+                       />
             
             <!--Form-->
-            <StackPanel Grid.Row="2" Margin="0 25 0 0">
-                <Canvas>
-                    <Polygon Points="65,15 80,0 135,0 150,15
-                                         205,15 220,0 275,0 290,15"
-                                 Fill="White"
-                                 Opacity="0.5"/>
-                    <Polygon Points="125,16 140,0 215,0 230,16"
-                                         Fill="White"/>
-                    <Polygon Points="100,37 115,43 250,43 265,37"
-                                 Fill="White"
-                                 Opacity="0.5"/>
-                    <TextBox TextWrapping="NoWrap"
-                                 Height="25"
-                                 Width="225"
-                                 Margin="65 14"
-                                 Padding="5,0,5,0"
-                                 BorderBrush="Transparent"
-                                 Foreground="Gray"
-                                 FontSize="14">
-                        <TextBox.Style>
-                            <Style TargetType="TextBox">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="TextBox">
-                                            <Border BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}" 
-                                Background="{TemplateBinding Background}" 
-                                CornerRadius="0 0 16 16">
-                                                <ScrollViewer x:Name="PART_ContentHost"/>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
-                    <TextBlock Text="Login:"
-                               FontFamily="Constantia" 
-                               FontSize="15"
-                               Margin="157 -2"
-                               Foreground="#FF6DFAFF"/>
-                </Canvas>
-                <Canvas>
-                    <Polygon Points="100,123 115,117 250,117 265,123"
-                             Fill="White"
-                             Opacity="0.5"/>
-                    <Polygon Points="125,143 140,158 215,158 230,143"
-                             Fill="White"/>
-                    <Polygon Points="65,143 80,158 135,158 150,143
-                                     205,143 220,158 275,158 290,143"
-                             Fill="White"
-                             Opacity="0.5"/>
-                    <TextBlock Text="Password:"
-                               FontFamily="Constantia" 
-                               FontSize="15"
-                               Margin="145 142"
-                               Foreground="#FF6DFAFF"/>
-                    <TextBox TextWrapping="NoWrap"
-                             Height="25"
-                             Width="225"
-                             Margin="65 121"
-                             Padding="5,0,5,0"
-                             BorderBrush="Transparent"
-                             Foreground="Gray"
-                             FontSize="14">
-                        <TextBox.Style>
-                            <Style TargetType="TextBox">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="TextBox">
-                                            <Border BorderBrush="{TemplateBinding BorderBrush}" 
-                                                    BorderThickness="{TemplateBinding BorderThickness}" 
-                                                    Background="{TemplateBinding Background}" 
-                                                    CornerRadius="16 16 0 0">
-                                                <ScrollViewer x:Name="PART_ContentHost"/>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
-                </Canvas>
-            </StackPanel>
+            <Frame x:Name="ConnectionFrame"
+                   Grid.Row="2"
+                   NavigationUIVisibility="Hidden"/>
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Button x:Name="SignInBtn"
+                        Grid.Column="0" 
+                        Grid.Row="1"
+                        Content="Sign In"
+                        Height="25"
+                        Width="100"
+                        Background="AliceBlue"
+                        FontFamily="Constantia" 
+                        FontSize="14"
+                        Foreground="DarkGray"
+                        Template="{StaticResource ResourceKey=RoundButtonTemplate}"
+                        Click="LogInButton_Click"/>
+                <Button x:Name="SignUpBtn"
+                        Grid.Column="1"
+                        Grid.Row="1"
+                        Content="Sign Up"
+                        Height="25"
+                        Width="100"
+                        Background="AliceBlue"
+                        FontFamily="Constantia" 
+                        FontSize="14"
+                        Foreground="DarkGray"
+                        Template="{StaticResource ResourceKey=RoundButtonTemplate}"
+                        Click="SignUpButton_Click"/>
+            </Grid>
         </Grid>
     </Border>
 </Window>

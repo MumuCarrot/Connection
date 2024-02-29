@@ -13,4 +13,8 @@
     <Folder Include="Source\Icon\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="8.3.0" />
+  </ItemGroup>
+
 </Project>
