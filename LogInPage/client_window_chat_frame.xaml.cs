@@ -9,26 +9,21 @@ namespace LogInPage
     /// </summary>
     public partial class ClientWindowChatFrame : Page
     {
-        public string Message { get { return MessageTextBox.Text; } }
-        public Client client = MainWindow.client;
-        private readonly ClientWindow mainWindow;
-
-        public ClientWindowChatFrame(ClientWindow cw)
+        public ClientWindowChatFrame()
         {
             InitializeComponent();
             MessageTextBox.Focus();
-            client.UpdateChat();
-            mainWindow = cw;
+            Client.UpdateChat();
         }
 
         private void Send_Click(object? sender, RoutedEventArgs? e)
         {
             string dateTime = DateTime.Now.ToString();
-            string userName = client.Login;
+            string userName = Client.Login;
             string message = MessageTextBox.Text;
             string messageType = "text";
             UploadMessage(dateTime, userName, message, messageType);
-            client.Message(Message, "text");
+            Client.Message(message, "text");
         }
 
         public void UploadMessage(string dateTime, string userName, string message, string type)
@@ -40,20 +35,12 @@ namespace LogInPage
             Table.Children.Add(tb);
         }
 
-        private void EscapePage()
-        {
-            mainWindow.ChatFrame.Content = mainWindow.clientWindowNothingFrame;
-        }
-
         private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
                 case Key.Enter:
                     Send_Click(null, null);
-                    break;
-                case Key.Escape:
-                    EscapePage();
                     break;
             }
         }

@@ -8,22 +8,27 @@ namespace LogInPage
     /// </summary>
     public partial class ClientWindow : Window
     {
-        public client_window_nothing_frame clientWindowNothingFrame;
-        public ClientWindowChatFrame clientWindowChatFrame;
+        public static Client client;
+        private static readonly client_window_nothing_frame? clientWindowNothingFrame;
+        private static readonly ClientWindowChatFrame? clientWindowChatFrame;
+
         public ClientWindow()
         {
             InitializeComponent();
-
-            Client.ClientWindowProperty = this;
-            clientWindowNothingFrame = new();
-            clientWindowChatFrame = new(this);
         }
 
-        public void UploadMessage(string dt, string user_name, string message, string type)
+        static ClientWindow()
+        {
+            client = MainWindow.client;
+            clientWindowNothingFrame = new();
+            clientWindowChatFrame = new();
+        }
+
+        public static void UploadMessage(string dt, string user_name, string message, string type)
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
-                clientWindowChatFrame.UploadMessage(dt, user_name, message, type);
+                clientWindowChatFrame?.UploadMessage(dt, user_name, message, type);
             }));
         }
 
@@ -41,6 +46,7 @@ namespace LogInPage
 
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
+            Client.Close();
             Close();
         }
 
@@ -58,6 +64,16 @@ namespace LogInPage
         private void MainChat_Click(object sender, RoutedEventArgs e)
         {
             ChatFrame.Content = clientWindowChatFrame;
+        }
+
+        private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Escape:
+                    ChatFrame.Content = clientWindowNothingFrame;
+                    break;
+            }
         }
     }
 }

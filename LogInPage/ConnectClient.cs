@@ -1,62 +1,50 @@
-﻿using Mysqlx.Connection;
-using System.Net.Sockets;
+﻿using System.Net.Sockets;
 using System.Text;
 
 namespace LogInPage
 {
+    /// <summary>
+    /// Static realisation of a CLIENT class
+    /// </summary>
     public class Client
     {
         #region PUBLIC FIELDS & PROPERTIES
         /// <summary>
         /// Connection status
         /// </summary>
-        public bool? Connected { get { return (tcpClient is not null) ? tcpClient?.Connected : null; } }
-        public static string HostName { get; } = "127.0.0.1";       // Server ip
-        public static int Port { get; } = 7007;                     // Server port
-        public static int MessageSize { get; } = 1024;              // Request size
-        public string Login { get; set; } = string.Empty;           // User login
-        public string Passw { get; set; } = string.Empty;           // User password
-        public string Answer { get; set; } = string.Empty;
-        public static ClientWindow? ClientWindowProperty { get; set; }
+        public static bool? Connected { get { return (tcpClient is not null) ? tcpClient?.Connected : null; } }
+        public static string HostName { get; } = "127.0.0.1";               // Server ip
+        public static int Port { get; } = 7007;                             // Server port
+        public static int MessageSize { get; } = 1024;                      // Request size
+        public static string Login { get; set; } = string.Empty;            // User login
+        public static string Passw { get; set; } = string.Empty;            // User password
+        public static string Answer { get; set; } = string.Empty;           // Server answer. TODO in a future: Change login request to delete this useles field
         #endregion
 
         #region PRIVATE FIELDS & PROPERTIES
-        private static TcpClient? tcpClient;                            // Client TCP connection
-        private static NetworkStream? stream;               // Client network stream
-        private static Thread? mainClientThread;                     // Initialization thread
+        private static TcpClient? tcpClient;                                // Client TCP connection
+        private static NetworkStream? stream;                               // Client network stream
+        private static Thread? mainClientThread;                            // Initialization thread
         #endregion
 
-        static Client() 
+        /// <summary>
+        /// Client initialization
+        /// </summary>
+        public void Start()
         {
             // Connection
             tcpClient = new(HostName, Port);
             // Stream initialization
             stream = tcpClient.GetStream();
-        }
-
-        ~Client() 
-        {
-            stream?.Close();
-            tcpClient?.Close();
-        }
-
-        /// <summary>
-        /// Client initialization
-        /// </summary>
-        public void StartClient()
-        {
             // Thread initialization
-            mainClientThread = new(new ThreadStart(ClientProcesses));
+            mainClientThread = new(new ThreadStart(StartClient));
             mainClientThread?.Start();
         }
 
-        /// <summary>
-        /// Threads to start
-        /// </summary>
-        private void ClientProcesses()
+        private void StartClient() 
         {
-            Thread reader = new(new ThreadStart(ReadAnswer));
-            reader.Start();
+            Thread answThread = new(new ThreadStart(ReadAnswer));
+            answThread.Start();
         }
 
         /// <summary>
@@ -65,7 +53,7 @@ namespace LogInPage
         /// <param name="login">Login from LogInPage</param>
         /// <param name="password">Password from LogInPage</param>
         /// <exception cref="Exception"></exception>
-        public void LogIn(string login, string password)
+        public static void LogIn(string login, string password)
         {
             if (tcpClient is not null && tcpClient.Connected)
             {
@@ -74,7 +62,7 @@ namespace LogInPage
             else throw new Exception("Server is not responding.");
         }
 
-        public void SignUp(string login, string password)
+        public static void SignUp(string login, string password)
         {
             if (tcpClient is not null && tcpClient.Connected)
             {
@@ -91,7 +79,7 @@ namespace LogInPage
             else throw new Exception("Server is not responding.");
         }
 
-        public void Message(string message, string type)
+        public static void Message(string message, string type)
         {
             if (tcpClient is not null && tcpClient.Connected)
             {
@@ -100,9 +88,31 @@ namespace LogInPage
             else throw new Exception("Server is not responding.");
         }
 
-        public void UpdateChat(int count = 50)
+        public static void UpdateChat(int count = 50)
         {
             SendRequest($"GET --ACMSG count{{{count}}}");
+        }
+
+        /// <summary>
+        /// Send method
+        /// </summary>
+        /// <param name="message">Message that will be requested</param>
+        /// <exception cref="Exception">
+        /// Stream is null
+        /// #CR0002 - Client sender exception
+        /// </exception>
+        private static void SendRequest(string message)
+        {
+            byte[] reqBytes = Encoding.UTF8.GetBytes(message);
+            if (stream is not null)
+                stream.Write(reqBytes, 0, reqBytes.Length);
+            else throw new Exception("Stream is null. #CR0002");
+        }
+
+        public static void Close() 
+        {
+            stream?.Close();
+            tcpClient?.Close();
         }
 
         /// <summary>
@@ -112,19 +122,19 @@ namespace LogInPage
         /// Stream is null.
         /// #CR0001 - Client reader exception
         /// </exception>
-        protected void ReadAnswer()
+        private void ReadAnswer()
         {
             if (stream is not null)
             {
                 while (true)
                 {
-                    // Waiting for an answer
-                    while (!stream.DataAvailable) ;
+                    while (!stream.DataAvailable) Thread.Sleep(1000);
 
                     byte[] bytesBuff = new byte[MessageSize];
                     if (stream is not null)
                         stream.Read(bytesBuff, 0, bytesBuff.Length);
                     else throw new Exception("Stream is null. #CR0001");
+
                     string answer = Encoding.UTF8.GetString(bytesBuff);
 
                     Answer = answer;
@@ -136,60 +146,41 @@ namespace LogInPage
                         int loginEnd = answer.IndexOf('}', loginStart);
 
                         // Извлекаем подстроку для логина
-                        this.Login = answer[loginStart..loginEnd];
+                        Login = answer[loginStart..loginEnd];
 
                         // Находим позиции начала и конца пароля
                         int passwordStart = answer.IndexOf("password{") + "password{".Length;
                         int passwordEnd = answer.IndexOf('}', passwordStart);
 
                         // Извлекаем подстроку для пароля
-                        this.Passw = answer[passwordStart..passwordEnd];
+                        Passw = answer[passwordStart..passwordEnd];
                     }
                     else if (answer.Contains("GET --ACMSG"))
                     {
-                        if (ClientWindowProperty is not null)
-                        {
-                            int loginStart = answer.IndexOf("login{") + "login{".Length;
-                            int loginEnd = answer.IndexOf('}', loginStart);
+                        int loginStart = answer.IndexOf("login{") + "login{".Length;
+                        int loginEnd = answer.IndexOf('}', loginStart);
 
-                            string userName = answer[loginStart..loginEnd];
+                        string userName = answer[loginStart..loginEnd];
 
-                            int contentStart = answer.IndexOf("content{") + "content{".Length;
-                            int contentEnd = answer.IndexOf('}', contentStart);
+                        int contentStart = answer.IndexOf("content{") + "content{".Length;
+                        int contentEnd = answer.IndexOf('}', contentStart);
 
-                            string message = answer[contentStart..contentEnd];
+                        string message = answer[contentStart..contentEnd];
 
-                            int msg_timeStart = answer.IndexOf("msg_time{") + "msg_time{".Length;
-                            int msg_timeEnd = answer.IndexOf('}', msg_timeStart);
+                        int msg_timeStart = answer.IndexOf("msg_time{") + "msg_time{".Length;
+                        int msg_timeEnd = answer.IndexOf('}', msg_timeStart);
 
-                            string dateTime = answer[msg_timeStart..msg_timeEnd];
+                        string dateTime = answer[msg_timeStart..msg_timeEnd];
 
-                            int typeStart = answer.IndexOf("type{") + "type{".Length;
-                            int typeEnd = answer.IndexOf('}', typeStart);
+                        int typeStart = answer.IndexOf("type{") + "type{".Length;
+                        int typeEnd = answer.IndexOf('}', typeStart);
 
-                            string messageType = answer[typeStart..typeEnd];
+                        string messageType = answer[typeStart..typeEnd];
 
-                            ClientWindowProperty.UploadMessage(dateTime, userName, message, messageType);
-                        }
+                        ClientWindow.UploadMessage(dateTime, userName, message, messageType);
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Send method
-        /// </summary>
-        /// <param name="message">Message that will be requested</param>
-        /// <exception cref="Exception">
-        /// Stream is null
-        /// #CR0002 - Client sender exception
-        /// </exception>
-        private void SendRequest(string message)
-        {
-            byte[] reqBytes = Encoding.UTF8.GetBytes(message);
-            if (stream is not null)
-                stream.Write(reqBytes, 0, reqBytes.Length);
-            else throw new Exception("Stream is null. #CR0002");
         }
     }
 }

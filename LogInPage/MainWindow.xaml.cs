@@ -5,9 +5,9 @@ namespace LogInPage
 {
     public partial class MainWindow : Window
     {
-        public static readonly Client client = new();
         public string Login { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
+        public readonly static Client client = new();
 
         public MainWindow()
         {
@@ -53,8 +53,8 @@ namespace LogInPage
                                 {
                                     try
                                     {
-                                        if (client.Connected != true)
-                                            client.StartClient();
+                                        if (Client.Connected != true)
+                                            client.Start();
                                         connected = true;
                                     }
                                     catch
@@ -62,12 +62,12 @@ namespace LogInPage
                                         Thread.Sleep(2000);
                                     }
                                 }
-                                client.LogIn(sip.LoginTextBox.Text, sip.PasswordTextBox.Password);
-                                while (client.Answer.Length <= 0) ;
-                                if (client.Answer.Contains("status{true}"))
+                                Client.LogIn(sip.LoginTextBox.Text, sip.PasswordTextBox.Password);
+                                while (Client.Answer.Length <= 0) ;
+                                if (Client.Answer.Contains("status{true}"))
                                 {
-                                    this.Login = client.Login;
-                                    this.Password = client.Passw;
+                                    this.Login = Client.Login;
+                                    this.Password = Client.Passw;
 
                                     var clw = new ClientWindow();
                                     clw.Show();
@@ -119,8 +119,8 @@ namespace LogInPage
                                     {
                                         try
                                         {
-                                            if (client.Connected != true)
-                                                client.StartClient();
+                                            if (Client.Connected != true)
+                                                client.Start();
                                             connected = true;
                                         }
                                         catch
@@ -128,11 +128,11 @@ namespace LogInPage
                                             Thread.Sleep(2000);
                                         }
                                     }
-                                    client.SignUp(sup.LoginTextBox.Text, sup.PasswordTextBox.Password);
-                                    if (sup.LoginTextBox.Text.ToString().Equals(client.Login) && sup.PasswordTextBox.Password.ToString().Equals(client.Passw))
+                                    Client.SignUp(sup.LoginTextBox.Text, sup.PasswordTextBox.Password);
+                                    if (sup.LoginTextBox.Text.ToString().Equals(Client.Login) && sup.PasswordTextBox.Password.ToString().Equals(Client.Passw))
                                     {
-                                        this.Login = client.Login;
-                                        this.Password = client.Passw;
+                                        this.Login = Client.Login;
+                                        this.Password = Client.Passw;
 
                                         var clw = new ClientWindow();
                                         clw.Show();

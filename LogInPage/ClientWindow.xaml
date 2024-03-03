@@ -27,7 +27,8 @@
     </Window.Resources>
 
     <Grid Background="GhostWhite" 
-          Style="{StaticResource WindowMainPanelStyle}">
+          Style="{StaticResource WindowMainPanelStyle}"
+          PreviewKeyDown="Grid_PreviewKeyDown">
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="180" Width="230" MaxWidth="300"/>
             <ColumnDefinition/>
