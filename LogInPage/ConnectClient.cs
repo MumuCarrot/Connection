@@ -1,11 +1,10 @@
-﻿using Org.BouncyCastle.Asn1.Ocsp;
+﻿using Mysqlx.Connection;
 using System.Net.Sockets;
 using System.Text;
-using System.Windows.Controls;
 
 namespace LogInPage
 {
-    public class Client()
+    public class Client
     {
         #region PUBLIC FIELDS & PROPERTIES
         /// <summary>
@@ -18,27 +17,37 @@ namespace LogInPage
         public string Login { get; set; } = string.Empty;           // User login
         public string Passw { get; set; } = string.Empty;           // User password
         public string Answer { get; set; } = string.Empty;
+        public static ClientWindow? ClientWindowProperty { get; set; }
         #endregion
 
         #region PRIVATE FIELDS & PROPERTIES
-        private TcpClient? tcpClient;                               // Client TCP connection
-        private Thread? mainClientThread;                           // Initialization thread
-        private NetworkStream? stream;                              // Client network stream
-        private Page? chat;
+        private static TcpClient? tcpClient;                            // Client TCP connection
+        private static NetworkStream? stream;               // Client network stream
+        private static Thread? mainClientThread;                     // Initialization thread
         #endregion
+
+        static Client() 
+        {
+            // Connection
+            tcpClient = new(HostName, Port);
+            // Stream initialization
+            stream = tcpClient.GetStream();
+        }
+
+        ~Client() 
+        {
+            stream?.Close();
+            tcpClient?.Close();
+        }
 
         /// <summary>
         /// Client initialization
         /// </summary>
         public void StartClient()
         {
-            // Connection
-            tcpClient = new(HostName, Port);
-            // Stream initialization
-            stream = tcpClient.GetStream();
             // Thread initialization
             mainClientThread = new(new ThreadStart(ClientProcesses));
-            mainClientThread.Start();
+            mainClientThread?.Start();
         }
 
         /// <summary>
@@ -91,9 +100,8 @@ namespace LogInPage
             else throw new Exception("Server is not responding.");
         }
 
-        public void UpdateChat(Page chat, int count = 50)
+        public void UpdateChat(int count = 50)
         {
-            this.chat = chat;
             SendRequest($"GET --ACMSG count{{{count}}}");
         }
 
@@ -106,57 +114,63 @@ namespace LogInPage
         /// </exception>
         protected void ReadAnswer()
         {
-            while (true)
+            if (stream is not null)
             {
-                byte[] bytesBuff = new byte[MessageSize];
-                if (stream is not null)
-                    stream.Read(bytesBuff, 0, bytesBuff.Length);
-                else throw new Exception("Stream is null. #CR0001");
-                string answer = Encoding.UTF8.GetString(bytesBuff);
-
-                Answer = answer;
-
-                if (answer.Contains("GET --USER_CHECK") && answer.Contains("status{true}"))
+                while (true)
                 {
-                    // Находим позиции начала и конца логина
-                    int loginStart = answer.IndexOf("login{") + "login{".Length;
-                    int loginEnd = answer.IndexOf('}', loginStart);
+                    // Waiting for an answer
+                    while (!stream.DataAvailable) ;
 
-                    // Извлекаем подстроку для логина
-                    this.Login = answer[loginStart..loginEnd];
+                    byte[] bytesBuff = new byte[MessageSize];
+                    if (stream is not null)
+                        stream.Read(bytesBuff, 0, bytesBuff.Length);
+                    else throw new Exception("Stream is null. #CR0001");
+                    string answer = Encoding.UTF8.GetString(bytesBuff);
 
-                    // Находим позиции начала и конца пароля
-                    int passwordStart = answer.IndexOf("password{") + "password{".Length;
-                    int passwordEnd = answer.IndexOf('}', passwordStart);
+                    Answer = answer;
 
-                    // Извлекаем подстроку для пароля
-                    this.Passw = answer[passwordStart..passwordEnd];
-                }
-                else if (answer.Contains("GET --ACMSG"))
-                {
-                    if (this.chat is client_window_chat_frame cwcf) 
+                    if (answer.Contains("GET --USER_CHECK") && answer.Contains("status{true}"))
                     {
+                        // Находим позиции начала и конца логина
                         int loginStart = answer.IndexOf("login{") + "login{".Length;
                         int loginEnd = answer.IndexOf('}', loginStart);
 
-                        string login = answer[loginStart..loginEnd];
+                        // Извлекаем подстроку для логина
+                        this.Login = answer[loginStart..loginEnd];
 
-                        int contentStart = answer.IndexOf("content{") + "content{".Length;
-                        int contentEnd = answer.IndexOf('}', contentStart);
+                        // Находим позиции начала и конца пароля
+                        int passwordStart = answer.IndexOf("password{") + "password{".Length;
+                        int passwordEnd = answer.IndexOf('}', passwordStart);
 
-                        string content = answer[contentStart..contentEnd];
+                        // Извлекаем подстроку для пароля
+                        this.Passw = answer[passwordStart..passwordEnd];
+                    }
+                    else if (answer.Contains("GET --ACMSG"))
+                    {
+                        if (ClientWindowProperty is not null)
+                        {
+                            int loginStart = answer.IndexOf("login{") + "login{".Length;
+                            int loginEnd = answer.IndexOf('}', loginStart);
 
-                        int msg_timeStart = answer.IndexOf("msg_time{") + "msg_time{".Length;
-                        int msg_timeEnd = answer.IndexOf('}', msg_timeStart);
+                            string userName = answer[loginStart..loginEnd];
 
-                        string msg_time = answer[msg_timeStart..msg_timeEnd];
+                            int contentStart = answer.IndexOf("content{") + "content{".Length;
+                            int contentEnd = answer.IndexOf('}', contentStart);
 
-                        int typeStart = answer.IndexOf("type{") + "type{".Length;
-                        int typeEnd = answer.IndexOf('}', typeStart);
+                            string message = answer[contentStart..contentEnd];
 
-                        string type = answer[typeStart..typeEnd];
+                            int msg_timeStart = answer.IndexOf("msg_time{") + "msg_time{".Length;
+                            int msg_timeEnd = answer.IndexOf('}', msg_timeStart);
 
-                        cwcf.UploadMessage(null, client_name:login, dt:msg_time, message:content, type:type);
+                            string dateTime = answer[msg_timeStart..msg_timeEnd];
+
+                            int typeStart = answer.IndexOf("type{") + "type{".Length;
+                            int typeEnd = answer.IndexOf('}', typeStart);
+
+                            string messageType = answer[typeStart..typeEnd];
+
+                            ClientWindowProperty.UploadMessage(dateTime, userName, message, messageType);
+                        }
                     }
                 }
             }

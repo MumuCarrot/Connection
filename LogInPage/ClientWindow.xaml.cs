@@ -8,9 +8,23 @@ namespace LogInPage
     /// </summary>
     public partial class ClientWindow : Window
     {
+        public client_window_nothing_frame clientWindowNothingFrame;
+        public ClientWindowChatFrame clientWindowChatFrame;
         public ClientWindow()
         {
             InitializeComponent();
+
+            Client.ClientWindowProperty = this;
+            clientWindowNothingFrame = new();
+            clientWindowChatFrame = new(this);
+        }
+
+        public void UploadMessage(string dt, string user_name, string message, string type)
+        {
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                clientWindowChatFrame.UploadMessage(dt, user_name, message, type);
+            }));
         }
 
         private void DragAndMove(object sender, MouseButtonEventArgs e)
@@ -27,7 +41,7 @@ namespace LogInPage
 
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void MaximizeBtn_Click(object sender, RoutedEventArgs e)
@@ -43,7 +57,7 @@ namespace LogInPage
 
         private void MainChat_Click(object sender, RoutedEventArgs e)
         {
-            ChatFrame.Content = new client_window_chat_frame(MainWindow.client, ()=>{ ChatFrame.Content = new client_window_nothing_frame(); });
+            ChatFrame.Content = clientWindowChatFrame;
         }
     }
 }

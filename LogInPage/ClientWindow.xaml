@@ -72,7 +72,7 @@
         
         <!-- Список чатов -->
         <ScrollViewer Grid.Column="0"
-                    Grid.Row="1">
+                      Grid.Row="1">
             <StackPanel x:Name="ChatList">
                 <Button x:Name="MainChat"
                         Height="60"

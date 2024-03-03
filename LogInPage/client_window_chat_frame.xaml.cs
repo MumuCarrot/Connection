@@ -7,55 +7,42 @@ namespace LogInPage
     /// <summary>
     /// Логика взаимодействия для client_window_chat_frame.xaml
     /// </summary>
-    public partial class client_window_chat_frame : Page
+    public partial class ClientWindowChatFrame : Page
     {
         public string Message { get { return MessageTextBox.Text; } }
-        public Client client;
-        private readonly Action? EscapePage;
-        public client_window_chat_frame(Client client, Action esc)
+        public Client client = MainWindow.client;
+        private readonly ClientWindow mainWindow;
+
+        public ClientWindowChatFrame(ClientWindow cw)
         {
             InitializeComponent();
             MessageTextBox.Focus();
-            this.client = client;
-            EscapePage = esc;
-            client.UpdateChat(this);
+            client.UpdateChat();
+            mainWindow = cw;
         }
 
         private void Send_Click(object? sender, RoutedEventArgs? e)
         {
-            UploadMessage(sender);
+            string dateTime = DateTime.Now.ToString();
+            string userName = client.Login;
+            string message = MessageTextBox.Text;
+            string messageType = "text";
+            UploadMessage(dateTime, userName, message, messageType);
+            client.Message(Message, "text");
         }
 
-        public void UploadMessage(object? sender, string? dt = null, string? client_name = null, string message = "", string? type = null)
+        public void UploadMessage(string dateTime, string userName, string message, string type)
         {
-            if (sender is not null)
+            TextBlock tb = new()
             {
-                if (MessageTextBox.Text.Length > 0)
-                {
-                    TextBlock newTb = new()
-                    {
-                        Text = $"[{DateTime.Now}] " + client.Login + " : " + MessageTextBox.Text
-                    };
-                    Table.Children.Add(newTb);
-                    client.Message(MessageTextBox.Text, "text");
-                    MessageTextBox.Text = string.Empty;
-                    MessageTextBox.Focus();
-                }
-            }
-            else
-            {
-                if (message.Length > 0)
-                {
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        TextBlock newTb = new()
-                        {
-                            Text = $"[{dt}] " + client_name + " : " + message
-                        };
-                        Table.Children.Add(newTb);
-                    }));
-                }
-            }
+                Text = "[ " + dateTime + " ] " + userName + " : " + message
+            };
+            Table.Children.Add(tb);
+        }
+
+        private void EscapePage()
+        {
+            mainWindow.ChatFrame.Content = mainWindow.clientWindowNothingFrame;
         }
 
         private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -66,7 +53,7 @@ namespace LogInPage
                     Send_Click(null, null);
                     break;
                 case Key.Escape:
-                    if (EscapePage is not null) EscapePage();
+                    EscapePage();
                     break;
             }
         }
