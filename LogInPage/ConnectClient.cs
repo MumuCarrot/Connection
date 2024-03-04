@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿using Newtonsoft.Json;
+using System.Net.Sockets;
 using System.Text;
 
 namespace LogInPage
@@ -41,7 +42,7 @@ namespace LogInPage
             mainClientThread?.Start();
         }
 
-        private void StartClient() 
+        private void StartClient()
         {
             Thread answThread = new(new ThreadStart(ReadAnswer));
             answThread.Start();
@@ -109,7 +110,7 @@ namespace LogInPage
             else throw new Exception("Stream is null. #CR0002");
         }
 
-        public static void Close() 
+        public static void Close()
         {
             stream?.Close();
             tcpClient?.Close();
@@ -128,56 +129,71 @@ namespace LogInPage
             {
                 while (true)
                 {
-                    while (!stream.DataAvailable) Thread.Sleep(1000);
+                    while (!stream.DataAvailable) Thread.Sleep(500);
 
                     byte[] bytesBuff = new byte[MessageSize];
                     if (stream is not null)
                         stream.Read(bytesBuff, 0, bytesBuff.Length);
                     else throw new Exception("Stream is null. #CR0001");
 
-                    string answer = Encoding.UTF8.GetString(bytesBuff);
+                    Answer = Encoding.UTF8.GetString(bytesBuff);
 
-                    Answer = answer;
-
-                    if (answer.Contains("GET --USER_CHECK") && answer.Contains("status{true}"))
+                    if (Answer.Contains("GET --USER_CHECK") && Answer.Contains("status{true}"))
                     {
-                        // Находим позиции начала и конца логина
-                        int loginStart = answer.IndexOf("login{") + "login{".Length;
-                        int loginEnd = answer.IndexOf('}', loginStart);
+                        int loginStart = Answer.IndexOf("login{") + "login{".Length;
+                        int loginEnd = Answer.IndexOf('}', loginStart);
 
-                        // Извлекаем подстроку для логина
-                        Login = answer[loginStart..loginEnd];
+                        Login = Answer[loginStart..loginEnd];
 
-                        // Находим позиции начала и конца пароля
-                        int passwordStart = answer.IndexOf("password{") + "password{".Length;
-                        int passwordEnd = answer.IndexOf('}', passwordStart);
+                        int passwordStart = Answer.IndexOf("password{") + "password{".Length;
+                        int passwordEnd = Answer.IndexOf('}', passwordStart);
 
                         // Извлекаем подстроку для пароля
-                        Passw = answer[passwordStart..passwordEnd];
+                        Passw = Answer[passwordStart..passwordEnd];
                     }
-                    else if (answer.Contains("GET --ACMSG"))
+                    else if (Answer.Contains("GET --ACMSG"))
                     {
-                        int loginStart = answer.IndexOf("login{") + "login{".Length;
-                        int loginEnd = answer.IndexOf('}', loginStart);
+                        // Находим позицию начала JSON-строки
+                        int startIndex = Answer.IndexOf('{') + 1;
 
-                        string userName = answer[loginStart..loginEnd];
+                        // Если JSON-строка найдена
+                        if (startIndex != -1)
+                        {
+                            // Находим позицию конца JSON-строки
+                            int endIndex = Answer.LastIndexOf('}');
 
-                        int contentStart = answer.IndexOf("content{") + "content{".Length;
-                        int contentEnd = answer.IndexOf('}', contentStart);
+                            // Если найден конец JSON-строки
+                            if (endIndex != -1)
+                            {
+                                // Извлекаем JSON-строку из исходной строки
+                                string json = Answer.Substring(startIndex, endIndex - startIndex);
 
-                        string message = answer[contentStart..contentEnd];
+                                // Попытка десериализации JSON-строки
+                                try
+                                {
+                                    // Десериализация JSON-строки в список сообщений
+                                    var messageList = JsonConvert.DeserializeObject<MessageConteiner>(json);
 
-                        int msg_timeStart = answer.IndexOf("msg_time{") + "msg_time{".Length;
-                        int msg_timeEnd = answer.IndexOf('}', msg_timeStart);
-
-                        string dateTime = answer[msg_timeStart..msg_timeEnd];
-
-                        int typeStart = answer.IndexOf("type{") + "type{".Length;
-                        int typeEnd = answer.IndexOf('}', typeStart);
-
-                        string messageType = answer[typeStart..typeEnd];
-
-                        ClientWindow.UploadMessage(dateTime, userName, message, messageType);
+                                    if (messageList is not null)
+                                        foreach (var message in messageList.Messages)
+                                        {
+                                            ClientWindow.UploadMessage(message.MessageDateTime, message.Login, message.Content, message.MessageType);
+                                        }
+                                }
+                                catch (JsonException ex)
+                                {
+                                    Console.WriteLine("Ошибка при десериализации JSON: " + ex.Message);
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Конец JSON-строки не найден.");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("JSON-строка не найдена.");
+                        }
                     }
                 }
             }

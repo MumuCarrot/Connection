@@ -8,7 +8,7 @@ namespace LogInPage
     /// </summary>
     public partial class ClientWindow : Window
     {
-        public static Client client;
+        public readonly static Client client;
         private static readonly client_window_nothing_frame? clientWindowNothingFrame;
         private static readonly ClientWindowChatFrame? clientWindowChatFrame;
 
