@@ -24,6 +24,29 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="{x:Type Button}" x:Key="ToolBarButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="16">
+                            <Border.Background>
+                                <RadialGradientBrush>
+                                    <GradientStop Color="#FFB0DFFD" Offset="1"/>
+                                    <GradientStop Color="#FFD4EFFF" Offset="0"/>
+                                </RadialGradientBrush>
+                            </Border.Background>
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="0.5"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
     <Grid Background="GhostWhite" 
@@ -50,17 +73,23 @@
                         Height="25" 
                         Width="25" 
                         Content="_"
-                        Click="MinimizedBtn_Click"/>
+                        Margin="3, 0, 0, 0"
+                        Click="MinimizedBtn_Click"
+                        Style="{StaticResource ToolBarButton}"/>
                 <Button x:Name="MaxemizeBtn" 
                         Height="25" 
                         Width="25" 
                         Content="□"
-                        Click="MaximizeBtn_Click"/>
+                        Margin="3, 0, 0, 0"
+                        Click="MaximizeBtn_Click"
+                        Style="{StaticResource ToolBarButton}"/>
                 <Button x:Name="CloseBtn"
                         Height="25" 
                         Width="25" 
                         Content="X"
-                        Click="CloseBtn_Click"/>
+                        Margin="3, 0, 0, 0"
+                        Click="CloseBtn_Click"
+                        Style="{StaticResource ToolBarButton}"/>
             </StackPanel>
         </Grid>
         <!-- Разделение списка чатов и чата -->
@@ -70,7 +99,7 @@
                       Width="3" 
                       HorizontalAlignment="Left" 
                       VerticalAlignment="Stretch" />
-        
+
         <!-- Список чатов -->
         <ScrollViewer Grid.Column="0"
                       Grid.Row="1">
@@ -80,7 +109,7 @@
                         Click="MainChat_Click" Background="#FFE5F3FD"/>
             </StackPanel>
         </ScrollViewer>
-        
+
         <!-- Чат -->
         <Frame x:Name="ChatFrame"
                Grid.Column="1"

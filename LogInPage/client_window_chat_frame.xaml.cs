@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace LogInPage
 {
@@ -14,27 +15,27 @@ namespace LogInPage
             InitializeComponent();
             MessageTextBox.Focus();
             Client.UpdateChat();
+            scrollViewer.ScrollToEnd();
         }
 
         private void Send_Click(object? sender, RoutedEventArgs? e)
         {
-            string dateTime = DateTime.Now.ToString();
-            string userName = Client.Login;
-            string message = MessageTextBox.Text;
-            string messageType = "text";
-            UploadMessage(dateTime, userName, message, messageType);
-            Client.Message(message, "text");
+            UploadMessage(new Message {
+                MessageDateTime = DateTime.Now.ToString(),
+                Login = Client.Login,
+                Content = MessageTextBox.Text,
+                MessageType = "text"
+            });
+            Client.Message(MessageTextBox.Text, "text");
 
             MessageTextBox.Text = string.Empty;
         }
 
-        public void UploadMessage(string dateTime, string userName, string message, string type)
+        public void UploadMessage(Message message)
         {
-            TextBlock tb = new()
-            {
-                Text = "[ " + dateTime + " ] " + userName + " : " + message
-            };
-            Table.Children.Add(tb);
+            MessageFrame msg = new(message);
+            
+            Table.Children.Add(msg);
         }
 
         private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)

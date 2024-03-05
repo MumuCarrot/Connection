@@ -30,7 +30,7 @@ namespace LogInPage
     /// </param>
     public class Message
     {
-        [JsonProperty("datatime")]
+        [JsonProperty("datetime")]
         public string MessageDateTime { get; set; } = string.Empty;
         [JsonProperty("login")]
         public string Login { get; set; } = string.Empty;

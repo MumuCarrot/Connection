@@ -24,11 +24,11 @@ namespace LogInPage
             clientWindowChatFrame = new();
         }
 
-        public static void UploadMessage(string dt, string user_name, string message, string type)
+        public static void UploadMessage(Message message)
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
-                clientWindowChatFrame?.UploadMessage(dt, user_name, message, type);
+                clientWindowChatFrame?.UploadMessage(message);
             }));
         }
 

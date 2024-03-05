@@ -273,7 +273,7 @@ namespace LogInPage
                                         {
                                             foreach (var message in messageList.Messages)
                                             {
-                                                ClientWindow.UploadMessage(message.MessageDateTime, message.Login, message.Content, message.MessageType);
+                                                ClientWindow.UploadMessage(message);
                                             }
                                         }
                                         Answer = string.Empty;
@@ -317,7 +317,7 @@ namespace LogInPage
                                         {
                                             foreach (var message in messageList.Messages)
                                             {
-                                                ClientWindow.UploadMessage(message.MessageDateTime, message.Login, message.Content, message.MessageType);
+                                                ClientWindow.UploadMessage(message);
                                             }
                                         }
                                         Answer = string.Empty;
