@@ -24,6 +24,8 @@ namespace LogInPage
             string messageType = "text";
             UploadMessage(dateTime, userName, message, messageType);
             Client.Message(message, "text");
+
+            MessageTextBox.Text = string.Empty;
         }
 
         public void UploadMessage(string dateTime, string userName, string message, string type)
