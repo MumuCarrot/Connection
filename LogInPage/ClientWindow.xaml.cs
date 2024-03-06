@@ -11,6 +11,7 @@ namespace LogInPage
         public readonly static Client client;
         private static readonly client_window_nothing_frame? clientWindowNothingFrame;
         private static readonly ClientWindowChatFrame? clientWindowChatFrame;
+        private static readonly ClientWindowSettingsFrame? clientWindowSettingsFrame;
 
         public ClientWindow()
         {
@@ -22,6 +23,7 @@ namespace LogInPage
             client = MainWindow.client;
             clientWindowNothingFrame = new();
             clientWindowChatFrame = new();
+            clientWindowSettingsFrame = new();
         }
 
         public static void UploadMessage(Message message)
@@ -74,6 +76,11 @@ namespace LogInPage
                     ChatFrame.Content = clientWindowNothingFrame;
                     break;
             }
+        }
+
+        private void Settings_Click(object sender, RoutedEventArgs e)
+        {
+            ChatFrame.Content = clientWindowSettingsFrame;
         }
     }
 }

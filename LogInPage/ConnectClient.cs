@@ -27,14 +27,8 @@ namespace LogInPage
         /// Message size
         /// </summary>
         public static int MessageSize { get; } = 1024;
-        /// <summary>
-        /// Current user login
-        /// </summary>
-        public static string Login { get; set; } = string.Empty;
-        /// <summary>
-        /// Current user password
-        /// </summary>
-        public static string Passw { get; set; } = string.Empty;
+        
+        public static User? CurrentUser { get; set; }
         /// <summary>
         /// Server's answer
         /// </summary>
@@ -134,9 +128,9 @@ namespace LogInPage
         /// </exception>
         public static void Message(string message, string type)
         {
-            if (tcpClient is not null && Connected)
+            if (tcpClient is not null && Connected && CurrentUser is not null)
             {
-                SendRequest($"POST --MSG login{{{Login}}} content{{{message}}} msg_time{{{DateTime.Now}}} msg_type{{{type}}}");
+                SendRequest($"POST --MSG login{{{CurrentUser.Login}}} content{{{message}}} msg_time{{{DateTime.Now}}} msg_type{{{type}}}");
             }
             else throw new Exception("Server is not responding.");
         }
@@ -155,6 +149,17 @@ namespace LogInPage
             if (tcpClient is not null && Connected)
             {
                 SendRequest($"GET --ACMSG count{{{count}}}");
+            }
+            else throw new Exception("Server is not responding.");
+        }
+
+        public static void UpdateUser(string message) 
+        {
+            if (tcpClient is not null && Connected)
+            {
+                string json = JsonConvert.SerializeObject(message);
+
+                SendRequest($"PATCH --UPD_USER json{{{json}}}");
             }
             else throw new Exception("Server is not responding.");
         }
@@ -194,143 +199,147 @@ namespace LogInPage
         /// </exception>
         private void ReadAnswer()
         {
-            if (stream is not null)
+            try
             {
-                while (true)
+                if (stream is not null)
                 {
-                    // Waiting for responce
-                    while (!stream.DataAvailable) Thread.Sleep(500);
-
-                    // Reading answer
-                    byte[] bytesBuff = new byte[MessageSize];
-                    if (stream is not null)
-                        stream.Read(bytesBuff, 0, bytesBuff.Length);
-                    else throw new Exception("Stream is null. #CR0001");
-
-                    // Translating answer
-                    Answer = Encoding.UTF8.GetString(bytesBuff);
-
-                    // Searching for key word
-                    int keyWordIndex = Answer.IndexOf(' ');
-                    if (keyWordIndex == -1) throw new Exception("Key word was not found.");
-
-                    // Getting key word
-                    string keyWord = Answer[..keyWordIndex];
-
-                    // Switching key words
-                    switch (keyWord)
+                    while (true)
                     {
-                        // GET key word logic
-                        case "GET":
+                        // Waiting for responce
+                        while (!stream.DataAvailable) Thread.Sleep(500);
 
-                            // Searching for method
-                            int startMethodIndex = Answer.IndexOf("--");
-                            if (startMethodIndex == -1) throw new Exception("GET method was not found.");
-                            int endMethodIndex = Answer.IndexOf(' ', startMethodIndex);
-                            if (endMethodIndex == -1) throw new Exception("GET method was not found.");
+                        // Reading answer
+                        byte[] bytesBuff = new byte[MessageSize];
+                        if (stream is not null)
+                            stream.Read(bytesBuff, 0, bytesBuff.Length);
+                        else throw new Exception("Stream is null. #CR0001");
 
-                            // Getting method
-                            string method = Answer[startMethodIndex..endMethodIndex];
+                        // Translating answer
+                        Answer = Encoding.UTF8.GetString(bytesBuff);
 
-                            // Switching method
-                            switch (method)
-                            {
-                                // Returns status true if user already exist
-                                case "--USER_CHECK":
-                                    // Searching for login
-                                    int loginStart = Answer.IndexOf("login{") + "login{".Length;
-                                    int loginEnd = Answer.IndexOf('}', loginStart);
+                        // Searching for key word
+                        int keyWordIndex = Answer.IndexOf(' ');
+                        if (keyWordIndex == -1) throw new Exception("Key word was not found.");
 
-                                    // Getting login
-                                    Login = Answer[loginStart..loginEnd];
+                        // Getting key word
+                        string keyWord = Answer[..keyWordIndex];
 
-                                    // Searching for password
-                                    int passwordStart = Answer.IndexOf("password{") + "password{".Length;
-                                    int passwordEnd = Answer.IndexOf('}', passwordStart);
+                        // Switching key words
+                        switch (keyWord)
+                        {
+                            // GET key word logic
+                            case "GET":
 
-                                    // Getting password
-                                    Passw = Answer[passwordStart..passwordEnd];
+                                // Searching for method
+                                int startMethodIndex = Answer.IndexOf("--");
+                                if (startMethodIndex == -1) throw new Exception("GET method was not found.");
+                                int endMethodIndex = Answer.IndexOf(' ', startMethodIndex);
+                                if (endMethodIndex == -1) throw new Exception("GET method was not found.");
 
-                                    break; // --USER_CHECK 
+                                // Getting method
+                                string method = Answer[startMethodIndex..endMethodIndex];
 
-                                case "--ACMSG":
-                                    // Searching for JSON start point
-                                    int startIndex = Answer.IndexOf('{') + 1;
-                                    if (startIndex == -1) throw new Exception("JSON start point wasn't found.");
-                                    int endIndex = Answer.LastIndexOf('}');
-                                    if (endIndex == -1) throw new Exception("JSON end point wasn't found.");
+                                // Switching method
+                                switch (method)
+                                {
+                                    // Returns status true if user already exist
+                                    case "--USER_CHECK":
+                                        // Searching for JSON start point
+                                        int startIndexUC = Answer.IndexOf("json{") + "json{".Length;
+                                        if (startIndexUC == -1) throw new Exception("JSON start point wasn't found.");
+                                        int endIndexUC = Answer.IndexOf('}') + 1;
+                                        if (endIndexUC == -1) throw new Exception("JSON end point wasn't found.");
 
-                                    // Getting JSON into string
-                                    string json = Answer[startIndex..endIndex];
+                                        // Getting JSON into string
+                                        string jsonUC = Answer[startIndexUC..endIndexUC];
 
-                                    // Try of JSON deserialization
-                                    try
-                                    {
-                                        // JSON deserialization
-                                        MessageConteiner? messageList = JsonConvert.DeserializeObject<MessageConteiner>(json);
+                                        CurrentUser = JsonConvert.DeserializeObject<User>(jsonUC);
 
-                                        if (messageList is not null)
+                                        break; // --USER_CHECK 
+
+                                    case "--ACMSG":
+                                        // Searching for JSON start point
+                                        int startIndex = Answer.IndexOf('{') + 1;
+                                        if (startIndex == -1) throw new Exception("JSON start point wasn't found.");
+                                        int endIndex = Answer.LastIndexOf('}');
+                                        if (endIndex == -1) throw new Exception("JSON end point wasn't found.");
+
+                                        // Getting JSON into string
+                                        string json = Answer[startIndex..endIndex];
+
+                                        // Try of JSON deserialization
+                                        try
                                         {
-                                            foreach (var message in messageList.Messages)
+                                            // JSON deserialization
+                                            MessageConteiner? messageList = JsonConvert.DeserializeObject<MessageConteiner>(json);
+
+                                            if (messageList is not null)
                                             {
-                                                ClientWindow.UploadMessage(message);
+                                                foreach (var message in messageList.Messages)
+                                                {
+                                                    ClientWindow.UploadMessage(message);
+                                                }
                                             }
+                                            Answer = string.Empty;
                                         }
-                                        Answer = string.Empty;
-                                    }
-                                    catch (JsonException ex)
-                                    {
-                                        MessageBox.Show("Ошибка при десериализации JSON: " + ex.Message);
-                                    }
-                                    break; // --ACMSG
-
-                            }
-                            break; // GET
-                        case "POST":
-                            // Searching for method
-                            int startMethodIndexPost = Answer.IndexOf("--");
-                            if (startMethodIndexPost == -1) throw new Exception("POST method was not found.");
-                            int endMethodIndexPost = Answer.IndexOf(' ', startMethodIndexPost);
-                            if (endMethodIndexPost == -1) throw new Exception("POST method was not found.");
-
-                            // Getting method
-                            string methodPost = Answer[startMethodIndexPost..endMethodIndexPost];
-                            switch (methodPost) 
-                            {
-                                case "--MSG":
-                                    // Searching for JSON start point
-                                    int startIndex = Answer.IndexOf('{') + 1;
-                                    if (startIndex == -1) throw new Exception("JSON start point wasn't found.");
-                                    int endIndex = Answer.LastIndexOf('}');
-                                    if (endIndex == -1) throw new Exception("JSON end point wasn't found.");
-
-                                    // Getting JSON into string
-                                    string json = Answer[startIndex..endIndex];
-
-                                    // Try of JSON deserialization
-                                    try
-                                    {
-                                        // JSON deserialization
-                                        MessageConteiner? messageList = JsonConvert.DeserializeObject<MessageConteiner>(json);
-
-                                        if (messageList is not null)
+                                        catch (JsonException ex)
                                         {
-                                            foreach (var message in messageList.Messages)
-                                            {
-                                                ClientWindow.UploadMessage(message);
-                                            }
+                                            MessageBox.Show("Ошибка при десериализации JSON: " + ex.Message);
                                         }
-                                        Answer = string.Empty;
-                                    }
-                                    catch (JsonException ex)
-                                    {
-                                        MessageBox.Show("Ошибка при десериализации JSON: " + ex.Message);
-                                    }
-                                    break; // MSG
-                            }
-                            break; // POST
+                                        break; // --ACMSG
+
+                                }
+                                break; // GET
+                            case "POST":
+                                // Searching for method
+                                int startMethodIndexPost = Answer.IndexOf("--");
+                                if (startMethodIndexPost == -1) throw new Exception("POST method was not found.");
+                                int endMethodIndexPost = Answer.IndexOf(' ', startMethodIndexPost);
+                                if (endMethodIndexPost == -1) throw new Exception("POST method was not found.");
+
+                                // Getting method
+                                string methodPost = Answer[startMethodIndexPost..endMethodIndexPost];
+                                switch (methodPost)
+                                {
+                                    case "--MSG":
+                                        // Searching for JSON start point
+                                        int startIndex = Answer.IndexOf('{') + 1;
+                                        if (startIndex == -1) throw new Exception("JSON start point wasn't found.");
+                                        int endIndex = Answer.LastIndexOf('}');
+                                        if (endIndex == -1) throw new Exception("JSON end point wasn't found.");
+
+                                        // Getting JSON into string
+                                        string json = Answer[startIndex..endIndex];
+
+                                        // Try of JSON deserialization
+                                        try
+                                        {
+                                            // JSON deserialization
+                                            MessageConteiner? messageList = JsonConvert.DeserializeObject<MessageConteiner>(json);
+
+                                            if (messageList is not null)
+                                            {
+                                                foreach (var message in messageList.Messages)
+                                                {
+                                                    ClientWindow.UploadMessage(message);
+                                                }
+                                            }
+                                            Answer = string.Empty;
+                                        }
+                                        catch (JsonException ex)
+                                        {
+                                            MessageBox.Show("Ошибка при десериализации JSON: " + ex.Message);
+                                        }
+                                        break; // MSG
+                                }
+                                break; // POST
+                        }
                     }
                 }
+            }
+            catch 
+            { 
+                Close();
             }
         }
     }

@@ -22,7 +22,7 @@ namespace LogInPage
         {
             UploadMessage(new Message {
                 MessageDateTime = DateTime.Now.ToString(),
-                Login = Client.Login,
+                Login = Client.CurrentUser?.Login ?? "user not found",
                 Content = MessageTextBox.Text,
                 MessageType = "text"
             });

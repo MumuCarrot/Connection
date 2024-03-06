@@ -100,15 +100,36 @@
                       HorizontalAlignment="Left" 
                       VerticalAlignment="Stretch" />
 
-        <!-- Список чатов -->
-        <ScrollViewer Grid.Column="0"
-                      Grid.Row="1">
-            <StackPanel x:Name="ChatList">
-                <Button x:Name="MainChat"
-                        Height="60"
-                        Click="MainChat_Click" Background="#FFE5F3FD"/>
-            </StackPanel>
-        </ScrollViewer>
+        <!-- Панель поиска, настроек, списка чатов -->
+        <Grid  Grid.Column="0"
+               Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Height="30" 
+                        Width="30"
+                        x:Name="Settings"
+                        Click="Settings_Click"/>
+                <TextBox Grid.Column="1"/>
+            </Grid>
+            <!-- Список чатов -->
+            <ScrollViewer Grid.Row="1">
+                <StackPanel x:Name="ChatList">
+                    <Button x:Name="MainChat"
+                            Height="60"
+                            Click="MainChat_Click" 
+                            Background="#FFE5F3FD"/>
+                </StackPanel>
+            </ScrollViewer>
+            
+        </Grid>
 
         <!-- Чат -->
         <Frame x:Name="ChatFrame"

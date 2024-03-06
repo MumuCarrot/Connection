@@ -66,9 +66,6 @@ namespace LogInPage
                                 while (Client.Answer.Length <= 0) ;
                                 if (Client.Answer.Contains("status{true}"))
                                 {
-                                    this.Login = Client.Login;
-                                    this.Password = Client.Passw;
-
                                     var clw = new ClientWindow();
                                     clw.Show();
 
@@ -129,11 +126,8 @@ namespace LogInPage
                                         }
                                     }
                                     Client.SignUp(sup.LoginTextBox.Text, sup.PasswordTextBox.Password);
-                                    if (sup.LoginTextBox.Text.ToString().Equals(Client.Login) && sup.PasswordTextBox.Password.ToString().Equals(Client.Passw))
+                                    if (sup.LoginTextBox.Text.ToString().Equals(Client.CurrentUser?.Login) && sup.PasswordTextBox.Password.ToString().Equals(Client.CurrentUser?.Password))
                                     {
-                                        this.Login = Client.Login;
-                                        this.Password = Client.Passw;
-
                                         var clw = new ClientWindow();
                                         clw.Show();
 
