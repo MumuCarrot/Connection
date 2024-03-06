@@ -153,13 +153,13 @@ namespace LogInPage
             else throw new Exception("Server is not responding.");
         }
 
-        public static void UpdateUser(string message) 
+        public static void UpdateUser() 
         {
             if (tcpClient is not null && Connected)
             {
-                string json = JsonConvert.SerializeObject(message);
+                string json = JsonConvert.SerializeObject(CurrentUser);
 
-                SendRequest($"PATCH --UPD_USER json{{{json}}}");
+                SendRequest($"PATCH --UPD_USER user{{{json}}}");
             }
             else throw new Exception("Server is not responding.");
         }
