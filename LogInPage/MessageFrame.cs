@@ -8,11 +8,13 @@ namespace LogInPage
     {
         public SolidColorBrush frameColorBrush = new(Color.FromRgb(191, 230, 255));
         private CornerRadius frameCornerRadius = new(8);
-        private Thickness frameMargin = new(8, 5, 0, 0);
+        private Thickness frameMargin = new(8, 5, 8, 0);
+
+        public bool isMyMessage = false;
 
         private readonly Border? frame;
         private readonly Grid? frameGrid;
-        private readonly TextBlock? login;
+        private readonly TextBlock? username;
         private readonly TextBlock? content;
         private readonly TextBlock? dateTime;
 
@@ -20,13 +22,18 @@ namespace LogInPage
         {
             if (message.MessageType == "text") 
             { 
-                login = new TextBlock
+                username = new TextBlock
                 {
                     Text = message.Login,
                     HorizontalAlignment = HorizontalAlignment.Left,
                     Padding = new Thickness(5, 0, 5, 0),
                     FontWeight = FontWeights.Bold
                 };
+
+                if (message.Login.Equals(Client.CurrentUser?.Login)) 
+                { 
+                    isMyMessage = true;
+                }
 
                 content = new TextBlock
                 {
@@ -54,8 +61,8 @@ namespace LogInPage
                     },
                 };
 
-                frameGrid.Children.Add(login);
-                Grid.SetRow(login, 0);
+                frameGrid.Children.Add(username);
+                Grid.SetRow(username, 0);
 
                 frameGrid.Children.Add(content);
                 Grid.SetRow(content, 2);
@@ -72,6 +79,8 @@ namespace LogInPage
                     Margin = frameMargin,
                     Child = frameGrid
                 };
+
+                if (isMyMessage) frame.HorizontalAlignment = HorizontalAlignment.Right;
 
                 Content = frame;
             }
