@@ -80,7 +80,10 @@ namespace LogInPage
 
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
-            ChatFrame.Content = clientWindowSettingsFrame;
+            if (ChatFrame.Content != clientWindowSettingsFrame)
+                ChatFrame.Content = clientWindowSettingsFrame;
+            else
+                ChatFrame.Content = clientWindowNothingFrame;
         }
     }
 }

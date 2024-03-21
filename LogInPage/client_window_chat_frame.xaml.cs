@@ -10,6 +10,9 @@ namespace LogInPage
     /// </summary>
     public partial class ClientWindowChatFrame : Page
     {
+        public bool IsEmpty { get { return MessageTextBox.Text.Length == 0; } }
+        private readonly SolidColorBrush mySolidColorBrush = new();
+
         public ClientWindowChatFrame()
         {
             InitializeComponent();
@@ -40,12 +43,28 @@ namespace LogInPage
 
         private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            switch (e.Key)
-            {
-                case Key.Enter:
-                    Send_Click(null, null);
-                    break;
+            if (IsEmpty) 
+            { 
+                switch (e.Key)
+                {
+                    case Key.Enter:
+                        Send_Click(null, null);
+                        break;
+                }
             }
+        }
+
+        private void MessageTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!IsEmpty)
+            {
+                mySolidColorBrush.Color = Color.FromRgb(68, 181, 249);
+            }
+            else
+            {
+                mySolidColorBrush.Color = Color.FromRgb(162, 220, 255);
+            }
+            SendMsg.Background = mySolidColorBrush;
         }
     }
 }

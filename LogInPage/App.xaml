@@ -33,6 +33,9 @@
         <ControlTemplate x:Key="VerticalScrollBar"
                          TargetType="{x:Type ScrollBar}">
             <Grid>
+                
+                <!--// First and last row is can be used for buttons //-->
+                
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition/>
@@ -63,15 +66,24 @@
                     </Track.DecreaseRepeatButton>
 
                     <Track.Thumb>
-
                         <Thumb>
-
-                            <!--// Add style //-->
-
+                            <Thumb.Style>
+                                <Style>
+                                    <Setter Property="ItemsControl.Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <Border
+                                                    x:Name="border"
+                                                    Background="LightGray"
+                                                    CornerRadius="4">
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Thumb.Style>
                         </Thumb>
-
                     </Track.Thumb>
-
                     <Track.IncreaseRepeatButton>
                         <RepeatButton
                             Margin="3,2"

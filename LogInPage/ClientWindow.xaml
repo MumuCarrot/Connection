@@ -103,7 +103,8 @@
 
         <!-- Панель поиска, настроек, списка чатов -->
         <Grid  Grid.Column="0"
-               Grid.Row="1">
+               Grid.Row="1"
+               Background="#FFF1F5F7">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
@@ -123,18 +124,61 @@
                         BorderBrush="Transparent">
                     <Button.Content>
                         <StackPanel>
-                            <TextBlock Text="¯¯¯" Height="5"/>
-                            <TextBlock Text="¯¯¯" Height="5"/>
-                            <TextBlock Text="¯¯¯" Height="5"/>
+                            <TextBlock 
+                                Text="¯¯¯" 
+                                Height="5" 
+                                FontWeight="Bold"/>
+                            <TextBlock 
+                                Text="¯¯¯" 
+                                Height="5" 
+                                FontWeight="Bold"/>
+                            <TextBlock 
+                                Text="¯¯¯" 
+                                Height="5" 
+                                FontWeight="Bold"/>
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <TextBox Grid.Column="1"/>
+                <TextBox
+                    Grid.Column="1"
+                    OverridesDefaultStyle="True"
+                    Margin="0 1">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type TextBox}">
+                                        <Border 
+                                            BorderBrush="#FFE5F3FD" 
+                                            BorderThickness="3" 
+                                            Background="{TemplateBinding Background}" 
+                                            CornerRadius="12">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <ScrollViewer 
+                                                    Grid.Column="0"
+                                                    x:Name="PART_ContentHost"/>
+                                                <Button 
+                                                    Grid.Column="1"
+                                                    Content="👁‍🗨"
+                                                    Margin="5 3"
+                                                    BorderBrush="Transparent"
+                                                    Background="Transparent"/>
+                                            </Grid>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
             </Grid>
             <!-- Список чатов -->
             <ScrollViewer 
-                Grid.Row="1"
-                >
+                Grid.Row="1">
                 <StackPanel x:Name="ChatList">
                     <Button x:Name="MainChat"
                             Height="60"
@@ -166,6 +210,31 @@
         Click="MainChat_Click" 
         Background="#FFE5F3FD"
         BorderBrush="Transparent"/>
+                    <Button 
+Height="60"
+Click="MainChat_Click" 
+Background="#FFE5F3FD"
+BorderBrush="Transparent"/>
+                    <Button 
+Height="60"
+Click="MainChat_Click" 
+Background="#FFE5F3FD"
+BorderBrush="Transparent"/>
+                    <Button 
+Height="60"
+Click="MainChat_Click" 
+Background="#FFE5F3FD"
+BorderBrush="Transparent"/>
+                    <Button 
+Height="60"
+Click="MainChat_Click" 
+Background="#FFE5F3FD"
+BorderBrush="Transparent"/>
+                    <Button 
+Height="60"
+Click="MainChat_Click" 
+Background="#FFE5F3FD"
+BorderBrush="Transparent"/>
                     <Button 
 Height="60"
 Click="MainChat_Click" 

@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using Microsoft.Win32;
+using System.Windows.Controls;
 
 namespace LogInPage
 {
@@ -32,6 +33,23 @@ namespace LogInPage
                     Client.CurrentUser.AboutMe = AboutMe.Text;
                     Client.UpdateUser();
                 }
+            }
+        }
+
+        private void ChangeAvatar_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new()
+            {
+                Filter = "Image file (*.png;*.jpg)|*.png;*.jpg|All files (*.*)|*.*",
+                Title = "Choose your file"
+            };
+
+            bool? result = openFileDialog.ShowDialog();
+
+            if (result == true)
+            {
+                string selectedFileName = openFileDialog.FileName;
+                Client.UploadAvatar(selectedFileName);
             }
         }
     }

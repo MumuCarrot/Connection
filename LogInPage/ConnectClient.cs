@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
+using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows;
+
 
 namespace LogInPage
 {
@@ -26,8 +28,8 @@ namespace LogInPage
         /// <summary>
         /// Message size
         /// </summary>
-        public static int MessageSize { get; } = 1024;
-        
+        public static int MessageSize { get; } = 10240;
+
         public static User? CurrentUser { get; set; }
         /// <summary>
         /// Server's answer
@@ -153,13 +155,54 @@ namespace LogInPage
             else throw new Exception("Server is not responding.");
         }
 
-        public static void UpdateUser() 
+        public static void UpdateUser()
         {
             if (tcpClient is not null && Connected)
             {
                 string json = JsonConvert.SerializeObject(CurrentUser);
 
                 SendRequest($"PATCH --UPD_USER user{{{json}}}");
+            }
+            else throw new Exception("Server is not responding.");
+        }
+
+        public static void UploadAvatar(string path)
+        {
+            if (tcpClient is not null && Connected)
+            {
+                /*byte[] image_bytes = File.ReadAllBytes(path);
+                int parts = image_bytes.Length / 4000;
+
+                Avatar ava = new()
+                {
+                    UserName = CurrentUser?.UserName ?? "null",
+                    AvatarDateTime = DateTime.Now.ToString()
+                };
+
+                string json = JsonConvert.SerializeObject(ava);
+                SendRequest($"PATCH --UPD_AVATAR avatar{{{json}}}");
+
+                int iter = 0;
+                byte[] part;
+                for (int i = 0; i < parts; i++)
+                {
+                    if (iter + 4000 < image_bytes.Length)
+                    {
+                        part = image_bytes[iter..(iter + 4000)];
+                        string jsonIN = JsonConvert.SerializeObject(part);
+                        if (stream.CanRead)
+                            SendRequest($"PATCH --UPD_AVATAR part{{{jsonIN}}}");
+                    }
+                    else
+                    {
+                        part = image_bytes[iter..image_bytes.Length];
+                        string jsonIN = JsonConvert.SerializeObject(part);
+                        if (stream.CanRead)
+                            SendRequest($"PATCH --UPD_AVATAR part{{{jsonIN}}}");
+                    }
+                }*/
+
+                SendRequest($"PATCH --UPD_AVATAR status{{close}}");
             }
             else throw new Exception("Server is not responding.");
         }
@@ -337,8 +380,8 @@ namespace LogInPage
                     }
                 }
             }
-            catch 
-            { 
+            catch
+            {
                 Close();
             }
         }
