@@ -35,8 +35,31 @@
                      BorderBrush="Transparent"
                      Background="Transparent"
                      TextWrapping="NoWrap"/>
-            <Button Grid.Column="1"
-                    Click="Send_Click" Background="#FFA2DCFF"/>
+            <Button 
+                Grid.Column="1"
+                Click="Send_Click" 
+                Background="#FFA2DCFF"
+                BorderBrush="Transparent"
+                Content="⇒" 
+                FontSize="24">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="50"
+                                            Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
         </Grid>
     </Grid>
 </Page>

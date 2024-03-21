@@ -16,6 +16,7 @@
                       ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
     <Window.Resources>
+
         <Style TargetType="{x:Type Panel}" x:Key="WindowMainPanelStyle">
             <Setter Property="Margin" Value="0" />
             <Style.Triggers>
@@ -116,16 +117,80 @@
                 <Button Height="30" 
                         Width="30"
                         x:Name="Settings"
-                        Click="Settings_Click"/>
+                        Click="Settings_Click" 
+                        HorizontalAlignment="Left"
+                        Background="Transparent"
+                        BorderBrush="Transparent">
+                    <Button.Content>
+                        <StackPanel>
+                            <TextBlock Text="¯¯¯" Height="5"/>
+                            <TextBlock Text="¯¯¯" Height="5"/>
+                            <TextBlock Text="¯¯¯" Height="5"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
                 <TextBox Grid.Column="1"/>
             </Grid>
             <!-- Список чатов -->
-            <ScrollViewer Grid.Row="1">
+            <ScrollViewer 
+                Grid.Row="1"
+                >
                 <StackPanel x:Name="ChatList">
                     <Button x:Name="MainChat"
                             Height="60"
                             Click="MainChat_Click" 
-                            Background="#FFE5F3FD"/>
+                            Background="#FFE5F3FD"
+                            BorderBrush="Transparent"/>
+                    <Button 
+        Height="60"
+        Click="MainChat_Click" 
+        Background="#FFE5F3FD"
+        BorderBrush="Transparent"/>
+                    <Button 
+        Height="60"
+        Click="MainChat_Click" 
+        Background="#FFE5F3FD"
+        BorderBrush="Transparent"/>
+                    <Button 
+        Height="60"
+        Click="MainChat_Click" 
+        Background="#FFE5F3FD"
+        BorderBrush="Transparent"/>
+                    <Button 
+        Height="60"
+        Click="MainChat_Click" 
+        Background="#FFE5F3FD"
+        BorderBrush="Transparent"/>
+                    <Button 
+        Height="60"
+        Click="MainChat_Click" 
+        Background="#FFE5F3FD"
+        BorderBrush="Transparent"/>
+                    <Button 
+Height="60"
+Click="MainChat_Click" 
+Background="#FFE5F3FD"
+BorderBrush="Transparent"/>
+                    <Button 
+Height="60"
+Click="MainChat_Click" 
+Background="#FFE5F3FD"
+BorderBrush="Transparent"/>
+                    <Button 
+Height="60"
+Click="MainChat_Click" 
+Background="#FFE5F3FD"
+BorderBrush="Transparent"/>
+                    <Button 
+Height="60"
+Click="MainChat_Click" 
+Background="#FFE5F3FD"
+BorderBrush="Transparent"/>
+                    <Button 
+Height="60"
+Click="MainChat_Click" 
+Background="#FFE5F3FD"
+BorderBrush="Transparent"/>
                 </StackPanel>
             </ScrollViewer>
             

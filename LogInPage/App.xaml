@@ -5,5 +5,85 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
 
+        <!--// Scroll bar style //-->
+
+        <Style TargetType="ScrollBar">
+            <Setter Property="SnapsToDevicePixels"
+                    Value="True"/>
+            <Setter Property="OverridesDefaultStyle"
+                    Value="True"/>
+
+            <Style.Triggers>
+
+                <Trigger Property="Orientation"
+                         Value="Vertical">
+
+                    <Setter Property="Width"
+                            Value="6"/>
+
+                    <Setter Property="Template"
+                            Value="{DynamicResource VerticalScrollBar}"/>
+
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--// Template for scroll bar //-->
+
+        <ControlTemplate x:Key="VerticalScrollBar"
+                         TargetType="{x:Type ScrollBar}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!--// Border with a background //-->
+
+                <Border
+                    Grid.Row="1"
+                    CornerRadius="20"
+                    Margin="10"
+                    Background="#E6C36A">
+
+                </Border>
+
+                <Track
+                    Name="PART_Track"
+                    Grid.Row="1"
+                    IsDirectionReversed="True">
+
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton
+                            Margin="3,2"
+                            Command="ScrollBar.PageUpCommand">
+
+                        </RepeatButton>
+                    </Track.DecreaseRepeatButton>
+
+                    <Track.Thumb>
+
+                        <Thumb>
+
+                            <!--// Add style //-->
+
+                        </Thumb>
+
+                    </Track.Thumb>
+
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton
+                            Margin="3,2"
+                            Command="ScrollBar.PageDownCommand">
+
+                        </RepeatButton>
+                    </Track.IncreaseRepeatButton>
+
+                </Track>
+
+            </Grid>
+        </ControlTemplate>
+        
     </Application.Resources>
 </Application>

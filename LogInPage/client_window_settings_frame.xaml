@@ -45,11 +45,42 @@
                                 <RowDefinition Height="60"/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <Border Background="Black" 
+                        <Border Background="Black" 
                                     CornerRadius="60" 
                                     Grid.Column="1"
-                                    Grid.Row="1"/>
-                        </Grid>
+                                    Grid.Row="1">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="18"/>
+                                </Grid.RowDefinitions>
+                                <Button 
+                                    x:Name="ChangeAvatar"
+                                    Height="Auto"
+                                    Width="{Binding ElementName=ChangeAvatar, Path=ActualHeight}"
+                                    Grid.Row="1"
+                                    Click="ChangeAvatar_Click">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="50"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </Grid>
+                        </Border>
+                    </Grid>
                         <!-- Name Login -->
                         <Grid Grid.Column="1">
                             <Grid.RowDefinitions>
@@ -59,18 +90,33 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-
-                            <TextBox Grid.Row="1"
-                                     x:Name="UserName"
-                                     BorderBrush="Transparent"
-                                     Background="#FFDCF1FF"/>
-                            <TextBox Grid.Row="3"
-                                     x:Name="UserLogin"
-                                     BorderBrush="Transparent"
-                                     Background="#FFDCF1FF"/>
+                        <TextBlock 
+                            Grid.Row="0"
+                            Text="Username:" 
+                            FontFamily="Cambria" 
+                            VerticalAlignment="Bottom"/>
+                        <TextBox 
+                            Grid.Row="1"
+                            x:Name="UserName"
+                            BorderBrush="Transparent"
+                            Background="#FFDCF1FF"/>
+                        <TextBlock 
+                            Grid.Row="2"
+                            Text="Login:" 
+                            FontFamily="Cambria" 
+                            VerticalAlignment="Bottom"/>
+                        <TextBox 
+                            Grid.Row="3"
+                            x:Name="UserLogin"
+                            BorderBrush="Transparent"
+                            Background="#FFDCF1FF"/>
                         </Grid>
                     </Grid>
                 <StackPanel Grid.Row="1">
+                    <TextBlock
+                        Text="About me:" 
+                        FontFamily="Cambria" 
+                        VerticalAlignment="Bottom"/>
                     <TextBox Height="50"
                              x:Name="AboutMe"
                              VerticalAlignment="Top"
@@ -88,7 +134,19 @@
                             Background="#FF8EECBB"
                             Content="Update Profile"
                             Margin="0 5"
-                            Click="Update_Click"/>
+                            Click="Update_Click" 
+                            FontFamily="Cambria"/>
+
+                    <Button 
+                        x:Name="ResetPassword"
+                        Height="25" 
+                        Width="100" 
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Bottom"
+                        BorderBrush="Transparent"
+                        Background="#FFECAC8E"
+                        Content="Change password"
+                        FontFamily="Cambria"/>
                 </StackPanel>
             </Grid>
         </Border>
