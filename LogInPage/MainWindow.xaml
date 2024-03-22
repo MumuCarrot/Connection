@@ -1,18 +1,26 @@
-﻿<Window x:Class="LogInPage.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LogInPage"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="350" 
-        ResizeMode="NoResize" 
-        WindowStartupLocation="CenterScreen" 
-        WindowStyle="None"
-        AllowsTransparency="True"
-        Background="Transparent">
+﻿<Window 
+    x:Class="LogInPage.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:LogInPage"
+    mc:Ignorable="d"
+    Title="MainWindow" 
+    Height="500" 
+    Width="350" 
+    ResizeMode="NoResize" 
+    WindowStartupLocation="CenterScreen" 
+    WindowStyle="None"
+    AllowsTransparency="True"
+    Background="Transparent">
 
+    <!--// Window styles //-->
+    
     <Window.Resources>
+        
+        <!--// Rectangle styles //-->
+
         <Style TargetType="Rectangle">
             <Style.Triggers>
                 <Trigger Property="IsMouseOver"
@@ -22,6 +30,9 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        
+        <!--// Button styles //-->
+        
         <ControlTemplate x:Key="RoundButtonTemplate" TargetType="{x:Type Button}">
             <Grid>
                 <Border x:Name="border" 
@@ -40,10 +51,17 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
+    
     </Window.Resources>
 
-    <Border x:Name="MainBorder"
-            CornerRadius="0 0 16 16">
+    <!--// Window container //-->
+
+    <Border 
+        x:Name="MainBorder"
+        CornerRadius="0 0 16 16">
+
+        <!--// Window container style //-->
+
         <Border.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="#FF00ACFF"/>
@@ -51,7 +69,13 @@
                 <GradientStop Color="#FF6CFAFF" Offset="0.439"/>
             </LinearGradientBrush>
         </Border.Background>
+
+        <!--// Window container content container //-->
+
         <Grid>
+
+            <!--// Window container contant container style //-->
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="25"/>
                 <RowDefinition Height="163"/>
@@ -59,21 +83,27 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Canvas Grid.Column="0" 
-                    Width="Auto" 
-                    Height="Auto"
-                    MouseDown="MurkaPolygon_MouseDown">
+            <!--// Canvas for polygons //-->
+
+            <Canvas 
+                Grid.Column="0" 
+                Width="Auto" 
+                Height="Auto"
+                MouseDown="MurkaPolygon_MouseDown">
+
                 <Polygon Points="310,0 330,25 330,80 340,100 340,280 350,300 350,0">
                     <Polygon.Fill>
                         <SolidColorBrush Color="White"
                                          Opacity="0.5"/>
                     </Polygon.Fill>
                 </Polygon>
+
                 <Polygon Points="0,0 0,300 10,280 10,100 20,80 20,25 40,0">
                     <Polygon.Fill>
                         <SolidColorBrush Color="White" Opacity="0.5"/>
                     </Polygon.Fill>
                 </Polygon>
+
                 <Polygon x:Name="MurkaPolygon"
                          Points="100,0 125,25 225,25 250,0">
                     <Polygon.Fill>
@@ -81,6 +111,9 @@
                                          Opacity="0.5"/>
                     </Polygon.Fill>
                 </Polygon>
+
+                <!--// Minimize and exit rectangles //-->
+
                 <Grid Margin="125 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -88,75 +121,98 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <Rectangle Grid.Column="0" 
-                               Width="40"
-                               Height="10"
-                               Fill="#FF1491FF"
-                               RadiusX="5"
-                               RadiusY="5"
-                               Margin="5 5"
-                               MouseLeftButtonDown="Button_Click_Hide"/>
+                    <!--// Minimize //-->
 
+                    <Rectangle 
+                        Grid.Column="0" 
+                        Width="40"
+                        Height="10"
+                        Fill="#FF1491FF"
+                        RadiusX="5"
+                        RadiusY="5"
+                        Margin="5 5"
+                        MouseLeftButtonDown="Button_Click_Hide"/>
 
-                    <Rectangle Grid.Column="2"
-                               Width="40"
-                               Height="10"
-                               Fill="#FF145DFF"
-                               RadiusX="5"
-                               RadiusY="5"
-                               Margin="5 0 0 0"
-                               MouseLeftButtonDown="Button_Click_Close"/>
+                    <!--// Exit //-->
+
+                    <Rectangle 
+                        Grid.Column="2"
+                        Width="40"
+                        Height="10"
+                        Fill="#FF145DFF"
+                        RadiusX="5"
+                        RadiusY="5"
+                        Margin="5 0 0 0"
+                        MouseLeftButtonDown="Button_Click_Close"/>
 
                 </Grid>
+
             </Canvas>
 
-            <TextBlock x:Name="LogoBar"
-                       Grid.Row="1" Margin="0 45" 
-                       Text="Connect" 
-                       FontFamily="Constantia" 
-                       FontSize="60" 
-                       Foreground="AliceBlue" 
-                       HorizontalAlignment="Center"
-                       />
-            
-            <!--Form-->
+            <!--// Interactive logo //-->
+
+            <TextBlock 
+                x:Name="LogoBar"
+                Grid.Row="1" Margin="0 45" 
+                Text="Connect" 
+                FontFamily="Constantia" 
+                FontSize="60" 
+                Foreground="AliceBlue" 
+                HorizontalAlignment="Center"/>
+
+            <!--// Log In and Sign Up fram //-->
+
             <Frame x:Name="ConnectionFrame"
                    Grid.Row="2"
                    NavigationUIVisibility="Hidden"/>
+
+            <!--// Log In and Sign Up button //-->
+
             <Grid Grid.Row="3">
+
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
+
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1.5*"/>
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Button x:Name="SignInBtn"
-                        Grid.Column="0" 
-                        Grid.Row="1"
-                        Content="Sign In"
-                        Height="25"
-                        Width="100"
-                        Background="AliceBlue"
-                        FontFamily="Constantia" 
-                        FontSize="14"
-                        Foreground="DarkGray"
-                        Template="{StaticResource ResourceKey=RoundButtonTemplate}"
-                        Click="LogInButton_Click"/>
-                <Button x:Name="SignUpBtn"
-                        Grid.Column="1"
-                        Grid.Row="1"
-                        Content="Sign Up"
-                        Height="25"
-                        Width="100"
-                        Background="AliceBlue"
-                        FontFamily="Constantia" 
-                        FontSize="14"
-                        Foreground="DarkGray"
-                        Template="{StaticResource ResourceKey=RoundButtonTemplate}"
-                        Click="SignUpButton_Click"/>
+
+                <!--// Sign In button //-->
+
+                <Button 
+                    x:Name="SignInBtn"
+                    Grid.Column="0" 
+                    Grid.Row="1"
+                    Content="Sign In"
+                    Height="25"
+                    Width="100"
+                    Background="AliceBlue"
+                    FontFamily="Constantia" 
+                    FontSize="14"
+                    Foreground="DarkGray"
+                    Template="{StaticResource ResourceKey=RoundButtonTemplate}"
+                    Click="LogInButton_Click"/>
+
+                <!--// Sign Up button //-->
+
+                <Button 
+                    x:Name="SignUpBtn"
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Content="Sign Up"
+                    Height="25"
+                    Width="100"
+                    Background="AliceBlue"
+                    FontFamily="Constantia" 
+                    FontSize="14"
+                    Foreground="DarkGray"
+                    Template="{StaticResource ResourceKey=RoundButtonTemplate}"
+                    Click="SignUpButton_Click"/>
+
             </Grid>
         </Grid>
     </Border>
