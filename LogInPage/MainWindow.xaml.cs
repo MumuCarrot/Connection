@@ -3,27 +3,62 @@ using System.Windows.Input;
 
 namespace LogInPage
 {
+    /// <summary>
+    /// Authorization/Registration window 
+    /// </summary>
     public partial class MainWindow : Window
     {
-        public string Login { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
+        /// <summary>
+        /// Client for user using
+        /// FILENAME: ConnectClient.cs
+        /// </summary>
         public readonly static Client client = new();
 
+        /// <summary>
+        /// Window initialization
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Minimization
+        /// </summary>
+        /// <param name="sender">
+        /// Rectangle sender
+        /// </param>
+        /// <param name="e">
+        /// Click
+        /// </param>
         private void Button_Click_Hide(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
         }
 
+        /// <summary>
+        /// Close
+        /// </summary>
+        /// <param name="sender">
+        /// Rectangle sender
+        /// </param>
+        /// <param name="e">
+        /// Click
+        /// </param>
         private void Button_Click_Close(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
+        /// <summary>
+        /// Drug and move
+        /// </summary>
+        /// <param name="sender">
+        /// Polyghon sender
+        /// </param>
+        /// <param name="e">
+        /// MouseDown
+        /// </param>
         private void MurkaPolygon_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -32,6 +67,15 @@ namespace LogInPage
             }
         }
 
+        /// <summary>
+        /// Log In
+        /// </summary>
+        /// <param name="sender">
+        /// Button
+        /// </param>
+        /// <param name="e">
+        /// Click
+        /// </param>
         private void LogInButton_Click(object sender, RoutedEventArgs e)
         {
             if (SignInBtn.Content.ToString() == "Sign In")
@@ -41,34 +85,40 @@ namespace LogInPage
                     ConnectionFrame.Content = new SignInPage();
                     SignUpBtn.Content = "Cancel";
                 }
-                else 
-                { 
+                else
+                {
                     try
                     {
-                        if (ConnectionFrame.Content is SignInPage sip)
-                            if (sip.LoginTextBox.Text.Length >= 6 && sip.PasswordTextBox.Password.Length >= 5)
+                        if (ConnectionFrame.Content is SignInPage signInPage)
+                        {
+                            // Check on entered data in login and password fields
+                            if (signInPage.LoginTextBox.Text.Length >= 6 &&
+                                signInPage.PasswordTextBox.Password.Length >= 5)
                             {
+                                // Loop util client connect to the server
                                 bool connected = false;
                                 while (!connected)
                                 {
-                                    try
+                                    if (Client.Connected != true)
                                     {
-                                        if (Client.Connected != true)
-                                            client.Start();
-                                        connected = true;
+                                        client.Start();
+                                        Thread.Sleep(500);
+                                        continue;
                                     }
-                                    catch
-                                    {
-                                        Thread.Sleep(2000);
-                                    }
+                                    connected = true;
                                 }
-                                Client.LogIn(sip.LoginTextBox.Text, sip.PasswordTextBox.Password);
+
+                                // Client connected and now log in him to the server
+                                Client.LogIn(signInPage.LoginTextBox.Text, signInPage.PasswordTextBox.Password);
+
+                                // Wait for an answer status{true}
                                 while (Client.Answer.Length <= 0) ;
                                 if (Client.Answer.Contains("status{true}"))
                                 {
                                     var clw = new ClientWindow();
                                     clw.Show();
 
+                                    // If true end this window
                                     this.Close();
                                 }
                             }
@@ -77,6 +127,7 @@ namespace LogInPage
                                 LogoBar.FontSize = 30;
                                 LogoBar.Text = "Login or password\ntoo short.";
                             }
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -84,13 +135,22 @@ namespace LogInPage
                     }
                 }
             }
-            else 
+            else
             {
                 ConnectionFrame.Content = null;
                 SignInBtn.Content = "Sign In";
             }
         }
 
+        /// <summary>
+        /// Sign Up
+        /// </summary>
+        /// <param name="sender">
+        /// Button
+        /// </param>
+        /// <param name="e">
+        /// Click
+        /// </param>
         private void SignUpButton_Click(object sender, RoutedEventArgs e)
         {
             if (SignUpBtn.Content.ToString() == "Sign Up")
@@ -100,41 +160,47 @@ namespace LogInPage
                     ConnectionFrame.Content = new SignUpPage();
                     SignInBtn.Content = "Cancel";
                 }
-                else 
+                else
                 {
                     try
                     {
-                        if (ConnectionFrame.Content is SignUpPage sup)
-                            if (sup.LoginTextBox.Text.Length >= 6 && 
-                                sup.PasswordTextBox.Password.Length >= 5 && 
-                                sup.PassPasswordTextBox.Password.Length >= 5)
+                        if (ConnectionFrame.Content is SignUpPage signUpPage)
+                        {
+                            // Check on entered data in login, password and pass password fields
+                            if (signUpPage.LoginTextBox.Text.Length >= 6 &&
+                                signUpPage.PasswordTextBox.Password.Length >= 5 &&
+                                signUpPage.PassPasswordTextBox.Password.Length >= 5)
                             {
-                                if (sup.PasswordTextBox.Password.Equals(sup.PassPasswordTextBox.Password))
+                                // Check on equality of password and pass password
+                                if (signUpPage.PasswordTextBox.Password.Equals(signUpPage.PassPasswordTextBox.Password))
                                 {
+                                    // Loop util client connect to the server
                                     bool connected = false;
                                     while (!connected)
                                     {
-                                        try
+                                        if (Client.Connected != true)
                                         {
-                                            if (Client.Connected != true)
-                                                client.Start();
-                                            connected = true;
+                                            client.Start();
+                                            Thread.Sleep(500);
+                                            continue;
                                         }
-                                        catch
-                                        {
-                                            Thread.Sleep(2000);
-                                        }
+                                        connected = true;
                                     }
-                                    Client.SignUp(sup.LoginTextBox.Text, sup.PasswordTextBox.Password);
-                                    if (sup.LoginTextBox.Text.ToString().Equals(Client.CurrentUser?.Login) && sup.PasswordTextBox.Password.ToString().Equals(Client.CurrentUser?.Password))
+
+                                    // Client connected and now sign up him to the server
+                                    Client.SignUp(signUpPage.LoginTextBox.Text, signUpPage.PasswordTextBox.Password);
+
+                                    // Wait for an answer and then check data on equality
+                                    if (signUpPage.LoginTextBox.Text.ToString().Equals(Client.CurrentUser?.Login) && signUpPage.PasswordTextBox.Password.ToString().Equals(Client.CurrentUser?.Password))
                                     {
                                         var clw = new ClientWindow();
                                         clw.Show();
 
+                                        // If true end this window
                                         this.Close();
                                     }
                                 }
-                                else 
+                                else
                                 {
                                     LogoBar.FontSize = 30;
                                     LogoBar.Text = "Password and pass\npassword is not equal";
@@ -145,6 +211,7 @@ namespace LogInPage
                                 LogoBar.FontSize = 30;
                                 LogoBar.Text = "Login or password\ntoo short.";
                             }
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -152,7 +219,7 @@ namespace LogInPage
                     }
                 }
             }
-            else 
+            else
             {
                 ConnectionFrame.Content = null;
                 SignUpBtn.Content = "Sign Up";
