@@ -43,7 +43,7 @@ namespace LogInPage
 
         private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (IsEmpty) 
+            if (!IsEmpty) 
             { 
                 switch (e.Key)
                 {

@@ -3,6 +3,7 @@ using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows;
+using System.Windows.Shapes;
 
 
 namespace LogInPage
@@ -29,12 +30,16 @@ namespace LogInPage
         /// Message size
         /// </summary>
         public static int MessageSize { get; } = 10240;
-
+        /// <summary>
+        /// User class
+        /// </summary>
         public static User? CurrentUser { get; set; }
         /// <summary>
         /// Server's answer
         /// </summary>
         public static string Answer { get; set; } = string.Empty;
+
+        public static bool ImageSenderUnready { get; set; } = true;
         #endregion
 
         #region PRIVATE FIELDS & PROPERTIES
@@ -168,41 +173,67 @@ namespace LogInPage
 
         public static void UploadAvatar(string path)
         {
-            if (tcpClient is not null && Connected)
+            if (tcpClient is not null && Connected) 
             {
-                /*byte[] image_bytes = File.ReadAllBytes(path);
-                int parts = image_bytes.Length / 4000;
-
                 Avatar ava = new()
                 {
                     UserName = CurrentUser?.UserName ?? "null",
+                    Login = CurrentUser?.Login ?? "null",
                     AvatarDateTime = DateTime.Now.ToString()
                 };
 
                 string json = JsonConvert.SerializeObject(ava);
+                ImageSenderUnready = true;
                 SendRequest($"PATCH --UPD_AVATAR avatar{{{json}}}");
 
-                int iter = 0;
-                byte[] part;
-                for (int i = 0; i < parts; i++)
-                {
-                    if (iter + 4000 < image_bytes.Length)
-                    {
-                        part = image_bytes[iter..(iter + 4000)];
-                        string jsonIN = JsonConvert.SerializeObject(part);
-                        if (stream.CanRead)
-                            SendRequest($"PATCH --UPD_AVATAR part{{{jsonIN}}}");
-                    }
-                    else
-                    {
-                        part = image_bytes[iter..image_bytes.Length];
-                        string jsonIN = JsonConvert.SerializeObject(part);
-                        if (stream.CanRead)
-                            SendRequest($"PATCH --UPD_AVATAR part{{{jsonIN}}}");
-                    }
-                }*/
+                Thread uploader = new(new ParameterizedThreadStart(SendImage));
+                uploader.Start(path);
+            }
+        }
 
-                SendRequest($"PATCH --UPD_AVATAR status{{close}}");
+        private static void SendImage(object? path) 
+        {
+            if (tcpClient is not null && Connected && stream is not null)
+            {
+                if (path is not null && path is string pathString) 
+                {
+               
+                    while (ImageSenderUnready) Thread.Sleep(50);
+
+                    byte[] image_bytes = File.ReadAllBytes(pathString);
+
+                    byte[] part;
+                    for (int i = 0; i < image_bytes.Length; i += 4000)
+                    {
+
+                        while (ImageSenderUnready) Thread.Sleep(50);
+
+                        if (i + 4000 < image_bytes.Length)
+                        {
+                            part = image_bytes[i..(i + 4000)];
+                            string jsonIN = JsonConvert.SerializeObject(part);
+                            if (stream.CanRead) 
+                            {
+                                ImageSenderUnready = true;
+                                SendRequest($"PATCH --UPD_AVATAR part{{{jsonIN}}}");
+                            }
+                        }
+                        else
+                        {
+                            part = image_bytes[i..image_bytes.Length];
+                            string jsonIN = JsonConvert.SerializeObject(part);
+                            if (stream.CanRead) 
+                            {
+                                ImageSenderUnready = true;
+                                SendRequest($"PATCH --UPD_AVATAR part{{{jsonIN}}}");
+                            }
+                        }
+                    }
+
+                    while (ImageSenderUnready) Thread.Sleep(500);
+
+                    SendRequest($"PATCH --UPD_AVATAR status{{close}}");
+                }
             }
             else throw new Exception("Server is not responding.");
         }
@@ -376,6 +407,24 @@ namespace LogInPage
                                         break; // MSG
                                 }
                                 break; // POST
+                            case "PATCH":
+                                // Searching for method
+                                int startMethodIndexPatch = Answer.IndexOf("--");
+                                if (startMethodIndexPatch == -1) throw new Exception("PATCH method was not found.");
+                                int endMethodIndexPatch = Answer.IndexOf(' ', startMethodIndexPatch);
+                                if (endMethodIndexPatch == -1) throw new Exception("PATCH method was not found.");
+
+                                string methodPatch = Answer[startMethodIndexPatch..endMethodIndexPatch];
+
+                                switch (methodPatch)
+                                {
+                                    case "--UPD_AVATAR":
+                                        if (Answer.Contains("ready")) ImageSenderUnready = false;
+
+                                        break; // UPD_AVATAR
+                                }
+
+                                break; // PATCH
                         }
                     }
                 }
