@@ -16,35 +16,36 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <!-- User Account settings -->
-            <Border Grid.Column="1"
-                    CornerRadius="16"
-                    Background="#FFBFE6FF"
-                    x:Name="SettingsBorder"
-                    Margin="5">
-                <Grid Margin="5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <!-- Avatar Name Login -->
-                    <Grid Margin="0 30 0 0">
+        <Border 
+            Grid.Column="1"
+            x:Name="SettingsBorder"
+            CornerRadius="16"
+            Background="#FFBFE6FF"
+            Margin="5">
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <!-- Avatar Name Login -->
+                <Grid Margin="0 30 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="1.5*"/>
+                    </Grid.ColumnDefinitions>
+                    <!-- Avatar -->
+                    <Grid Grid.Column="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
-                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <!-- Avatar -->
-                        <Grid Grid.Column="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="60"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition Height="60"/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
                         <Border Background="Black" 
                                     CornerRadius="60" 
                                     Grid.Column="1"
@@ -81,15 +82,15 @@
                             </Grid>
                         </Border>
                     </Grid>
-                        <!-- Name Login -->
-                        <Grid Grid.Column="1">
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
+                    <!-- Name Login -->
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
                         <TextBlock 
                             Grid.Row="0"
                             Text="Username:" 
@@ -137,17 +138,52 @@
                             Click="Update_Click" 
                             FontFamily="Cambria"/>
 
-                    <Button 
-                        x:Name="ResetPassword"
-                        Height="25" 
-                        Width="100" 
-                        HorizontalAlignment="Right" 
-                        VerticalAlignment="Bottom"
-                        BorderBrush="Transparent"
-                        Background="#FFECAC8E"
-                        Content="Change password"
-                        FontFamily="Cambria"/>
                 </StackPanel>
+                
+                <!--// Exit out of profile //-->
+                
+                <Border
+                    Grid.Row="2"
+                    Background="#FFECAC8E"
+                    CornerRadius="16"
+                    Height="{Binding ElementName=crticalPanel, Path=Height}" 
+                    VerticalAlignment="Bottom"
+                    Margin="5">
+                    
+                    <!--// Critical settings panel //-->
+                    
+                    <StackPanel
+                        Name="crticalPanel"
+                        VerticalAlignment="Bottom">
+                        
+                        <!--// Chage password button //-->
+                        
+                        <Button
+                            x:Name="ChangePasswordBtn"
+                            Height="25" 
+                            Width="200"
+                            BorderBrush="Transparent"
+                            BorderThickness="2"
+                            Background="#FFECAC8E"
+                            Content="Change password"
+                            FontFamily="Cambria" 
+                            Click="ChangePasswordBtn_Click"/>
+
+                        <!--// Leave profile button //-->
+                        
+                        <Button
+                            x:Name="LeaveProfileBtn"
+                            Height="25" 
+                            Width="200"
+                            BorderBrush="Transparent"
+                            BorderThickness="2"
+                            Background="#FFECAC8E"
+                            Content="Leave profile"
+                            FontFamily="Cambria" 
+                            Click="LeaveProfileBtn_Click"/>
+                        
+                    </StackPanel>
+                </Border>
             </Grid>
         </Border>
     </Grid>

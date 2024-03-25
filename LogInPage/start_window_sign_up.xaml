@@ -72,14 +72,19 @@
                        FontFamily="Constantia" 
                        FontSize="15"
                        Foreground="#FF6DFAFF" HorizontalAlignment="Center" Canvas.Left="140.5" Canvas.Top="141.5" VerticalAlignment="Center" Width="74"/>
-            <PasswordBox x:Name="PasswordTextBox"
+            <PasswordBox 
+                x:Name="PasswordTextBox"
                 Height="25"
                 Width="225"
                 MaxLength="50"  
                 Padding="5,0,5,0"
                 BorderBrush="Transparent"
                 Foreground="Gray"
-                FontSize="14" Canvas.Left="65" Canvas.Top="66" HorizontalAlignment="Center" VerticalAlignment="Top">
+                FontSize="14" 
+                Canvas.Left="65" 
+                Canvas.Top="66" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Top">
                 <PasswordBox.Style>
                     <Style TargetType="{x:Type PasswordBox}">
                         <Setter Property="Template">

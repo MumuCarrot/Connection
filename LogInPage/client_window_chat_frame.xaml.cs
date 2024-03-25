@@ -12,31 +12,34 @@ namespace LogInPage
     {
         public bool IsEmpty { get { return MessageTextBox.Text.Length == 0; } }
         private readonly SolidColorBrush mySolidColorBrush = new();
+        Client client;
 
-        public ClientWindowChatFrame()
+        public ClientWindowChatFrame(Client client)
         {
             InitializeComponent();
             MessageTextBox.Focus();
-            Client.UpdateChat();
+            client.UpdateChat();
             scrollViewer.ScrollToEnd();
+
+            this.client = client;
         }
 
         private void Send_Click(object? sender, RoutedEventArgs? e)
         {
             UploadMessage(new Message {
                 MessageDateTime = DateTime.Now.ToString(),
-                Login = Client.CurrentUser?.Login ?? "user not found",
+                Login = client.CurrentUser?.Login ?? "user not found",
                 Content = MessageTextBox.Text,
                 MessageType = "text"
-            });
-            Client.Message(MessageTextBox.Text, "text");
+            }, true);
+            client.Message(MessageTextBox.Text, "text");
 
             MessageTextBox.Text = string.Empty;
         }
 
-        public void UploadMessage(Message message)
+        public void UploadMessage(Message message, bool? isMy)
         {
-            MessageFrame msg = new(message);
+            MessageFrame msg = new(message, isMy);
             
             Table.Children.Add(msg);
         }

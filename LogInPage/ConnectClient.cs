@@ -3,7 +3,6 @@ using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows;
-using System.Windows.Shapes;
 
 
 namespace LogInPage
@@ -21,25 +20,29 @@ namespace LogInPage
         /// <summary>
         /// Server ip
         /// </summary>
-        public static string HostName { get; } = "127.0.0.1";
+        public string HostName { get; } = "127.0.0.1";
         /// <summary>
         /// Server port
         /// </summary>
-        public static int Port { get; } = 7007;
+        public int Port { get; } = 7007;
         /// <summary>
         /// Message size
         /// </summary>
-        public static int MessageSize { get; } = 10240;
+        public int MessageSize { get; } = 10240;
         /// <summary>
         /// User class
         /// </summary>
-        public static User? CurrentUser { get; set; }
+        public User? CurrentUser { get; set; }
+
+        public Window? CurrenWindow { get; set; }
         /// <summary>
         /// Server's answer
         /// </summary>
-        public static string Answer { get; set; } = string.Empty;
+        public string Answer { get; set; } = string.Empty;
 
-        public static bool ImageSenderUnready { get; set; } = true;
+        public bool ImageSenderUnready { get; set; } = true;
+
+        public bool CloseClient { get; private set; } = false;
         #endregion
 
         #region PRIVATE FIELDS & PROPERTIES
@@ -83,7 +86,7 @@ namespace LogInPage
         /// <exception cref="Exception">
         /// Server is not responding
         /// </exception>
-        public static void LogIn(string login, string password)
+        public void LogIn(string login, string password)
         {
             if (tcpClient is not null && Connected)
             {
@@ -104,7 +107,7 @@ namespace LogInPage
         /// <exception cref="Exception">
         /// Server is not responding
         /// </exception>
-        public static void SignUp(string login, string password)
+        public void SignUp(string login, string password)
         {
             if (tcpClient is not null && Connected)
             {
@@ -133,7 +136,7 @@ namespace LogInPage
         /// <exception cref="Exception">
         /// Server is not responding
         /// </exception>
-        public static void Message(string message, string type)
+        public void Message(string message, string type)
         {
             if (tcpClient is not null && Connected && CurrentUser is not null)
             {
@@ -151,7 +154,7 @@ namespace LogInPage
         /// <exception cref="Exception">
         /// Server is not responding
         /// </exception>
-        public static void UpdateChat(int count = 50)
+        public void UpdateChat(int count = 50)
         {
             if (tcpClient is not null && Connected)
             {
@@ -160,7 +163,7 @@ namespace LogInPage
             else throw new Exception("Server is not responding.");
         }
 
-        public static void UpdateUser()
+        public void UpdateUser()
         {
             if (tcpClient is not null && Connected)
             {
@@ -171,11 +174,23 @@ namespace LogInPage
             else throw new Exception("Server is not responding.");
         }
 
-        public static void UploadAvatar(string path)
+        public void UpdateUserPassword(string password)
         {
-            if (tcpClient is not null && Connected) 
+            if (tcpClient is not null && Connected)
             {
-                Avatar ava = new()
+                string?[]? str = [password, CurrentUser?.Login];
+                string json = JsonConvert.SerializeObject(str);
+
+                SendRequest($"PATCH --UPD_UPASSWORD json{{{json}}}");
+            }
+            else throw new Exception("Server is not responding.");
+        }
+
+        public void UploadAvatar(string path)
+        {
+            if (tcpClient is not null && Connected)
+            {
+                ProfilePicture ava = new()
                 {
                     UserName = CurrentUser?.UserName ?? "null",
                     Login = CurrentUser?.Login ?? "null",
@@ -191,13 +206,13 @@ namespace LogInPage
             }
         }
 
-        private static void SendImage(object? path) 
+        private void SendImage(object? path)
         {
             if (tcpClient is not null && Connected && stream is not null)
             {
-                if (path is not null && path is string pathString) 
+                if (path is not null && path is string pathString)
                 {
-               
+
                     while (ImageSenderUnready) Thread.Sleep(50);
 
                     byte[] image_bytes = File.ReadAllBytes(pathString);
@@ -212,7 +227,7 @@ namespace LogInPage
                         {
                             part = image_bytes[i..(i + 4000)];
                             string jsonIN = JsonConvert.SerializeObject(part);
-                            if (stream.CanRead) 
+                            if (stream.CanRead)
                             {
                                 ImageSenderUnready = true;
                                 SendRequest($"PATCH --UPD_AVATAR part{{{jsonIN}}}");
@@ -222,7 +237,7 @@ namespace LogInPage
                         {
                             part = image_bytes[i..image_bytes.Length];
                             string jsonIN = JsonConvert.SerializeObject(part);
-                            if (stream.CanRead) 
+                            if (stream.CanRead)
                             {
                                 ImageSenderUnready = true;
                                 SendRequest($"PATCH --UPD_AVATAR part{{{jsonIN}}}");
@@ -258,8 +273,9 @@ namespace LogInPage
         /// <summary>
         /// Close client
         /// </summary>
-        public static void Close()
+        public void Close()
         {
+            CloseClient = true;
             stream?.Close();
             tcpClient?.Close();
         }
@@ -277,10 +293,12 @@ namespace LogInPage
             {
                 if (stream is not null)
                 {
-                    while (true)
+                    while (!CloseClient)
                     {
                         // Waiting for responce
-                        while (!stream.DataAvailable) Thread.Sleep(500);
+                        while (!stream.DataAvailable || CloseClient) Thread.Sleep(500);
+
+                        if (CloseClient) break;
 
                         // Reading answer
                         byte[] bytesBuff = new byte[MessageSize];
@@ -347,11 +365,11 @@ namespace LogInPage
                                             // JSON deserialization
                                             MessageConteiner? messageList = JsonConvert.DeserializeObject<MessageConteiner>(json);
 
-                                            if (messageList is not null)
+                                            if (messageList is not null && CurrenWindow is not null && CurrenWindow is ClientWindow cw)
                                             {
                                                 foreach (var message in messageList.Messages)
                                                 {
-                                                    ClientWindow.UploadMessage(message);
+                                                    cw.UploadMessage(message, message.Login.Equals(CurrentUser?.Login));
                                                 }
                                             }
                                             Answer = string.Empty;
@@ -391,11 +409,11 @@ namespace LogInPage
                                             // JSON deserialization
                                             MessageConteiner? messageList = JsonConvert.DeserializeObject<MessageConteiner>(json);
 
-                                            if (messageList is not null)
+                                            if (messageList is not null && CurrenWindow is not null && CurrenWindow is ClientWindow cw)
                                             {
                                                 foreach (var message in messageList.Messages)
                                                 {
-                                                    ClientWindow.UploadMessage(message);
+                                                    cw.UploadMessage(message, message.Login.Equals(CurrentUser?.Login));
                                                 }
                                             }
                                             Answer = string.Empty;

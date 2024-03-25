@@ -18,7 +18,7 @@ namespace LogInPage
         private readonly TextBlock? content;
         private readonly TextBlock? dateTime;
 
-        public MessageFrame(Message message)
+        public MessageFrame(Message message, bool? isMy)
         {
             if (message.MessageType == "text") 
             { 
@@ -30,10 +30,7 @@ namespace LogInPage
                     FontWeight = FontWeights.Bold
                 };
 
-                if (message.Login.Equals(Client.CurrentUser?.Login)) 
-                { 
-                    isMyMessage = true;
-                }
+                isMyMessage = isMy is not null && (bool)isMy;
 
                 content = new TextBlock
                 {

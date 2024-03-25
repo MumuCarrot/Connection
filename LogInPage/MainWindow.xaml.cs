@@ -12,7 +12,7 @@ namespace LogInPage
         /// Client for user using
         /// FILENAME: ConnectClient.cs
         /// </summary>
-        public readonly static Client client = new();
+        public readonly Client client;
 
         /// <summary>
         /// Window initialization
@@ -20,6 +20,8 @@ namespace LogInPage
         public MainWindow()
         {
             InitializeComponent();
+
+            client = new();
         }
 
         /// <summary>
@@ -109,13 +111,13 @@ namespace LogInPage
                                 }
 
                                 // Client connected and now log in him to the server
-                                Client.LogIn(signInPage.LoginTextBox.Text, signInPage.PasswordTextBox.Password);
+                                client.LogIn(signInPage.LoginTextBox.Text, signInPage.PasswordTextBox.Password);
 
                                 // Wait for an answer status{true}
-                                while (Client.Answer.Length <= 0) ;
-                                if (Client.Answer.Contains("status{true}"))
+                                while (client.Answer.Length <= 0) Thread.Sleep(500);
+                                if (client.Answer.Contains("status{true}"))
                                 {
-                                    var clw = new ClientWindow();
+                                    var clw = new ClientWindow(this);
                                     clw.Show();
 
                                     // If true end this window
@@ -188,12 +190,12 @@ namespace LogInPage
                                     }
 
                                     // Client connected and now sign up him to the server
-                                    Client.SignUp(signUpPage.LoginTextBox.Text, signUpPage.PasswordTextBox.Password);
+                                    client.SignUp(signUpPage.LoginTextBox.Text, signUpPage.PasswordTextBox.Password);
 
                                     // Wait for an answer and then check data on equality
-                                    if (signUpPage.LoginTextBox.Text.ToString().Equals(Client.CurrentUser?.Login) && signUpPage.PasswordTextBox.Password.ToString().Equals(Client.CurrentUser?.Password))
+                                    if (signUpPage.LoginTextBox.Text.ToString().Equals(client.CurrentUser?.Login) && signUpPage.PasswordTextBox.Password.ToString().Equals(client.CurrentUser?.Password))
                                     {
-                                        var clw = new ClientWindow();
+                                        var clw = new ClientWindow(this);
                                         clw.Show();
 
                                         // If true end this window

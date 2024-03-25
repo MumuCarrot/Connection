@@ -8,30 +8,32 @@ namespace LogInPage
     /// </summary>
     public partial class ClientWindowSettingsFrame : Page
     {
-        public ClientWindowSettingsFrame()
+        private ClientWindow RefClientWindow { get; set; }
+        public ClientWindowSettingsFrame(ClientWindow cw)
         {
             InitializeComponent();
+            RefClientWindow = cw;
         }
 
         private void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            UserName.Text = Client.CurrentUser?.UserName;
-            UserLogin.Text = Client.CurrentUser?.Login;
-            AboutMe.Text = Client.CurrentUser?.AboutMe;
+            UserName.Text = RefClientWindow.client.CurrentUser?.UserName;
+            UserLogin.Text = RefClientWindow.client.CurrentUser?.Login;
+            AboutMe.Text = RefClientWindow.client.CurrentUser?.AboutMe;
         }
 
         private void Update_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (UserLogin.Text != Client.CurrentUser?.Login ||
-                UserName.Text != Client.CurrentUser?.UserName ||
-                AboutMe.Text != Client.CurrentUser?.AboutMe) 
+            if (UserLogin.Text != RefClientWindow.client.CurrentUser?.Login ||
+                UserName.Text != RefClientWindow.client.CurrentUser?.UserName ||
+                AboutMe.Text != RefClientWindow.client.CurrentUser?.AboutMe) 
             {
-                if (Client.CurrentUser is not null) 
-                { 
-                    Client.CurrentUser.UserName = UserName.Text;
-                    Client.CurrentUser.Login = UserLogin.Text;
-                    Client.CurrentUser.AboutMe = AboutMe.Text;
-                    Client.UpdateUser();
+                if (RefClientWindow.client.CurrentUser is not null) 
+                {
+                    RefClientWindow.client.CurrentUser.UserName = UserName.Text;
+                    RefClientWindow.client.CurrentUser.Login = UserLogin.Text;
+                    RefClientWindow.client.CurrentUser.AboutMe = AboutMe.Text;
+                    RefClientWindow.client.UpdateUser();
                 }
             }
         }
@@ -49,8 +51,23 @@ namespace LogInPage
             if (result == true)
             {
                 string selectedFileName = openFileDialog.FileName;
-                Client.UploadAvatar(selectedFileName);
+                RefClientWindow.client.UploadAvatar(selectedFileName);
             }
+        }
+
+        private void ChangePasswordBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ChangePasswordWindow cpw = new(RefClientWindow.client);
+
+            cpw.ShowDialog();
+        }
+
+        private void LeaveProfileBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            RefClientWindow.client.Close();
+            var mainWindow = new MainWindow();
+            mainWindow.Show();
+            RefClientWindow.Close();
         }
     }
 }

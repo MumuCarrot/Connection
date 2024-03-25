@@ -29,13 +29,17 @@
             </Grid.ColumnDefinitions>
 
             
-            <TextBox x:Name="MessageTextBox" 
-                     Margin="5"
-                     Height="20"
-                     BorderBrush="Transparent"
-                     Background="Transparent"
-                     TextWrapping="NoWrap" 
-                     TextChanged="MessageTextBox_TextChanged"/>
+            <TextBox 
+                x:Name="MessageTextBox" 
+                Margin="5 5 5 10"
+                Height="20"
+                MaxLength="1000"
+                MaxHeight="240"
+                BorderBrush="Transparent"
+                Background="Transparent"
+                TextWrapping="Wrap" 
+                TextChanged="MessageTextBox_TextChanged" VerticalAlignment="Bottom"/>
+            
             <Button 
                 x:Name="SendMsg"
                 Grid.Column="1"
@@ -43,7 +47,9 @@
                 Background="#FFA2DCFF"
                 BorderBrush="Transparent" 
                 FontSize="24"
-                Margin="3">
+                Margin="3" 
+                Height="{Binding ElementName=SendMsg, Path=ActualWidth}"
+                VerticalAlignment="Bottom">
                 <Button.Content>
                     <Polygon Points="2,0 4,6 2,12 17,6" 
                              Fill="GhostWhite"/>

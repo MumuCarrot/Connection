@@ -8,29 +8,27 @@ namespace LogInPage
     /// </summary>
     public partial class ClientWindow : Window
     {
-        public readonly static Client client;
-        private static readonly client_window_nothing_frame? clientWindowNothingFrame;
-        private static readonly ClientWindowChatFrame? clientWindowChatFrame;
-        private static readonly ClientWindowSettingsFrame? clientWindowSettingsFrame;
+        public readonly Client client;
+        private readonly client_window_nothing_frame? clientWindowNothingFrame;
+        private readonly ClientWindowSettingsFrame? clientWindowSettingsFrame;
+        private readonly ClientWindowChatFrame? clientWindowChatFrame;
 
-        public ClientWindow()
+        public ClientWindow(MainWindow mainWindow)
         {
             InitializeComponent();
-        }
 
-        static ClientWindow()
-        {
-            client = MainWindow.client;
+            client = mainWindow.client;
             clientWindowNothingFrame = new();
-            clientWindowChatFrame = new();
-            clientWindowSettingsFrame = new();
+            clientWindowSettingsFrame = new(this);
+            clientWindowChatFrame = new(client);
+            client.CurrenWindow = this;
         }
 
-        public static void UploadMessage(Message message)
+        public void UploadMessage(Message message, bool? isMy)
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
-                clientWindowChatFrame?.UploadMessage(message);
+                clientWindowChatFrame?.UploadMessage(message, isMy);
             }));
         }
 
@@ -46,9 +44,9 @@ namespace LogInPage
             DragMove();
         }
 
-        private void CloseBtn_Click(object sender, RoutedEventArgs e)
+        public void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
-            Client.Close();
+            client.Close();
             Close();
         }
 
