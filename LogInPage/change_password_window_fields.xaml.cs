@@ -16,7 +16,10 @@ namespace LogInPage
 
         public void ChangePassword() 
         {
-            if (CurrentPassword.Password == client.CurrentUser?.Password && NewPassword.Password == RepeatedNewPassword.Password && NewPassword.Password.Length >= 5 && NewPassword.Password != CurrentPassword.Password) 
+            if (CurrentPassword.Password == client.CurrentUser?.Password && 
+                NewPassword.Password == RepeatedNewPassword.Password && 
+                NewPassword.Password.Length >= 5 && 
+                NewPassword.Password != CurrentPassword.Password) 
             { 
                 client.CurrentUser.Password = NewPassword.Password;
                 client.UpdateUserPassword(NewPassword.Password);

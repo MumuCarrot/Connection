@@ -74,7 +74,8 @@ namespace LogInPage
                     Background = frameColorBrush,
                     CornerRadius = frameCornerRadius,
                     Margin = frameMargin,
-                    Child = frameGrid
+                    Child = frameGrid,
+                    MaxWidth = 300
                 };
 
                 if (isMyMessage) frame.HorizontalAlignment = HorizontalAlignment.Right;

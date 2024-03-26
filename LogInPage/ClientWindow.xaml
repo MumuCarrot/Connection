@@ -10,21 +10,14 @@
         Width="800"
         WindowStyle="None">
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="0" 
-                      CornerRadius="0" 
-                      GlassFrameThickness="0"
-                      ResizeBorderThickness="5"/>
+        <WindowChrome 
+            CaptionHeight="0" 
+            CornerRadius="0"
+            GlassFrameThickness="0"
+            ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
+    
     <Window.Resources>
-
-        <Style TargetType="{x:Type Panel}" x:Key="WindowMainPanelStyle">
-            <Setter Property="Margin" Value="0" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=WindowState}" Value="Maximized">
-                    <Setter Property="Margin" Value="7" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
         <Style TargetType="{x:Type Button}" x:Key="ToolBarButton">
             <Setter Property="Template">
                 <Setter.Value>
@@ -50,9 +43,10 @@
         </Style>
     </Window.Resources>
 
-    <Grid Background="GhostWhite" 
-          Style="{StaticResource WindowMainPanelStyle}"
-          PreviewKeyDown="Grid_PreviewKeyDown">
+    <Grid
+        x:Name="MainGrid"
+        Background="GhostWhite" 
+        PreviewKeyDown="Grid_PreviewKeyDown">
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="180" Width="230" MaxWidth="300"/>
             <ColumnDefinition/>

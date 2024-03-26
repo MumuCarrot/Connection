@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
+using static LogInPage.MainWindow;
+using System.Xml.Serialization;
 
 namespace LogInPage
 {
@@ -7,7 +10,7 @@ namespace LogInPage
     /// </summary>
     public partial class ChangePasswordWindow : Window
     {
-        Client client;
+        private readonly Client client;
         public ChangePasswordWindow(Client client)
         {
             InitializeComponent();
@@ -31,6 +34,19 @@ namespace LogInPage
                 if (frame.Content is change_password_window_fields cpwf) 
                 {
                     cpwf.ChangePassword();
+
+                    if (client is not null && client.CurrentUser is not null && client.StayInClient)
+                    {
+                        XmlSerializer x = new(typeof(UserLock));
+
+                        using TextWriter writer = new StreamWriter("userlock.xml");
+                        x.Serialize(writer, new UserLock
+                        {
+                            Login = client.CurrentUser.Login,
+                            Password = client.CurrentUser.Password
+                        });
+                    }
+
                     this.Close();
                 }
             }

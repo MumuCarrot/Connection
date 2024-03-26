@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System.IO;
 using System.Windows.Controls;
 
 namespace LogInPage
@@ -64,6 +65,11 @@ namespace LogInPage
 
         private void LeaveProfileBtn_Click(object sender, System.Windows.RoutedEventArgs e)
         {
+            if (File.Exists("userlock.xml")) 
+            {
+                File.Delete("userlock.xml");
+            }
+
             RefClientWindow.client.Close();
             var mainWindow = new MainWindow();
             mainWindow.Show();

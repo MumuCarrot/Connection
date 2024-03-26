@@ -12,7 +12,7 @@
           PreviewKeyDown="Grid_PreviewKeyDown">
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <ScrollViewer Grid.Row="0"
@@ -32,13 +32,14 @@
             <TextBox 
                 x:Name="MessageTextBox" 
                 Margin="5 5 5 10"
-                Height="20"
+                Height="21"
                 MaxLength="1000"
                 MaxHeight="240"
                 BorderBrush="Transparent"
                 Background="Transparent"
                 TextWrapping="Wrap" 
-                TextChanged="MessageTextBox_TextChanged" VerticalAlignment="Bottom"/>
+                TextChanged="MessageTextBox_TextChanged" 
+                VerticalAlignment="Bottom"/>
             
             <Button 
                 x:Name="SendMsg"

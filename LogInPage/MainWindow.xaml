@@ -213,6 +213,32 @@
                     Template="{StaticResource ResourceKey=RoundButtonTemplate}"
                     Click="SignUpButton_Click"/>
 
+                <Grid
+                    Grid.Column="0"
+                    Grid.Row="2"
+                    Grid.ColumnSpan="2" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <RadioButton 
+                        Grid.Column="0" 
+                        x:Name="StayCheck"
+                        VerticalAlignment="Center" 
+                        HorizontalAlignment="Right"/>
+
+                    <TextBlock
+                        Grid.Column="1"
+                        Text="Stay with us?"
+                        HorizontalAlignment="Left" 
+                        VerticalAlignment="Center" 
+                        FontFamily="Constantia"/>
+
+                </Grid>
             </Grid>
         </Grid>
     </Border>

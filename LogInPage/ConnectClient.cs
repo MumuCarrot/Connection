@@ -43,6 +43,8 @@ namespace LogInPage
         public bool ImageSenderUnready { get; set; } = true;
 
         public bool CloseClient { get; private set; } = false;
+
+        public bool StayInClient { get; set; }
         #endregion
 
         #region PRIVATE FIELDS & PROPERTIES

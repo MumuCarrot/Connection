@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using System.Windows.Input;
+using System.Xml.Serialization;
 
 namespace LogInPage
 {
@@ -14,14 +16,54 @@ namespace LogInPage
         /// </summary>
         public readonly Client client;
 
+        public class UserLock
+        {
+            public string Login { get; set; } = string.Empty;
+            public string Password { get; set; } = string.Empty;
+        }
+
         /// <summary>
         /// Window initialization
         /// </summary>
         public MainWindow()
         {
-            InitializeComponent();
-
             client = new();
+
+            if (File.Exists("userlock.xml"))
+            {
+                XmlSerializer x = new(typeof(UserLock));
+
+                using FileStream fs = new("userlock.xml", FileMode.Open);
+                UserLock? user = x.Deserialize(fs) as UserLock;
+
+                // Loop util client connect to the server
+                bool connected = false;
+                while (!connected)
+                {
+                    if (Client.Connected != true)
+                    {
+                        client.Start();
+                        Thread.Sleep(500);
+                        continue;
+                    }
+                    connected = true;
+                }
+
+                client.LogIn(user?.Login ?? "undef", user?.Password ?? "undef");
+
+                // Wait for an answer status{true}
+                while (client.Answer.Length <= 0) Thread.Sleep(500);
+                if (client.Answer.Contains("status{true}"))
+                {
+                    var clw = new ClientWindow(this);
+                    clw.Show();
+
+                    // If true end this window
+                    this.Close();
+                }
+            }
+
+            InitializeComponent();
         }
 
         /// <summary>
@@ -120,6 +162,20 @@ namespace LogInPage
                                     var clw = new ClientWindow(this);
                                     clw.Show();
 
+                                    if (StayCheck.IsChecked is not null && (bool)StayCheck.IsChecked)
+                                    {
+                                        XmlSerializer x = new(typeof(UserLock));
+
+                                        using TextWriter writer = new StreamWriter("userlock.xml");
+                                        x.Serialize(writer, new UserLock
+                                        { 
+                                            Login = signInPage.LoginTextBox.Text,
+                                            Password = signInPage.PasswordTextBox.Password
+                                        });
+
+                                        client.StayInClient = (bool)StayCheck.IsChecked;
+                                    }
+
                                     // If true end this window
                                     this.Close();
                                 }
@@ -197,6 +253,18 @@ namespace LogInPage
                                     {
                                         var clw = new ClientWindow(this);
                                         clw.Show();
+
+                                        if (StayCheck.IsChecked is not null && (bool)StayCheck.IsChecked)
+                                        {
+                                            XmlSerializer x = new(typeof(UserLock));
+
+                                            using TextWriter writer = new StreamWriter("userlock.xml");
+                                            x.Serialize(writer, new UserLock
+                                            {
+                                                Login = signUpPage.LoginTextBox.Text,
+                                                Password = signUpPage.PasswordTextBox.Password
+                                            });
+                                        }
 
                                         // If true end this window
                                         this.Close();

@@ -1,10 +1,11 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using System.Windows.Shell;
 
 namespace LogInPage
 {
     /// <summary>
-    /// Логика взаимодействия для ClientWindow.xaml
+    /// Логика взаимодейтвия для ClientWindow.xaml
     /// </summary>
     public partial class ClientWindow : Window
     {
@@ -52,8 +53,16 @@ namespace LogInPage
 
         private void MaximizeBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (WindowState == WindowState.Normal) WindowState = WindowState.Maximized;
-            else WindowState = WindowState.Normal;
+            if (WindowState == WindowState.Normal)
+            {
+                WindowState = WindowState.Maximized;
+                MainGrid.Margin = new(7,7,7,47);
+            }
+            else 
+            { 
+                WindowState = WindowState.Normal;
+                MainGrid.Margin = new(0);
+            } 
         }
 
         private void MinimizedBtn_Click(object sender, RoutedEventArgs e)
@@ -79,9 +88,13 @@ namespace LogInPage
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
             if (ChatFrame.Content != clientWindowSettingsFrame)
+            {
                 ChatFrame.Content = clientWindowSettingsFrame;
-            else
+            }
+            else 
+            { 
                 ChatFrame.Content = clientWindowNothingFrame;
+            }
         }
     }
 }

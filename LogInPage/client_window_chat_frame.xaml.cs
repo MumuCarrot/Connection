@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -12,7 +13,7 @@ namespace LogInPage
     {
         public bool IsEmpty { get { return MessageTextBox.Text.Length == 0; } }
         private readonly SolidColorBrush mySolidColorBrush = new();
-        Client client;
+        private readonly Client client;
 
         public ClientWindowChatFrame(Client client)
         {
@@ -32,9 +33,12 @@ namespace LogInPage
                 Content = MessageTextBox.Text,
                 MessageType = "text"
             }, true);
+
             client.Message(MessageTextBox.Text, "text");
 
             MessageTextBox.Text = string.Empty;
+
+            scrollViewer.ScrollToEnd();
         }
 
         public void UploadMessage(Message message, bool? isMy)
@@ -62,10 +66,40 @@ namespace LogInPage
             if (!IsEmpty)
             {
                 mySolidColorBrush.Color = Color.FromRgb(68, 181, 249);
+
+                if (sender is TextBox textBox && textBox is not null)
+                {
+                    var formattedText = new FormattedText(
+                        textBox.Text,
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        new Typeface(textBox.FontFamily, textBox.FontStyle, textBox.FontWeight, textBox.FontStretch),
+                        textBox.FontSize,
+                        Brushes.Black,
+                        new NumberSubstitution(),
+                        VisualTreeHelper.GetDpi(textBox).PixelsPerDip);
+
+                    int rowCount = 0;
+                    if (textBox.LineCount > 6)
+                    {
+                        rowCount = 6;
+                    }
+                    else 
+                    { 
+                        rowCount = textBox.LineCount;
+                    }
+
+                    textBox.Height = formattedText.Height * rowCount + 5;
+                }
             }
             else
             {
                 mySolidColorBrush.Color = Color.FromRgb(162, 220, 255);
+
+                if (sender is TextBox textBox && textBox is not null) 
+                {
+                    textBox.Height = 21;
+                }
             }
             SendMsg.Background = mySolidColorBrush;
         }
