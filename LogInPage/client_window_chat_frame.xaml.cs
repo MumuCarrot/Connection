@@ -27,14 +27,17 @@ namespace LogInPage
 
         private void Send_Click(object? sender, RoutedEventArgs? e)
         {
-            UploadMessage(new Message {
+            Message message = new()
+            {
                 MessageDateTime = DateTime.Now.ToString(),
                 Login = client.CurrentUser?.Login ?? "user not found",
                 Content = MessageTextBox.Text,
                 MessageType = "text"
-            }, true);
+            };
 
-            client.Message(MessageTextBox.Text, "text");
+            UploadMessage(message, true);
+
+            client.Message(message);
 
             MessageTextBox.Text = string.Empty;
 

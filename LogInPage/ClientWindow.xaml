@@ -98,6 +98,7 @@
         <!-- Панель поиска, настроек, списка чатов -->
         <Grid  Grid.Column="0"
                Grid.Row="1"
+               Margin="3, 0, 0, 0"
                Background="#FFF1F5F7">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -135,8 +136,10 @@
                 </Button>
                 <TextBox
                     Grid.Column="1"
+                    x:Name="SerchTextBox"
                     OverridesDefaultStyle="True"
-                    Margin="0 1">
+                    Margin="0 1" 
+                    TextChanged="SerchTextBox_TextChanged">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Template">
@@ -155,12 +158,6 @@
                                                 <ScrollViewer 
                                                     Grid.Column="0"
                                                     x:Name="PART_ContentHost"/>
-                                                <Button 
-                                                    Grid.Column="1"
-                                                    Content="👁‍🗨"
-                                                    Margin="5 3"
-                                                    BorderBrush="Transparent"
-                                                    Background="Transparent"/>
                                             </Grid>
                                         </Border>
                                     </ControlTemplate>
@@ -173,90 +170,9 @@
             <!-- Список чатов -->
             <ScrollViewer 
                 Grid.Row="1">
-                <StackPanel x:Name="ChatList">
-                    <Button x:Name="MainChat"
-                            Height="60"
-                            Click="MainChat_Click" 
-                            Background="#FFE5F3FD"
-                            BorderBrush="Transparent"/>
-                    <Button 
-        Height="60"
-        Click="MainChat_Click" 
-        Background="#FFE5F3FD"
-        BorderBrush="Transparent"/>
-                    <Button 
-        Height="60"
-        Click="MainChat_Click" 
-        Background="#FFE5F3FD"
-        BorderBrush="Transparent"/>
-                    <Button 
-        Height="60"
-        Click="MainChat_Click" 
-        Background="#FFE5F3FD"
-        BorderBrush="Transparent"/>
-                    <Button 
-        Height="60"
-        Click="MainChat_Click" 
-        Background="#FFE5F3FD"
-        BorderBrush="Transparent"/>
-                    <Button 
-        Height="60"
-        Click="MainChat_Click" 
-        Background="#FFE5F3FD"
-        BorderBrush="Transparent"/>
-                    <Button 
-Height="60"
-Click="MainChat_Click" 
-Background="#FFE5F3FD"
-BorderBrush="Transparent"/>
-                    <Button 
-Height="60"
-Click="MainChat_Click" 
-Background="#FFE5F3FD"
-BorderBrush="Transparent"/>
-                    <Button 
-Height="60"
-Click="MainChat_Click" 
-Background="#FFE5F3FD"
-BorderBrush="Transparent"/>
-                    <Button 
-Height="60"
-Click="MainChat_Click" 
-Background="#FFE5F3FD"
-BorderBrush="Transparent"/>
-                    <Button 
-Height="60"
-Click="MainChat_Click" 
-Background="#FFE5F3FD"
-BorderBrush="Transparent"/>
-                    <Button 
-Height="60"
-Click="MainChat_Click" 
-Background="#FFE5F3FD"
-BorderBrush="Transparent"/>
-                    <Button 
-Height="60"
-Click="MainChat_Click" 
-Background="#FFE5F3FD"
-BorderBrush="Transparent"/>
-                    <Button 
-Height="60"
-Click="MainChat_Click" 
-Background="#FFE5F3FD"
-BorderBrush="Transparent"/>
-                    <Button 
-Height="60"
-Click="MainChat_Click" 
-Background="#FFE5F3FD"
-BorderBrush="Transparent"/>
-                    <Button 
-Height="60"
-Click="MainChat_Click" 
-Background="#FFE5F3FD"
-BorderBrush="Transparent"/>
-                </StackPanel>
+                <Frame x:Name="FrameList"/>
             </ScrollViewer>
-            
+
         </Grid>
 
         <!-- Чат -->

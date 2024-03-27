@@ -1,6 +1,6 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Shell;
 
 namespace LogInPage
 {
@@ -12,7 +12,8 @@ namespace LogInPage
         public readonly Client client;
         private readonly client_window_nothing_frame? clientWindowNothingFrame;
         private readonly ClientWindowSettingsFrame? clientWindowSettingsFrame;
-        private readonly ClientWindowChatFrame? clientWindowChatFrame;
+        public readonly ClientWindowChatFrame? clientWindowChatFrame;
+        private readonly chat_list chatList;
 
         public ClientWindow(MainWindow mainWindow)
         {
@@ -23,6 +24,7 @@ namespace LogInPage
             clientWindowSettingsFrame = new(this);
             clientWindowChatFrame = new(client);
             client.CurrenWindow = this;
+            FrameList.Content = chatList = new chat_list(this);
         }
 
         public void UploadMessage(Message message, bool? isMy)
@@ -56,23 +58,18 @@ namespace LogInPage
             if (WindowState == WindowState.Normal)
             {
                 WindowState = WindowState.Maximized;
-                MainGrid.Margin = new(7,7,7,47);
+                MainGrid.Margin = new(7, 7, 7, 47);
             }
-            else 
-            { 
+            else
+            {
                 WindowState = WindowState.Normal;
                 MainGrid.Margin = new(0);
-            } 
+            }
         }
 
         private void MinimizedBtn_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
-        }
-
-        private void MainChat_Click(object sender, RoutedEventArgs e)
-        {
-            ChatFrame.Content = clientWindowChatFrame;
         }
 
         private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -91,9 +88,21 @@ namespace LogInPage
             {
                 ChatFrame.Content = clientWindowSettingsFrame;
             }
-            else 
-            { 
+            else
+            {
                 ChatFrame.Content = clientWindowNothingFrame;
+            }
+        }
+
+        private void SerchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (SerchTextBox.Text.Length > 0)
+            {
+                client.ReciveUsersByLogin(SerchTextBox.Text);
+            }
+            else 
+            {
+                
             }
         }
     }
