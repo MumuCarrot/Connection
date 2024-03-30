@@ -7,6 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="60" 
              d:DesignWidth="200"
+             Height="60"
              MouseLeftButtonDown="UserControl_MouseLeftButtonDown">
     <UserControl.Resources>
         <Style TargetType="local:ListButton">

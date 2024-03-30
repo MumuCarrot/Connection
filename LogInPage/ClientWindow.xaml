@@ -171,7 +171,8 @@
             <ScrollViewer 
                 Grid.Row="1">
                 <Frame 
-                    x:Name="FrameList"/>
+                    x:Name="FrameList"
+                    NavigationUIVisibility="Hidden"/>
             </ScrollViewer>
 
         </Grid>

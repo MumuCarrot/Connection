@@ -54,7 +54,14 @@ namespace LogInPage
             {
                 Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    
+                    foreach (var user in userPackege.users) 
+                    {
+                        cw.userList.Add(new ListButton 
+                        { 
+                            TitleText = user.Login,
+                            UnderlineText = user.AboutMe
+                        });
+                    }
                 })); 
             }
         }

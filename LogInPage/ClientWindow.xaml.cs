@@ -14,6 +14,7 @@ namespace LogInPage
         private readonly ClientWindowSettingsFrame? clientWindowSettingsFrame;
         public readonly ClientWindowChatFrame? clientWindowChatFrame;
         private readonly chat_list chatList;
+        public readonly user_list userList;
 
         public ClientWindow(MainWindow mainWindow)
         {
@@ -25,6 +26,7 @@ namespace LogInPage
             clientWindowChatFrame = new(client);
             client.CurrenWindow = this;
             FrameList.Content = chatList = new chat_list(this);
+            userList = new();
         }
 
         public void UploadMessage(Message message, bool? isMy)
@@ -99,10 +101,11 @@ namespace LogInPage
             if (SerchTextBox.Text.Length > 0)
             {
                 client.ReciveUsersByLogin(SerchTextBox.Text);
+                FrameList.Content = userList;
             }
             else 
             {
-                
+                FrameList.Content = chatList;
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿<Page x:Class="LogInPage.chat_list"
+﻿<Page x:Class="LogInPage.user_list"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,10 +9,7 @@
       d:DesignWidth="200"
       Title="chat_list">
 
-    <StackPanel x:Name="ChatList">
-        <local:ListButton 
-            TitleText="MainChat" 
-            UnderlineText="Тут общаются пока только маркцукерберг и паша дуров."
-            Click="ListButton_Click"/>
+    <StackPanel x:Name="UserList">
+
     </StackPanel>
 </Page>
