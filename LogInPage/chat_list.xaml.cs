@@ -8,11 +8,17 @@ namespace LogInPage
     /// </summary>
     public partial class chat_list : Page
     {
+        private ClientWindow clientWindow;
         public chat_list(ClientWindow cw)
         {
             InitializeComponent();
 
-            ChatList.Children.Add(new ListButton(cw, "Main chat", "Тут общаются пока только сосиска и сочная."));
+            clientWindow = cw;
+        }
+
+        private void ListButton_Click(object sender, EventArgs e)
+        {
+            clientWindow.ChatFrame.Content = clientWindow.clientWindowChatFrame;
         }
     }
 }

@@ -349,14 +349,23 @@ namespace LogInPage
         {
             try
             {
-                if (stream is not null)
-                {
+                if (stream is not null) 
+                { 
                     while (!CloseClient)
                     {
                         // Waiting for responce
-                        while (CloseClient || !stream.DataAvailable) Thread.Sleep(500);
-
-                        if (CloseClient) break;
+                        try 
+                        { 
+                            while (!stream.DataAvailable) 
+                            {
+                                Thread.Sleep(500);
+                            }
+                        }
+                        catch
+                        {
+                            if (CloseClient) break;
+                            else continue;
+                        }
 
                         // Reading answer
                         byte[] bytesBuff = new byte[MessageSize];
@@ -388,6 +397,7 @@ namespace LogInPage
                                 PatchResponce(Answer[(keyWordIndex + 1)..]);
                                 break; // PATCH
                         }
+
                     }
                 }
             }

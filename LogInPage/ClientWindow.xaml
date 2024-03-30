@@ -170,7 +170,8 @@
             <!-- Список чатов -->
             <ScrollViewer 
                 Grid.Row="1">
-                <Frame x:Name="FrameList"/>
+                <Frame 
+                    x:Name="FrameList"/>
             </ScrollViewer>
 
         </Grid>
