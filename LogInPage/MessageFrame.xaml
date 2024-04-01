@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="LogInPage.MessageFrame"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LogInPage"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" 
+             d:DesignWidth="300">
+    
+    <!--// Message frame //-->
+    
+    <Border
+        x:Name="frame"
+        HorizontalAlignment="Left" 
+        VerticalAlignment="Top"
+        Background="#FFBFE6FF"
+        CornerRadius="8"
+        Margin="8, 5, 8, 0"
+        MaxWidth="300">
+
+        <!--// Message frame container //-->
+        
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                Grid.Row="0"
+                x:Name ="username"
+                Text="default"
+                HorizontalAlignment="Left"
+                Padding="5, 0"
+                FontWeight="DemiBold"/>
+
+            <TextBox
+                Grid.Row="2"
+                x:Name="content" 
+                Text="default message text"
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top"
+                Background="Transparent"
+                BorderThickness="0"
+                Margin="3, 0"
+                IsReadOnly="true"
+                TextWrapping="Wrap"/>
+
+            <TextBlock
+                Grid.Row="3"
+                x:Name="time"
+                Text="11:11"
+                HorizontalAlignment="Right"
+                Padding="5, 0"/>
+
+        </Grid>
+
+    </Border>
+        
+</UserControl>
