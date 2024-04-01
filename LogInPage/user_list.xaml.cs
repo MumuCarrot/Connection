@@ -1,15 +1,16 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace LogInPage
 {
-    /// <summary>
-    /// Логика взаимодействия для user_list.xaml
-    /// </summary>
     public partial class user_list : Page
     {
-        public user_list()
+        ClientWindow clientWindow;
+        public user_list(ClientWindow cw)
         {
+            clientWindow = cw;
+
             InitializeComponent();
         }
 
@@ -17,11 +18,41 @@ namespace LogInPage
         {
             try
             {
-                UserList.Children.Add(obj);
+                if (obj is ListButton lb) 
+                {
+                    lb.Click += Button_CLick;
+                    UserList.Children.Add(obj);
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void Button_CLick(object? sender, EventArgs e) 
+        {
+            if (sender is ListButton lb) 
+            {
+                User? user = null;
+                foreach (var u in clientWindow.userSearchResult) 
+                {
+                    if (u.Login.Equals(lb.TitleText)) 
+                    {
+                        user = u;
+                        break;
+                    }
+                }
+
+                if (user is not null) 
+                { 
+                    clientWindow.ChatFrame.Content = new user_bio_page 
+                    { 
+                        Login = user.Login,
+                        Username = user.UserName,
+                        Bio = user.AboutMe
+                    };
+                }
             }
         }
     }

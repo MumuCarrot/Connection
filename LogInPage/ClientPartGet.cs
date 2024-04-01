@@ -54,6 +54,7 @@ namespace LogInPage
             {
                 Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
+                    cw.userSearchResult = userPackege.users;
                     foreach (var user in userPackege.users) 
                     {
                         cw.userList.Add(new ListButton 

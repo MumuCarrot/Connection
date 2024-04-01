@@ -10,11 +10,13 @@ namespace LogInPage
     public partial class ClientWindow : Window
     {
         public readonly Client client;
+        public readonly ClientWindowChatFrame? clientWindowChatFrame;
+        public readonly user_list userList;
+        public List<User> userSearchResult = [];
+
         private readonly client_window_nothing_frame? clientWindowNothingFrame;
         private readonly ClientWindowSettingsFrame? clientWindowSettingsFrame;
-        public readonly ClientWindowChatFrame? clientWindowChatFrame;
         private readonly chat_list chatList;
-        public readonly user_list userList;
 
         public ClientWindow(MainWindow mainWindow)
         {
@@ -26,7 +28,7 @@ namespace LogInPage
             clientWindowChatFrame = new(client);
             client.CurrenWindow = this;
             FrameList.Content = chatList = new chat_list(this);
-            userList = new();
+            userList = new(this);
         }
 
         public void UploadMessage(Message message, bool? isMy)

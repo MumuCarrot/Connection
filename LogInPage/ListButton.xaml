@@ -9,27 +9,40 @@
              d:DesignWidth="200"
              Height="60"
              MouseLeftButtonDown="UserControl_MouseLeftButtonDown">
+    
+    <!--// Trigger by default //-->
+    
     <UserControl.Resources>
         <Style TargetType="local:ListButton">
+            
             <Setter Property="Background" 
                     Value="#E5F3FD"/>
+            
             <Style.Triggers>
+                
                 <Trigger Property="IsMouseOver" 
                          Value="True">
+                    
                     <Setter Property="Background" 
                             Value="#FFC1DEF3"/>
+                    
                 </Trigger>
+            
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
-    <Grid 
-        Margin="2">
+    
+    <!--// ListButton body //-->
+    
+    <Grid Margin="2">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <!--// Title //-->
+        
         <TextBlock 
             Grid.Row="0"
             x:Name="Title" 
@@ -37,16 +50,15 @@
             HorizontalAlignment="Left"
             FontWeight="Bold"/>
 
-        <TextBox 
+        <!--// Underline //-->
+        
+        <TextBlock
             Grid.Row="1"
             x:Name="Underline" 
             VerticalAlignment="Top" 
             HorizontalAlignment="Left"
             TextWrapping="Wrap"
-            Focusable="False"
-            IsReadOnly="True"
-            IsHitTestVisible="False" 
-            Background="{x:Null}" 
-            BorderBrush="{x:Null}"/>
+            Background="{x:Null}"/>
+        
     </Grid>
 </UserControl>

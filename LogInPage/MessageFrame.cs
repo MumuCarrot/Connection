@@ -15,7 +15,7 @@ namespace LogInPage
         private readonly Border? frame;
         private readonly Grid? frameGrid;
         private readonly TextBlock? username;
-        private readonly TextBlock? content;
+        private readonly TextBox? content;
         private readonly TextBlock? dateTime;
 
         public MessageFrame(Message message, bool? isMy)
@@ -32,12 +32,15 @@ namespace LogInPage
 
                 isMyMessage = isMy is not null && (bool)isMy;
 
-                content = new TextBlock
+                content = new TextBox
                 {
                     Text = message.Content,
                     HorizontalAlignment = HorizontalAlignment.Left,
                     TextWrapping = TextWrapping.Wrap,
-                    Padding = new Thickness(5, 0, 5, 0)
+                    Margin = new Thickness(2, 0, 2, 0),
+                    Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
+                    BorderBrush = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
+                    IsReadOnly = true
                 };
 
                 dateTime = new TextBlock

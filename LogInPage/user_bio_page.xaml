@@ -1,0 +1,209 @@
+﻿<Page x:Class="LogInPage.user_bio_page"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:LogInPage"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="user_bio_page">
+
+    <!--// User bio container //-->
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <!--// User biography //-->
+
+        <Border 
+            Grid.Column="1"
+            x:Name="SettingsBorder"
+            CornerRadius="16"
+            Background="#FFBFE6FF"
+            Margin="5">
+
+            <!--// User biography fields container //-->
+
+            <Grid Margin="5">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <!--// User fields //-->
+
+                <Grid Margin="0 30 0 0">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="1.5*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--// Profile picture container //-->
+
+                    <Grid Grid.Column="0">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <!--// Profile picture //-->
+
+                        <Border 
+                            Background="Black" 
+                            CornerRadius="60" 
+                            Grid.Column="1"
+                            Grid.Row="1"/>
+
+                    </Grid>
+
+                    <!--// Username and login //-->
+
+                    <Grid Grid.Column="1">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <!--// Text Username //-->
+
+                        <TextBlock 
+                            Grid.Row="0"
+                            Text="Username:" 
+                            FontFamily="Cambria" 
+                            VerticalAlignment="Bottom"
+                            Foreground="#FF736666"/>
+
+                        <!--// Username //-->
+
+                        <TextBlock 
+                            Grid.Row="1"
+                            x:Name="UserName"
+                            FontFamily="Cambria"
+                            Text="User name"/>
+
+                        <!--// Text Login //-->
+
+                        <TextBlock 
+                            Grid.Row="2"
+                            Text="Login:" 
+                            FontFamily="Cambria" 
+                            VerticalAlignment="Bottom"
+                            Foreground="#FF736666"/>
+
+                        <!--// User Login //-->
+
+                        <TextBlock
+                            Grid.Row="3"
+                            x:Name="UserLogin"
+                            FontFamily="Cambria"
+                            Text="User login"/>
+
+                    </Grid>
+
+                </Grid>
+
+                <!--// About me //-->
+                <Grid Grid.Row="1">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="0.5*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+
+                        <!--// Text About me //-->
+
+                        <TextBlock
+                            Text="Bio:" 
+                            FontFamily="Cambria" 
+                            VerticalAlignment="Bottom"
+                            Foreground="#FF736666"/>
+
+                        <TextBlock 
+                            Height="50"
+                            x:Name="AboutMe"
+                            VerticalAlignment="Top"
+                            TextWrapping="Wrap"
+                            FontFamily="Cambria"
+                            Text="User biography."/>
+
+                    </StackPanel>
+
+                    <!--// Contact user //-->
+
+                    <Button 
+                        Grid.Column="1"
+                        x:Name="ContactUserBtn"
+                        Height="40"
+                        Width="60"
+                        BorderBrush="Transparent"
+                        Background="#FF51B9EF" 
+                        VerticalAlignment="Top">
+
+                        <!--// Content //-->
+
+                        <Button.Content>
+
+                            <Polygon Points="2,0 4,6 2,12 17,6" 
+                                     Fill="GhostWhite"/>
+
+                        </Button.Content>
+
+                        <!--// Button style //-->
+
+                        <Button.Style>
+
+                            <Style TargetType="Button">
+
+                                <Setter Property="Template">
+
+                                    <Setter.Value>
+
+                                        <ControlTemplate TargetType="Button">
+
+                                            <Border 
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="18"
+                                                Padding="{TemplateBinding Padding}">
+
+                                                <ContentPresenter 
+                                                    HorizontalAlignment="Center" 
+                                                    VerticalAlignment="Center"/>
+
+                                            </Border>
+                                            
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

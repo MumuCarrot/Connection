@@ -152,11 +152,11 @@ namespace LogInPage
             else throw new Exception("Server is not responding.");
         }
 
-        public void ReciveUsersByLogin(string login)
+        public void ReciveUsersByLogin(string character)
         {
             if (tcpClient is not null && Connected)
             {
-                string json = JsonConvert.SerializeObject(login);
+                string json = JsonConvert.SerializeObject(new string[] { CurrentUser?.Login ?? "undef", character });
 
                 SendRequest($"GET --UBYLOG json{{{json}}}");
             }
