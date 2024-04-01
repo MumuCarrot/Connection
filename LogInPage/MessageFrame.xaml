@@ -15,7 +15,7 @@
         HorizontalAlignment="Left" 
         VerticalAlignment="Top"
         Background="#FFBFE6FF"
-        CornerRadius="8"
+        CornerRadius="11, 11, 8, 0"
         Margin="8, 5, 8, 0"
         MaxWidth="300">
 
