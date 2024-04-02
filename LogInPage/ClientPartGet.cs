@@ -13,23 +13,23 @@ namespace LogInPage
             switch (method)
             {
                 case "--USER_CHECK":
-                    this.GetUserCheck(responce);
+                    this.GetResponceUserCheck(responce);
                     break; // --USER_CHECK
                 case "--ACMSG":
-                    this.GetUpdateChat(responce);
+                    this.GetResponceUpdateChat(responce);
                     break; // --ACMSG
                 case "--UBYLOG":
-                    this.GetUserByLogin(responce);
+                    this.GetResponceUserByLogin(responce);
                     break; // --UBYLOG
             }
         }
 
-        private void GetUserCheck(string responce)
+        private void GetResponceUserCheck(string responce)
         {
             CurrentUser = JsonExtractor<User>(responce, "json", right:1);
         }
 
-        private void GetUpdateChat(string responce)
+        private void GetResponceUpdateChat(string responce)
         {
             List<Message>? messageList = JsonExtractor<List<Message>>(responce, "json", right:2);
 
@@ -42,7 +42,7 @@ namespace LogInPage
             }
         }
 
-        private void GetUserByLogin(string responce)
+        private void GetResponceUserByLogin(string responce)
         {
             UserPackege? userPackege = JsonExtractor<UserPackege>(responce, "json", right:3);
 

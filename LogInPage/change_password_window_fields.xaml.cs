@@ -22,7 +22,7 @@ namespace LogInPage
                 NewPassword.Password != CurrentPassword.Password) 
             { 
                 client.CurrentUser.Password = NewPassword.Password;
-                client.UpdateUserPassword(NewPassword.Password);
+                client.PatchRequestPassword(NewPassword.Password);
             }
         }
     }

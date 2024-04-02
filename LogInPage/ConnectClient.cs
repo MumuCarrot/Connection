@@ -88,7 +88,7 @@ namespace LogInPage
         /// <exception cref="Exception">
         /// Server is not responding
         /// </exception>
-        public void LogIn(string login, string password)
+        public void GetRequestLogIn(string login, string password)
         {
             if (tcpClient is not null && Connected)
             {
@@ -103,13 +103,55 @@ namespace LogInPage
             else throw new Exception("Server is not responding.");
         }
 
-        public void LogIn(User user)
+        public void GetRequestLogIn(User user)
         {
             if (tcpClient is not null && Connected)
             {
                 string json = JsonConvert.SerializeObject(user);
 
                 SendRequest($"GET --USER_CHECK json{{{json}}}");
+            }
+            else throw new Exception("Server is not responding.");
+        }
+
+        public void GetRequestUsersByLogin(string character)
+        {
+            if (tcpClient is not null && Connected)
+            {
+                string json = JsonConvert.SerializeObject(new string[] { CurrentUser?.Login ?? "undef", character });
+
+                SendRequest($"GET --USER-LIST json{{{json}}}");
+            }
+            else throw new Exception("Server is not responding.");
+        }
+
+        /// <summary>
+        /// Update messages in chat
+        /// </summary>
+        /// <param name="count">
+        /// How much messages should be added
+        /// </param>
+        /// <exception cref="Exception">
+        /// Server is not responding
+        /// </exception>
+        public void GetRequestUpdateChat(int count = 50)
+        {
+            if (tcpClient is not null && Connected)
+            {
+                string json = JsonConvert.SerializeObject(count);
+
+                SendRequest($"GET --ACMSG json{{{json}}}");
+            }
+            else throw new Exception("Server is not responding.");
+        }
+
+        public void GetRequestUpdateChatList()
+        {
+            if (tcpClient is not null && Connected)
+            {
+                string userLogin = JsonConvert.SerializeObject(CurrentUser?.Login);
+
+                SendRequest($"GET --CHAT-LIST json{{{userLogin}}}");
             }
             else throw new Exception("Server is not responding.");
         }
@@ -126,7 +168,7 @@ namespace LogInPage
         /// <exception cref="Exception">
         /// Server is not responding
         /// </exception>
-        public void SignUp(string login, string password)
+        public void PostRequestSignUp(string login, string password)
         {
             if (tcpClient is not null && Connected)
             {
@@ -138,7 +180,7 @@ namespace LogInPage
                     Password = password
                 };
 
-                LogIn(newUser);
+                GetRequestLogIn(newUser);
 
                 while (Answer == string.Empty) ;
 
@@ -148,17 +190,6 @@ namespace LogInPage
 
                     SendRequest($"POST --USER json{{{json}}}");
                 }
-            }
-            else throw new Exception("Server is not responding.");
-        }
-
-        public void ReciveUsersByLogin(string character)
-        {
-            if (tcpClient is not null && Connected)
-            {
-                string json = JsonConvert.SerializeObject(new string[] { CurrentUser?.Login ?? "undef", character });
-
-                SendRequest($"GET --UBYLOG json{{{json}}}");
             }
             else throw new Exception("Server is not responding.");
         }
@@ -175,7 +206,7 @@ namespace LogInPage
         /// <exception cref="Exception">
         /// Server is not responding
         /// </exception>
-        public void Message(Message message)
+        public void PostRequestMessage(Message message)
         {
             if (tcpClient is not null && Connected && CurrentUser is not null)
             {
@@ -186,27 +217,7 @@ namespace LogInPage
             else throw new Exception("Server is not responding.");
         }
 
-        /// <summary>
-        /// Update messages in chat
-        /// </summary>
-        /// <param name="count">
-        /// How much messages should be added
-        /// </param>
-        /// <exception cref="Exception">
-        /// Server is not responding
-        /// </exception>
-        public void UpdateChat(int count = 50)
-        {
-            if (tcpClient is not null && Connected)
-            {
-                string json = JsonConvert.SerializeObject(count);
-
-                SendRequest($"GET --ACMSG json{{{json}}}");
-            }
-            else throw new Exception("Server is not responding.");
-        }
-
-        public void UpdateUser()
+        public void PatchRequestUser()
         {
             if (tcpClient is not null && Connected)
             {
@@ -217,7 +228,7 @@ namespace LogInPage
             else throw new Exception("Server is not responding.");
         }
 
-        public void UpdateUserPassword(string password)
+        public void PatchRequestPassword(string password)
         {
             if (tcpClient is not null && Connected)
             {
@@ -229,7 +240,7 @@ namespace LogInPage
             else throw new Exception("Server is not responding.");
         }
 
-        public void UploadAvatar(string path)
+        public void PatchRequestProfilePicture(string path)
         {
             if (tcpClient is not null && Connected)
             {
@@ -244,12 +255,12 @@ namespace LogInPage
                 ImageSenderUnready = true;
                 SendRequest($"PATCH --UPD_AVATAR avatar{{{json}}}");
 
-                Thread uploader = new(new ParameterizedThreadStart(SendImage));
+                Thread uploader = new(new ParameterizedThreadStart(PatchRequestProfilePictureImage));
                 uploader.Start(path);
             }
         }
 
-        private void SendImage(object? path)
+        private void PatchRequestProfilePictureImage(object? path)
         {
             if (tcpClient is not null && Connected && stream is not null)
             {
@@ -325,17 +336,27 @@ namespace LogInPage
 
         private static T? JsonExtractor<T>(string json, string keyWord, int left = 0, int right = 0)
         {
-            // Searching for JSON start point
-            int start = json.IndexOf($"{keyWord}{{") + $"{keyWord}{{".Length;
-            if (start == -1) throw new Exception("JSON start point wasn't found.");
-            int endpointStart = json.LastIndexOf("},") + "},".Length;
-            if (endpointStart == -1) endpointStart = start;
-            int end = json.IndexOf('}', endpointStart);
-            if (end == -1) throw new Exception("JSON end point wasn't found.");
+            string str = string.Empty;
+            try
+            {
+                // Searching for JSON start point
+                int start = json.IndexOf($"{keyWord}{{") + $"{keyWord}{{".Length;
+                if (start == -1) throw new Exception("JSON start point wasn't found.");
+                int endpointStart = json.LastIndexOf("},") + "},".Length;
+                if (endpointStart == -1) endpointStart = start;
+                int end = json.IndexOf('}', endpointStart);
+                if (end == -1) throw new Exception("JSON end point wasn't found.");
 
-            string str = json[(start + left)..(end + right)];
+                str = json[(start + left)..(end + right)];
 
-            return JsonConvert.DeserializeObject<T>(str);
+                return JsonConvert.DeserializeObject<T>(str);
+            }
+            catch
+            {
+                Console.WriteLine($"json:\n{json}\n\n");
+                Console.WriteLine($"str:\n{str}\n");
+                return default;
+            }
         }
 
         /// <summary>

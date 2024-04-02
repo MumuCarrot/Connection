@@ -102,7 +102,7 @@ namespace LogInPage
         {
             if (SerchTextBox.Text.Length > 0)
             {
-                client.ReciveUsersByLogin(SerchTextBox.Text);
+                client.GetRequestUsersByLogin(SerchTextBox.Text);
                 FrameList.Content = userList;
             }
             else 

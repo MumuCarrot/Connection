@@ -19,7 +19,7 @@ namespace LogInPage
         {
             InitializeComponent();
             MessageTextBox.Focus();
-            client.UpdateChat();
+            client.GetRequestUpdateChat();
             scrollViewer.ScrollToEnd();
 
             this.client = client;
@@ -40,7 +40,7 @@ namespace LogInPage
 
             UploadMessage(message, true);
 
-            client.Message(message);
+            client.PostRequestMessage(message);
 
             MessageTextBox.Text = string.Empty;
 

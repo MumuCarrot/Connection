@@ -34,7 +34,7 @@ namespace LogInPage
                     RefClientWindow.client.CurrentUser.UserName = UserName.Text;
                     RefClientWindow.client.CurrentUser.Login = UserLogin.Text;
                     RefClientWindow.client.CurrentUser.AboutMe = AboutMe.Text;
-                    RefClientWindow.client.UpdateUser();
+                    RefClientWindow.client.PatchRequestUser();
                 }
             }
         }
@@ -52,7 +52,7 @@ namespace LogInPage
             if (result == true)
             {
                 string selectedFileName = openFileDialog.FileName;
-                RefClientWindow.client.UploadAvatar(selectedFileName);
+                RefClientWindow.client.PatchRequestProfilePicture(selectedFileName);
             }
         }
 

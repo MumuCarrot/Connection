@@ -49,7 +49,7 @@ namespace LogInPage
                     connected = true;
                 }
 
-                client.LogIn(user?.Login ?? "undef", user?.Password ?? "undef");
+                client.GetRequestLogIn(user?.Login ?? "undef", user?.Password ?? "undef");
 
                 // Wait for an answer status{true}
                 while (client.Answer.Length <= 0) Thread.Sleep(500);
@@ -153,7 +153,7 @@ namespace LogInPage
                                 }
 
                                 // Client connected and now log in him to the server
-                                client.LogIn(signInPage.LoginTextBox.Text, signInPage.PasswordTextBox.Password);
+                                client.GetRequestLogIn(signInPage.LoginTextBox.Text, signInPage.PasswordTextBox.Password);
 
                                 // Wait for an answer status{true}
                                 while (client.Answer.Length <= 0) Thread.Sleep(500);
@@ -246,7 +246,7 @@ namespace LogInPage
                                     }
 
                                     // Client connected and now sign up him to the server
-                                    client.SignUp(signUpPage.LoginTextBox.Text, signUpPage.PasswordTextBox.Password);
+                                    client.PostRequestSignUp(signUpPage.LoginTextBox.Text, signUpPage.PasswordTextBox.Password);
 
                                     // Wait for an answer and then check data on equality
                                     if (signUpPage.LoginTextBox.Text.ToString().Equals(client.CurrentUser?.Login) && signUpPage.PasswordTextBox.Password.ToString().Equals(client.CurrentUser?.Password))
