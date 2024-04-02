@@ -10,9 +10,6 @@
       Title="chat_list">
 
     <StackPanel x:Name="ChatList">
-        <local:ListButton 
-            TitleText="MainChat" 
-            UnderlineText="Тут общаются пока только маркцукерберг и паша дуров."
-            Click="ListButton_Click"/>
+        
     </StackPanel>
 </Page>

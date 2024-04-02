@@ -23,6 +23,8 @@ namespace LogInPage
             set { Underline.Text = value; }
         }
 
+        public string? Id { get; set; } = null;
+
         private void UserControl_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Click?.Invoke(this, EventArgs.Empty);

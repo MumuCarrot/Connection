@@ -10,7 +10,8 @@ namespace LogInPage
     public partial class ClientWindow : Window
     {
         public readonly Client client;
-        public readonly ClientWindowChatFrame? clientWindowChatFrame;
+        public readonly List<ClientWindowChatFrame>? clientWindowChatFrameList = [];
+        public ClientWindowChatFrame? CurrentChat { get; set; }
         public readonly user_list userList;
         public List<User> userSearchResult = [];
 
@@ -29,14 +30,20 @@ namespace LogInPage
             FrameList.Content = chatList = new chat_list(this);
             userList = new(this);
 
-            clientWindowChatFrame = new(client);
+            if (client.UserChatIds is not null) 
+            {
+                foreach (var id in client.UserChatIds) 
+                { 
+                    clientWindowChatFrameList.Add(new(client, id));
+                }
+            }
         }
 
         public void UploadMessage(Message message, bool? isMy)
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
-                clientWindowChatFrame?.UploadMessage(message, isMy);
+                CurrentChat?.UploadMessage(message, isMy);
             }));
         }
 

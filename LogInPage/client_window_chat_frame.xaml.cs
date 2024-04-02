@@ -12,17 +12,20 @@ namespace LogInPage
     public partial class ClientWindowChatFrame : Page
     {
         public bool IsEmpty { get { return MessageTextBox.Text.Length == 0; } }
+        public string ChatId { get; private set; }
         private readonly SolidColorBrush mySolidColorBrush = new();
         private readonly Client client;
 
-        public ClientWindowChatFrame(Client client)
+        public ClientWindowChatFrame(Client client, string chatId)
         {
             InitializeComponent();
+
             MessageTextBox.Focus();
             client.GetRequestUpdateChat();
             scrollViewer.ScrollToEnd();
 
             this.client = client;
+            this.ChatId = chatId;
         }
 
         private void Send_Click(object? sender, RoutedEventArgs? e)

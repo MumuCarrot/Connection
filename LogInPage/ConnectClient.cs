@@ -384,7 +384,7 @@ namespace LogInPage
                         byte[] bytesBuff = new byte[MessageSize];
                         if (stream is not null)
                             stream.Read(bytesBuff, 0, bytesBuff.Length);
-                        else throw new Exception("Stream is null. #CR0001");
+                        else throw new Exception("Stream is null.");
 
                         // Translating answer
                         Answer = Encoding.UTF8.GetString(bytesBuff);
