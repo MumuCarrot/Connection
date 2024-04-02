@@ -26,22 +26,18 @@ namespace LogInPage
 
         private void GetUserCheck(string responce)
         {
-            User? user = JsonExtractor<User>(responce, "json", right:1);
-            if (user is not null)
-            {
-                CurrentUser = user;
-            }
+            CurrentUser = JsonExtractor<User>(responce, "json", right:1);
         }
 
         private void GetUpdateChat(string responce)
         {
-            MessageConteiner? messageList = JsonExtractor<MessageConteiner>(responce, "json", right:3);
+            List<Message>? messageList = JsonExtractor<List<Message>>(responce, "json", right:2);
 
             if (messageList is not null && CurrenWindow is not null && CurrenWindow is ClientWindow cw)
             {
-                foreach (var message in messageList.Messages)
+                foreach (var message in messageList)
                 {
-                    cw.UploadMessage(message, message.Login.Equals(CurrentUser?.Login));
+                    cw.UploadMessage(message, message.Username?.Equals(CurrentUser?.Login));
                 }
             }
         }

@@ -18,14 +18,11 @@
 
         private void PostMessage(string responce)
         {
-            MessageConteiner? messageList = JsonExtractor<MessageConteiner>(responce, "json");
+            Message? message = JsonExtractor<Message>(responce, "json", right: 1);
 
-            if (messageList is not null && CurrenWindow is not null && CurrenWindow is ClientWindow cw)
+            if (message is not null && CurrenWindow is not null && CurrenWindow is ClientWindow cw)
             {
-                foreach (var message in messageList.Messages)
-                {
-                    cw.UploadMessage(message, message.Login.Equals(CurrentUser?.Login));
-                }
+                cw.UploadMessage(message, message.Username?.Equals(CurrentUser?.Login));
             }
         }
     }

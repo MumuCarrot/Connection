@@ -9,9 +9,9 @@ namespace LogInPage
         {
             InitializeComponent();
 
-            username.Text = message.Login;
-            content.Text = message.Content;
-            time.Text = DateTime.Parse(message.MessageDateTime).ToString("HH:mm");
+            username.Text = message.Username;
+            content.Text = message.Content?.Text;
+            time.Text = message.Time.ToString("HH:mm");
 
             if (isMy is not null && (bool)isMy)
             {

@@ -29,10 +29,13 @@ namespace LogInPage
         {
             Message message = new()
             {
-                MessageDateTime = DateTime.Now.ToString(),
-                Login = client.CurrentUser?.Login ?? "user not found",
-                Content = MessageTextBox.Text,
-                MessageType = "text"
+                Time = DateTime.Now,
+                Username = client.CurrentUser?.Login ?? "user not found",
+                Content = new ContentMessage()
+                { 
+                    Text = MessageTextBox.Text,
+                    Image = ""
+                }
             };
 
             UploadMessage(message, true);

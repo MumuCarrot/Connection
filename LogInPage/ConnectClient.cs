@@ -328,9 +328,9 @@ namespace LogInPage
             // Searching for JSON start point
             int start = json.IndexOf($"{keyWord}{{") + $"{keyWord}{{".Length;
             if (start == -1) throw new Exception("JSON start point wasn't found.");
-            int endpointStart = json.LastIndexOf("},");
+            int endpointStart = json.LastIndexOf("},") + "},".Length;
             if (endpointStart == -1) endpointStart = start;
-            int end = json.IndexOf('}', endpointStart + 1);
+            int end = json.IndexOf('}', endpointStart);
             if (end == -1) throw new Exception("JSON end point wasn't found.");
 
             string str = json[(start + left)..(end + right)];
@@ -397,7 +397,6 @@ namespace LogInPage
                                 PatchResponce(Answer[(keyWordIndex + 1)..]);
                                 break; // PATCH
                         }
-
                     }
                 }
             }
