@@ -18,9 +18,12 @@ namespace LogInPage
                 case "--ACMSG":
                     this.GetResponceUpdateChat(responce);
                     break; // --ACMSG
-                case "--UBYLOG":
+                case "--USER-LIST":
                     this.GetResponceUserByLogin(responce);
-                    break; // --UBYLOG
+                    break; // --USER-LIST
+                case "--CHAT-LIST":
+                    this.GetResponceUpdateChatList(responce);
+                    break; // --CHAT-LIST
             }
         }
 
@@ -61,6 +64,11 @@ namespace LogInPage
                     }
                 })); 
             }
+        }
+
+        private void GetResponceUpdateChatList(string responce)
+        {
+            UserChatIds = JsonExtractor<List<string>>(responce, "json");
         }
     }
 }

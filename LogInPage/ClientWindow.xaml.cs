@@ -25,10 +25,11 @@ namespace LogInPage
             client = mainWindow.client;
             clientWindowNothingFrame = new();
             clientWindowSettingsFrame = new(this);
-            clientWindowChatFrame = new(client);
             client.CurrenWindow = this;
             FrameList.Content = chatList = new chat_list(this);
             userList = new(this);
+
+            clientWindowChatFrame = new(client);
         }
 
         public void UploadMessage(Message message, bool? isMy)

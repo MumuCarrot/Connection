@@ -65,9 +65,14 @@ namespace LogInPage
 
         private void LeaveProfileBtn_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (File.Exists("userlock.xml")) 
+            if (File.Exists("user_account_lock.xml")) 
             {
-                File.Delete("userlock.xml");
+                File.Delete("user_account_lock.xml");
+
+                if (File.Exists("user_chat_lock.xml"))
+                {
+                    File.Delete("user_chat_lock.xml");
+                }
             }
 
             RefClientWindow.client.Close();

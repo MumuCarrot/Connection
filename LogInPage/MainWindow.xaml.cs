@@ -29,12 +29,15 @@ namespace LogInPage
         {
             client = new();
 
-            if (File.Exists("userlock.xml"))
+            if (File.Exists("user_account_lock.xml"))
             {
                 XmlSerializer x = new(typeof(UserLock));
 
-                using FileStream fs = new("userlock.xml", FileMode.Open);
-                UserLock? user = x.Deserialize(fs) as UserLock;
+                UserLock? user = null;
+                using (FileStream fs = new("user_account_lock.xml", FileMode.Open)) 
+                { 
+                    user = x.Deserialize(fs) as UserLock;
+                }
 
                 // Loop util client connect to the server
                 bool connected = false;
@@ -50,6 +53,19 @@ namespace LogInPage
                 }
 
                 client.GetRequestLogIn(user?.Login ?? "undef", user?.Password ?? "undef");
+
+                if (File.Exists("user_chat_lock.xml"))
+                {
+                    x = new(typeof(List<string>));
+
+                    List<string>? chatLock = null;
+                    using (FileStream fs = new("user_chat_lock.xml", FileMode.Open)) 
+                    { 
+                        chatLock = x.Deserialize(fs) as List<string>;
+                    }
+
+                    client.UserChatIds = chatLock;
+                }
 
                 // Wait for an answer status{true}
                 while (client.Answer.Length <= 0) Thread.Sleep(500);
@@ -157,16 +173,14 @@ namespace LogInPage
 
                                 // Wait for an answer status{true}
                                 while (client.Answer.Length <= 0) Thread.Sleep(500);
-                                if (client.Answer.Contains("status{true}"))
-                                {
-                                    var clw = new ClientWindow(this);
-                                    clw.Show();
 
+                                if (client.CurrentUser is not null)
+                                {
                                     if (StayCheck.IsChecked is not null && (bool)StayCheck.IsChecked)
                                     {
                                         XmlSerializer x = new(typeof(UserLock));
 
-                                        using TextWriter writer = new StreamWriter("userlock.xml");
+                                        using TextWriter writer = new StreamWriter("user_account_lock.xml");
                                         x.Serialize(writer, new UserLock
                                         { 
                                             Login = signInPage.LoginTextBox.Text,
@@ -175,6 +189,20 @@ namespace LogInPage
 
                                         client.StayInClient = (bool)StayCheck.IsChecked;
                                     }
+
+                                    // при выходе из аккаунта затирать данные
+                                    client.GetRequestUpdateChatList();
+                                    while (client.UserChatIds is null) Thread.Sleep(500);
+                                    if (client.UserChatIds is not null) 
+                                    {
+                                        XmlSerializer x = new(typeof(List<string>));
+
+                                        using TextWriter writer = new StreamWriter("user_chat_lock.xml");
+                                        x.Serialize(writer, client.UserChatIds);
+                                    }
+
+                                    var clw = new ClientWindow(this);
+                                    clw.Show();
 
                                     // If true end this window
                                     this.Close();
@@ -258,7 +286,7 @@ namespace LogInPage
                                         {
                                             XmlSerializer x = new(typeof(UserLock));
 
-                                            using TextWriter writer = new StreamWriter("userlock.xml");
+                                            using TextWriter writer = new StreamWriter("user_account_lock.xml");
                                             x.Serialize(writer, new UserLock
                                             {
                                                 Login = signUpPage.LoginTextBox.Text,
