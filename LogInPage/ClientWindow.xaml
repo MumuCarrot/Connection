@@ -16,21 +16,18 @@
             GlassFrameThickness="0"
             ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
-    
+
     <Window.Resources>
         <Style TargetType="{x:Type Button}" x:Key="ToolBarButton">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="16">
-                            <Border.Background>
-                                <RadialGradientBrush>
-                                    <GradientStop Color="#FFB0DFFD" Offset="1"/>
-                                    <GradientStop Color="#FFD4EFFF" Offset="0"/>
-                                </RadialGradientBrush>
-                            </Border.Background>
-                            <ContentPresenter HorizontalAlignment="Center" 
-                                              VerticalAlignment="Center"/>
+                        <Border 
+                            CornerRadius="16" 
+                            Background="{Binding ElementName=ToolBarGrid, Path=Background}">
+                            <ContentPresenter 
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -52,7 +49,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition x:Name="ToolBar" Height="25"/>
+            <RowDefinition x:Name="ToolBar" Height="20"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -65,26 +62,38 @@
               MouseLeftButtonDown="DragAndMove">
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                 <Button x:Name="MinimizedBtn" 
-                        Height="25" 
-                        Width="25" 
-                        Content="_"
-                        Margin="3, 0, 0, 0"
+                        Height="20" 
+                        Width="35" 
                         Click="MinimizedBtn_Click"
-                        Style="{StaticResource ToolBarButton}"/>
+                        Style="{StaticResource ToolBarButton}">
+                    <Button.Content>
+                        <Image 
+                            Source="/Source/minimize_x48px.png"
+                            Margin="5"/>
+                    </Button.Content>
+                </Button>
                 <Button x:Name="MaxemizeBtn" 
-                        Height="25" 
-                        Width="25" 
-                        Content="□"
-                        Margin="3, 0, 0, 0"
+                        Height="20" 
+                        Width="35" 
                         Click="MaximizeBtn_Click"
-                        Style="{StaticResource ToolBarButton}"/>
+                        Style="{StaticResource ToolBarButton}">
+                <Button.Content>
+                    <Image 
+                            Source="/Source/maximize_x48px.png"
+                            Margin="3.5"/>
+                </Button.Content>
+                </Button>
                 <Button x:Name="CloseBtn"
-                        Height="25" 
-                        Width="25" 
-                        Content="X"
-                        Margin="3, 0, 0, 0"
+                        Height="20" 
+                        Width="35"
                         Click="CloseBtn_Click"
-                        Style="{StaticResource ToolBarButton}"/>
+                        Style="{StaticResource ToolBarButton}">
+                    <Button.Content>
+                        <Image 
+                            Source="/Source/close_x48px.png"
+                            Margin="2"/>
+                    </Button.Content>
+                </Button>
             </StackPanel>
         </Grid>
         <!-- Разделение списка чатов и чата -->
@@ -104,7 +113,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            
+
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -118,20 +127,9 @@
                         Background="Transparent"
                         BorderBrush="Transparent">
                     <Button.Content>
-                        <StackPanel>
-                            <TextBlock 
-                                Text="¯¯¯" 
-                                Height="5" 
-                                FontWeight="Bold"/>
-                            <TextBlock 
-                                Text="¯¯¯" 
-                                Height="5" 
-                                FontWeight="Bold"/>
-                            <TextBlock 
-                                Text="¯¯¯" 
-                                Height="5" 
-                                FontWeight="Bold"/>
-                        </StackPanel>
+                        <Image
+                            Source="/Source/settings_x48px.png" 
+                            Margin="2.5"/>
                     </Button.Content>
                 </Button>
                 <TextBox

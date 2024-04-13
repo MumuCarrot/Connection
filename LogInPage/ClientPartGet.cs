@@ -15,9 +15,9 @@ namespace LogInPage
                 case "--USER_CHECK":
                     this.GetResponceUserCheck(responce);
                     break; // --USER_CHECK
-                case "--ACMSG":
+                case "--CHAT-HISTORY":
                     this.GetResponceUpdateChat(responce);
-                    break; // --ACMSG
+                    break; // --CHAT-HISTORY
                 case "--USER-LIST":
                     this.GetResponceUserByLogin(responce);
                     break; // --USER-LIST
@@ -29,40 +29,54 @@ namespace LogInPage
 
         private void GetResponceUserCheck(string responce)
         {
-            CurrentUser = JsonExtractor<User>(responce, "json", right:1);
+            CurrentUser = JsonExtractor<User>(responce, "json", right: 1);
         }
 
         private void GetResponceUpdateChat(string responce)
         {
-            List<Message>? messageList = JsonExtractor<List<Message>>(responce, "json", right:2);
-
-            if (messageList is not null && CurrenWindow is not null && CurrenWindow is ClientWindow cw)
+            List<Chat>? chatList = null;
+            try
             {
-                foreach (var message in messageList)
+                chatList = JsonExtractor<List<Chat>>(responce, "json", right: 4);
+            }
+            catch 
+            { 
+                chatList = JsonExtractor<List<Chat>>(responce, "json", right: 2);
+            }
+
+            if (chatList is not null && CurrenWindow is not null && CurrenWindow is ClientWindow cw)
+            {
+                foreach (var chat in chatList)
                 {
-                    cw.UploadMessage(message, message.Username?.Equals(CurrentUser?.Login));
+                    if (chat.Messages is not null)
+                    {
+                        foreach (var message in chat.Messages)
+                        {
+                            cw.UploadMessage(message, message.Username?.Equals(CurrentUser?.Login));
+                        }
+                    }
                 }
             }
         }
 
         private void GetResponceUserByLogin(string responce)
         {
-            UserPackege? userPackege = JsonExtractor<UserPackege>(responce, "json", right:3);
+            UserPackege? userPackege = JsonExtractor<UserPackege>(responce, "json", right: 3);
 
             if (userPackege is not null && CurrenWindow is not null && CurrenWindow is ClientWindow cw)
             {
                 Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     cw.userSearchResult = userPackege.users;
-                    foreach (var user in userPackege.users) 
+                    foreach (var user in userPackege.users)
                     {
-                        cw.userList.Add(new ListButton 
-                        { 
+                        cw.userList.Add(new ListButton
+                        {
                             TitleText = user.Login,
                             UnderlineText = user.AboutMe
                         });
                     }
-                })); 
+                }));
             }
         }
 

@@ -39,6 +39,17 @@ namespace LogInPage
             }
         }
 
+        public void UpdateChat(int toUpdate = 50) 
+        {
+            if (CurrentChat is not null) 
+            {
+                if (!CurrentChat.IsContentLoaded)
+                { 
+                    client.GetRequestUpdateChat(CurrentChat?.ChatId ?? "null", toUpdate);
+                }
+            }
+        }
+
         public void UploadMessage(Message message, bool? isMy)
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
@@ -56,13 +67,13 @@ namespace LogInPage
                 Left = mouseDownPoint.X - Width / 2;
                 Top = mouseDownPoint.Y - ToolBar.Height.Value / 2;
             }
-            DragMove();
+            this.DragMove();
         }
 
         public void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
             client.Close();
-            Close();
+            this.Close();
         }
 
         private void MaximizeBtn_Click(object sender, RoutedEventArgs e)

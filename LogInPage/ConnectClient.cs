@@ -136,13 +136,13 @@ namespace LogInPage
         /// <exception cref="Exception">
         /// Server is not responding
         /// </exception>
-        public void GetRequestUpdateChat(int count = 50)
+        public void GetRequestUpdateChat(string chatId, int count = 50)
         {
             if (tcpClient is not null && Connected)
             {
-                string json = JsonConvert.SerializeObject(count);
+                string json = JsonConvert.SerializeObject(new string[] { chatId, count.ToString() });
 
-                SendRequest($"GET --ACMSG json{{{json}}}");
+                SendRequest($"GET --CHAT-HISTORY json{{{json}}}");
             }
             else throw new Exception("Server is not responding.");
         }
@@ -208,7 +208,7 @@ namespace LogInPage
         /// <exception cref="Exception">
         /// Server is not responding
         /// </exception>
-        public void PostRequestMessage(Message message)
+        public void PostRequestMessage(Message message, string chatId)
         {
             if (tcpClient is not null && Connected && CurrentUser is not null)
             {

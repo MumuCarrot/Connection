@@ -6,13 +6,11 @@ using System.Windows.Media;
 
 namespace LogInPage
 {
-    /// <summary>
-    /// Логика взаимодействия для client_window_chat_frame.xaml
-    /// </summary>
     public partial class ClientWindowChatFrame : Page
     {
         public bool IsEmpty { get { return MessageTextBox.Text.Length == 0; } }
         public string ChatId { get; private set; }
+        public bool IsContentLoaded { get; set; } = false;
         private readonly SolidColorBrush mySolidColorBrush = new();
         private readonly Client client;
 
@@ -21,7 +19,6 @@ namespace LogInPage
             InitializeComponent();
 
             MessageTextBox.Focus();
-            client.GetRequestUpdateChat();
             scrollViewer.ScrollToEnd();
 
             this.client = client;
@@ -43,7 +40,7 @@ namespace LogInPage
 
             UploadMessage(message, true);
 
-            client.PostRequestMessage(message);
+            client.PostRequestMessage(message, ChatId);
 
             MessageTextBox.Text = string.Empty;
 

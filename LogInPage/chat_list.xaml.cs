@@ -34,6 +34,8 @@ namespace LogInPage
                     if (ch.ChatId.Equals(lb.Id)) 
                     {
                         clientWindow.ChatFrame.Content = clientWindow.CurrentChat = ch;
+                        clientWindow.UpdateChat();
+                        clientWindow.CurrentChat.IsContentLoaded = true;
                         break;
                     }
                 }
