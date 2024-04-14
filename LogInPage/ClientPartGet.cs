@@ -39,8 +39,8 @@ namespace LogInPage
             {
                 chatList = JsonExtractor<List<Chat>>(responce, "json", right: 4);
             }
-            catch 
-            { 
+            catch
+            {
                 chatList = JsonExtractor<List<Chat>>(responce, "json", right: 2);
             }
 
@@ -61,20 +61,32 @@ namespace LogInPage
 
         private void GetResponceUserByLogin(string responce)
         {
-            UserPackege? userPackege = JsonExtractor<UserPackege>(responce, "json", right: 3);
-
-            if (userPackege is not null && CurrenWindow is not null && CurrenWindow is ClientWindow cw)
+            try
+            {
+                UserPackege? userPackege = JsonExtractor<UserPackege>(responce, "json", right: 3);
+                if (userPackege is not null && CurrenWindow is not null && CurrenWindow is ClientWindow cw)
+                {
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        cw.userSearchResult = userPackege.users;
+                        foreach (var user in userPackege.users)
+                        {
+                            cw.userList.Add(new ListButton
+                            {
+                                TitleText = user.Login,
+                                UnderlineText = user.AboutMe
+                            });
+                        }
+                    }));
+                }
+            }
+            catch
             {
                 Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    cw.userSearchResult = userPackege.users;
-                    foreach (var user in userPackege.users)
+                    if (CurrenWindow is not null && CurrenWindow is ClientWindow cw)
                     {
-                        cw.userList.Add(new ListButton
-                        {
-                            TitleText = user.Login,
-                            UnderlineText = user.AboutMe
-                        });
+                        cw.userList = new user_list(cw);
                     }
                 }));
             }

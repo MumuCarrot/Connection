@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace LogInPage
 {
@@ -18,7 +17,7 @@ namespace LogInPage
         {
             try
             {
-                if (obj is ListButton lb) 
+                if (obj is ListButton lb)
                 {
                     lb.Click += Button_CLick;
                     UserList.Children.Add(obj);
@@ -30,24 +29,24 @@ namespace LogInPage
             }
         }
 
-        private void Button_CLick(object? sender, EventArgs e) 
+        private void Button_CLick(object? sender, EventArgs e)
         {
-            if (sender is ListButton lb) 
+            if (sender is ListButton lb)
             {
                 User? user = null;
-                foreach (var u in clientWindow.userSearchResult) 
+                foreach (var u in clientWindow.userSearchResult)
                 {
-                    if (u.Login.Equals(lb.TitleText)) 
+                    if (u.Login.Equals(lb.TitleText))
                     {
                         user = u;
                         break;
                     }
                 }
 
-                if (user is not null) 
-                { 
-                    clientWindow.ChatFrame.Content = new user_bio_page 
-                    { 
+                if (user is not null)
+                {
+                    clientWindow.ChatFrame.Content = new user_bio_page
+                    {
                         Login = user.Login,
                         Username = user.UserName,
                         Bio = user.AboutMe

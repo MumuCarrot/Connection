@@ -12,7 +12,7 @@ namespace LogInPage
         public readonly Client client;
         public readonly List<ClientWindowChatFrame>? clientWindowChatFrameList = [];
         public ClientWindowChatFrame? CurrentChat { get; set; }
-        public readonly user_list userList;
+        public user_list userList;
         public List<User> userSearchResult = [];
 
         private readonly client_window_nothing_frame? clientWindowNothingFrame;
@@ -119,14 +119,22 @@ namespace LogInPage
 
         private void SerchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (SerchTextBox.Text.Length > 0)
+            try
             {
-                client.GetRequestUsersByLogin(SerchTextBox.Text);
-                FrameList.Content = userList;
+                userList = new user_list(this);
+                if (SerchTextBox.Text.Length > 0)
+                {
+                    client.GetRequestUsersByLogin(SerchTextBox.Text);
+                    FrameList.Content = userList;
+                }
+                else
+                {
+                    FrameList.Content = chatList;
+                }
             }
-            else 
+            catch (Exception ex)
             {
-                FrameList.Content = chatList;
+                MessageBox.Show("ClientWindow 1. " + ex.Message);
             }
         }
     }

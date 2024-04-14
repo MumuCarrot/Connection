@@ -77,11 +77,11 @@
                         Width="35" 
                         Click="MaximizeBtn_Click"
                         Style="{StaticResource ToolBarButton}">
-                <Button.Content>
-                    <Image 
-                            Source="/Source/maximize_x48px.png"
-                            Margin="3.5"/>
-                </Button.Content>
+                    <Button.Content>
+                        <Image 
+                                Source="/Source/maximize_x48px.png"
+                                Margin="3.5"/>
+                    </Button.Content>
                 </Button>
                 <Button x:Name="CloseBtn"
                         Height="20" 
@@ -108,35 +108,36 @@
         <Grid  Grid.Column="0"
                Grid.Row="1"
                Margin="3, 0, 0, 0"
-               Background="#FFF1F5F7">
+               Background="#FFE8F3F9">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="25"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="25"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button Height="30" 
-                        Width="30"
-                        x:Name="Settings"
-                        Click="Settings_Click" 
-                        HorizontalAlignment="Left"
-                        Background="Transparent"
-                        BorderBrush="Transparent">
+                
+                <Button
+                    x:Name="Settings"
+                    Click="Settings_Click" 
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    BorderBrush="Transparent">
                     <Button.Content>
                         <Image
                             Source="/Source/settings_x48px.png" 
                             Margin="2.5"/>
                     </Button.Content>
                 </Button>
+                
                 <TextBox
                     Grid.Column="1"
                     x:Name="SerchTextBox"
                     OverridesDefaultStyle="True"
-                    Margin="0 1" 
+                    Margin="0 0 0 1" 
                     TextChanged="SerchTextBox_TextChanged">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
@@ -144,10 +145,10 @@
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type TextBox}">
                                         <Border 
-                                            BorderBrush="#FFE5F3FD" 
-                                            BorderThickness="3" 
-                                            Background="{TemplateBinding Background}" 
-                                            CornerRadius="12">
+                                            BorderBrush="{Binding ElementName=ToolBarGrid, Path=Background}" 
+                                            BorderThickness="3,0,3,3" 
+                                            Background="#FFE5F3FD" 
+                                            CornerRadius="0, 0, 12, 12">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition/>
@@ -165,6 +166,7 @@
                     </TextBox.Style>
                 </TextBox>
             </Grid>
+            
             <!-- Список чатов -->
             <ScrollViewer 
                 Grid.Row="1">
