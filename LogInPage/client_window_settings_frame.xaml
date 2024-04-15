@@ -46,21 +46,31 @@
                             <RowDefinition Height="60"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Border Background="Black" 
-                                    CornerRadius="60" 
-                                    Grid.Column="1"
-                                    Grid.Row="1">
+                        <Border 
+                            x:Name="ProfilePictureHolder"
+                            Background="#FFDCF1FF" 
+                            CornerRadius="60" 
+                            Grid.Column="1"
+                            Grid.Row="1">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
-                                    <RowDefinition Height="18"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
+                                <Image
+                                    x:Name="PictureOfPPHolder"
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Margin="8"/>
                                 <Button 
                                     x:Name="ChangeAvatar"
-                                    Height="Auto"
+                                    Height="18"
                                     Width="{Binding ElementName=ChangeAvatar, Path=ActualHeight}"
                                     Grid.Row="1"
-                                    Click="ChangeAvatar_Click">
+                                    Click="ChangeAvatar_Click" 
+                                    HorizontalAlignment="Right"
+                                    BorderBrush="#FFBFE6FF"
+                                    Background="#FFDCF1FF">
                                     <Button.Style>
                                         <Style TargetType="Button">
                                             <Setter Property="Template">

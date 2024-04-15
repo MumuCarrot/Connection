@@ -21,6 +21,9 @@ namespace LogInPage
             UserName.Text = RefClientWindow.client.CurrentUser?.UserName;
             UserLogin.Text = RefClientWindow.client.CurrentUser?.Login;
             AboutMe.Text = RefClientWindow.client.CurrentUser?.AboutMe;
+
+            ProfilePictureHolder.Background = RefClientWindow.client.UserProfilePicture.PPColor;
+            PictureOfPPHolder.Source = RefClientWindow.client.UserProfilePicture?.ToSource(ProfilePictureSize.i64px);
         }
 
         private void Update_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -41,19 +44,7 @@ namespace LogInPage
 
         private void ChangeAvatar_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new()
-            {
-                Filter = "Image file (*.png;*.jpg)|*.png;*.jpg|All files (*.*)|*.*",
-                Title = "Choose your file"
-            };
-
-            bool? result = openFileDialog.ShowDialog();
-
-            if (result == true)
-            {
-                string selectedFileName = openFileDialog.FileName;
-                RefClientWindow.client.PatchRequestProfilePicture(selectedFileName);
-            }
+            
         }
 
         private void ChangePasswordBtn_Click(object sender, System.Windows.RoutedEventArgs e)

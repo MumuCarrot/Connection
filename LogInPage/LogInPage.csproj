@@ -12,7 +12,15 @@
     <None Remove="Source\close_x48px.png" />
     <None Remove="Source\maximize_x48px.png" />
     <None Remove="Source\minimize_x48px.png" />
+    <None Remove="Source\service_48px\close_x48px.png" />
+    <None Remove="Source\service_48px\maximize_x48px.png" />
+    <None Remove="Source\service_48px\minimize_x48px.png" />
+    <None Remove="Source\service_48px\settings_x48px.png" />
     <None Remove="Source\settings_x48px.png" />
+    <None Remove="Source\user_pp\default.png" />
+    <None Remove="Source\user_pp\user_pp_128px\default_x128px.png" />
+    <None Remove="Source\user_pp\user_pp_48px\default_x48px.png" />
+    <None Remove="Source\user_pp\user_pp_64px\default_x64px.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,16 +28,25 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Source\close_x48px.png">
+    <Content Include="Source\service_48px\close_x48px.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Source\maximize_x48px.png">
+    <Content Include="Source\service_48px\maximize_x48px.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Source\minimize_x48px.png">
+    <Content Include="Source\service_48px\minimize_x48px.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Source\settings_x48px.png">
+    <Content Include="Source\service_48px\settings_x48px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_128px\default_x128px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_48px\default_x48px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_64px\default_x64px.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

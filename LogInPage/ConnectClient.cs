@@ -47,6 +47,8 @@ namespace LogInPage
         public bool StayInClient { get; set; }
 
         public List<string>? UserChatIds { get; set; }
+
+        public ProfilePicture UserProfilePicture { get; set; } = new();
         #endregion
 
         #region PRIVATE FIELDS & PROPERTIES
@@ -238,73 +240,6 @@ namespace LogInPage
                 string json = JsonConvert.SerializeObject(str);
 
                 SendRequest($"PATCH --UPD_UPASSWORD json{{{json}}}");
-            }
-            else throw new Exception("Server is not responding.");
-        }
-
-        public void PatchRequestProfilePicture(string path)
-        {
-            if (tcpClient is not null && Connected)
-            {
-                ProfilePicture ava = new()
-                {
-                    UserName = CurrentUser?.UserName ?? "null",
-                    Login = CurrentUser?.Login ?? "null",
-                    AvatarDateTime = DateTime.Now.ToString()
-                };
-
-                string json = JsonConvert.SerializeObject(ava);
-                ImageSenderUnready = true;
-                SendRequest($"PATCH --UPD_AVATAR avatar{{{json}}}");
-
-                Thread uploader = new(new ParameterizedThreadStart(PatchRequestProfilePictureImage));
-                uploader.Start(path);
-            }
-        }
-
-        private void PatchRequestProfilePictureImage(object? path)
-        {
-            if (tcpClient is not null && Connected && stream is not null)
-            {
-                if (path is not null && path is string pathString)
-                {
-
-                    while (ImageSenderUnready) Thread.Sleep(50);
-
-                    byte[] image_bytes = File.ReadAllBytes(pathString);
-
-                    byte[] part;
-                    for (int i = 0; i < image_bytes.Length; i += 4000)
-                    {
-
-                        while (ImageSenderUnready) Thread.Sleep(50);
-
-                        if (i + 4000 < image_bytes.Length)
-                        {
-                            part = image_bytes[i..(i + 4000)];
-                            string jsonIN = JsonConvert.SerializeObject(part);
-                            if (stream.CanRead)
-                            {
-                                ImageSenderUnready = true;
-                                SendRequest($"PATCH --UPD_AVATAR part{{{jsonIN}}}");
-                            }
-                        }
-                        else
-                        {
-                            part = image_bytes[i..image_bytes.Length];
-                            string jsonIN = JsonConvert.SerializeObject(part);
-                            if (stream.CanRead)
-                            {
-                                ImageSenderUnready = true;
-                                SendRequest($"PATCH --UPD_AVATAR part{{{jsonIN}}}");
-                            }
-                        }
-                    }
-
-                    while (ImageSenderUnready) Thread.Sleep(500);
-
-                    SendRequest($"PATCH --UPD_AVATAR status{{close}}");
-                }
             }
             else throw new Exception("Server is not responding.");
         }

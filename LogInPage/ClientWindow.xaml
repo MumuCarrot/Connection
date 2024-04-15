@@ -68,7 +68,7 @@
                         Style="{StaticResource ToolBarButton}">
                     <Button.Content>
                         <Image 
-                            Source="/Source/minimize_x48px.png"
+                            Source="/Source/service_48px/minimize_x48px.png"
                             Margin="5"/>
                     </Button.Content>
                 </Button>
@@ -79,7 +79,7 @@
                         Style="{StaticResource ToolBarButton}">
                     <Button.Content>
                         <Image 
-                                Source="/Source/maximize_x48px.png"
+                                Source="/Source/service_48px/maximize_x48px.png"
                                 Margin="3.5"/>
                     </Button.Content>
                 </Button>
@@ -90,7 +90,7 @@
                         Style="{StaticResource ToolBarButton}">
                     <Button.Content>
                         <Image 
-                            Source="/Source/close_x48px.png"
+                            Source="/Source/service_48px/close_x48px.png"
                             Margin="2"/>
                     </Button.Content>
                 </Button>
@@ -128,7 +128,7 @@
                     BorderBrush="Transparent">
                     <Button.Content>
                         <Image
-                            Source="/Source/settings_x48px.png" 
+                            Source="/Source/service_48px/settings_x48px.png" 
                             Margin="2.5"/>
                     </Button.Content>
                 </Button>
