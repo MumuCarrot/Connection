@@ -12,6 +12,7 @@
     <None Remove="Source\close_x48px.png" />
     <None Remove="Source\maximize_x48px.png" />
     <None Remove="Source\minimize_x48px.png" />
+    <None Remove="Source\service_48px\change_user_pp_x48px.png" />
     <None Remove="Source\service_48px\close_x48px.png" />
     <None Remove="Source\service_48px\maximize_x48px.png" />
     <None Remove="Source\service_48px\minimize_x48px.png" />
@@ -28,6 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Source\service_48px\change_user_pp_x48px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Source\service_48px\close_x48px.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

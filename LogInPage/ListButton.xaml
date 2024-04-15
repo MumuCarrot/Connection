@@ -8,6 +8,7 @@
              d:DesignHeight="60" 
              d:DesignWidth="200"
              Height="60"
+             Name="thisControl"
              MouseLeftButtonDown="UserControl_MouseLeftButtonDown">
     
     <!--// Trigger by default //-->
@@ -33,32 +34,57 @@
     </UserControl.Resources>
     
     <!--// ListButton body //-->
-    
-    <Grid Margin="2">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Grid 
+        Margin="2">
 
-        <!--// Title //-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="58"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         
-        <TextBlock 
-            Grid.Row="0"
-            x:Name="Title" 
-            VerticalAlignment="Center" 
-            HorizontalAlignment="Left"
-            FontWeight="Bold"/>
+        <!--// Picture //-->
 
-        <!--// Underline //-->
+        <Border
+            Grid.Column="0"
+            CornerRadius="60"
+            Margin="5"
+            Background="#FFDCF1FF">
+            <Image
+                Margin="6"
+                Source="/Source/user_pp/user_pp_64px/default_x64px.png"/>
+        </Border>
         
-        <TextBlock
-            Grid.Row="1"
-            x:Name="Underline" 
-            VerticalAlignment="Top" 
-            HorizontalAlignment="Left"
-            TextWrapping="Wrap"
-            Background="{x:Null}"/>
+        <!--// Text //-->
         
+        <Grid Grid.Column="1">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!--// Title //-->
+        
+            <TextBlock 
+                Grid.Row="0"
+                x:Name="Title"
+                Text="Undefined"
+                VerticalAlignment="Center" 
+                HorizontalAlignment="Left"
+                FontWeight="Bold"/>
+
+            <!--// Underline //-->
+        
+            <TextBlock
+                Grid.Row="1"
+                x:Name="Underline" 
+                VerticalAlignment="Top" 
+                HorizontalAlignment="Left"
+                TextWrapping="Wrap"
+                Background="{x:Null}"/>
+        
+        </Grid>
     </Grid>
+    
 </UserControl>

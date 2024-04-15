@@ -30,11 +30,11 @@ namespace LogInPage
             FrameList.Content = chatList = new chat_list(this);
             userList = new(this);
 
-            if (client.UserChatIds is not null) 
+            if (client.UserChatPreload is not null) 
             {
-                foreach (var id in client.UserChatIds) 
+                foreach (var chat in client.UserChatPreload) 
                 { 
-                    clientWindowChatFrameList.Add(new(client, id));
+                    clientWindowChatFrameList.Add(new(client, chat.Id ?? ""));
                 }
             }
         }

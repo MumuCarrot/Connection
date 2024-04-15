@@ -11,7 +11,8 @@ namespace LogInPage
 
             username.Text = message.Username;
             content.Text = message.Content?.Text;
-            time.Text = message.Time.ToString("HH:mm");
+            if (message.Time is not null)
+                time.Text = ((DateTime)message.Time).ToString("HH:mm");
 
             if (isMy is not null && (bool)isMy)
             {

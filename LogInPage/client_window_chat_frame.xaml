@@ -16,7 +16,8 @@
         </Grid.RowDefinitions>
 
         <ScrollViewer Grid.Row="0"
-                      x:Name="scrollViewer">
+                      x:Name="scrollViewer"
+                      Margin="0, 0, 0, 3">
             <StackPanel x:Name="Table"
                         VerticalAlignment="Bottom"/>
         </ScrollViewer>

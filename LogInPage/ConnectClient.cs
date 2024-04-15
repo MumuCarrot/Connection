@@ -46,7 +46,7 @@ namespace LogInPage
 
         public bool StayInClient { get; set; }
 
-        public List<string>? UserChatIds { get; set; }
+        public List<Chat>? UserChatPreload { get; set; }
 
         public ProfilePicture UserProfilePicture { get; set; } = new();
         #endregion
@@ -153,9 +153,9 @@ namespace LogInPage
         {
             if (tcpClient is not null && Connected)
             {
-                string userLogin = JsonConvert.SerializeObject(CurrentUser?.Login);
+                string json = JsonConvert.SerializeObject(CurrentUser?.Login);
 
-                SendRequest($"GET --CHAT-LIST json{{{userLogin}}}");
+                SendRequest($"GET --CHAT-LIST json{{{json}}}");
             }
             else throw new Exception("Server is not responding.");
         }

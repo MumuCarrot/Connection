@@ -94,7 +94,14 @@ namespace LogInPage
 
         private void GetResponceUpdateChatList(string responce)
         {
-            UserChatIds = JsonExtractor<List<string>>(responce, "json");
+            try 
+            { 
+                UserChatPreload = JsonExtractor<List<Chat>>(responce, "json", right:4);
+            }
+            catch 
+            { 
+                UserChatPreload = JsonExtractor<List<Chat>>(responce, "json", right:2);
+            }
         }
     }
 }

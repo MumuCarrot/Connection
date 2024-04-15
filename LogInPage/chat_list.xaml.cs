@@ -11,13 +11,24 @@ namespace LogInPage
 
             clientWindow = cw;
 
-            if (clientWindow.client.UserChatIds is not null) 
+            if (clientWindow.client.UserChatPreload is not null) 
             {
-                foreach (var id in clientWindow.client.UserChatIds) 
+                foreach (var chat in clientWindow.client.UserChatPreload) 
                 {
+                    string title = string.Empty;
+                    if (chat.Chatusers is not null) 
+                    { 
+                        foreach (var j in chat.Chatusers) 
+                        {
+                            if (!j.Equals(clientWindow.client.CurrentUser?.Login)) title += j;
+                        }
+                    }
+
                     var newListButton = new ListButton
                     {
-                        Id = id,
+                        Id = chat.Id,
+                        TitleText = title,
+                        UnderlineText = chat.Messages?[0].Content?.Text ?? ""
                     };
                     newListButton.Click += ListButton_Click;
                     ChatList.Children.Add(newListButton);

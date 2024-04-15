@@ -23,7 +23,7 @@ namespace LogInPage
 
         public ContentMessage? Content { get; set; }
 
-        public DateTime Time { get; set; }
+        public DateTime? Time { get; set; }
     }
 
     public class ContentMessage

@@ -71,6 +71,11 @@
                                     HorizontalAlignment="Right"
                                     BorderBrush="#FFBFE6FF"
                                     Background="#FFDCF1FF">
+                                    <Button.Content>
+                                        <Image 
+                                            Margin="1"
+                                            Source="/Source/service_48px/change_user_pp_x48px.png" />
+                                    </Button.Content>
                                     <Button.Style>
                                         <Style TargetType="Button">
                                             <Setter Property="Template">
