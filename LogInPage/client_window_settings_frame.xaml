@@ -67,10 +67,10 @@
                                     Height="18"
                                     Width="{Binding ElementName=ChangeAvatar, Path=ActualHeight}"
                                     Grid.Row="1"
-                                    Click="ChangeAvatar_Click" 
                                     HorizontalAlignment="Right"
                                     BorderBrush="#FFBFE6FF"
-                                    Background="#FFDCF1FF">
+                                    Background="#FFDCF1FF"
+                                    Click="ChangeAvatar_Click">
                                     <Button.Content>
                                         <Image 
                                             Margin="1"

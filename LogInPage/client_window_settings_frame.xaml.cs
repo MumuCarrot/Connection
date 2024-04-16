@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using System.IO;
+﻿using System.IO;
 using System.Windows.Controls;
 
 namespace LogInPage
@@ -30,9 +29,9 @@ namespace LogInPage
         {
             if (UserLogin.Text != RefClientWindow.client.CurrentUser?.Login ||
                 UserName.Text != RefClientWindow.client.CurrentUser?.UserName ||
-                AboutMe.Text != RefClientWindow.client.CurrentUser?.AboutMe) 
+                AboutMe.Text != RefClientWindow.client.CurrentUser?.AboutMe)
             {
-                if (RefClientWindow.client.CurrentUser is not null) 
+                if (RefClientWindow.client.CurrentUser is not null)
                 {
                     RefClientWindow.client.CurrentUser.UserName = UserName.Text;
                     RefClientWindow.client.CurrentUser.Login = UserLogin.Text;
@@ -44,7 +43,8 @@ namespace LogInPage
 
         private void ChangeAvatar_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            
+            ProfilePictureSetter pps = new ProfilePictureSetter();
+            pps.ShowDialog();
         }
 
         private void ChangePasswordBtn_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -56,7 +56,7 @@ namespace LogInPage
 
         private void LeaveProfileBtn_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (File.Exists("user_account_lock.xml")) 
+            if (File.Exists("user_account_lock.xml"))
             {
                 File.Delete("user_account_lock.xml");
 
