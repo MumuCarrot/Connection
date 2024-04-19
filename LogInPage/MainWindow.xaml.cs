@@ -163,7 +163,7 @@ namespace LogInPage
                                 client.GetRequestLogIn(signInPage.LoginTextBox.Text, signInPage.PasswordTextBox.Password);
 
                                 // Wait for an answer status{true}
-                                while (client.Answer.Length <= 0) Thread.Sleep(500);
+                                while (!client.ServerConfirmation) Thread.Sleep(500);
 
                                 if (client.CurrentUser is not null)
                                 {

@@ -3,17 +3,30 @@
 namespace LogInPage
 {
     /// <summary>
-    /// Логика взаимодействия для change_password_window_fields.xaml
+    /// Change password window field
     /// </summary>
-    public partial class change_password_window_fields : Page
+    public partial class ChangePasswordWindowFields : Page
     {
-        Client client;
-        public change_password_window_fields(Client client)
+        /// <summary>
+        /// Current client
+        /// </summary>
+        private readonly Client client;
+
+        /// <summary>
+        /// Class constructor
+        /// </summary>
+        /// <param name="client">
+        /// Current client
+        /// </param>
+        public ChangePasswordWindowFields(Client client)
         {
             InitializeComponent();
             this.client = client;
         }
 
+        /// <summary>
+        /// Changes password if fields are changed
+        /// </summary>
         public void ChangePassword() 
         {
             if (CurrentPassword.Password == client.CurrentUser?.Password && 

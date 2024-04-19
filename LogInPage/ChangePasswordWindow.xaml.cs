@@ -1,16 +1,26 @@
 ﻿using System.IO;
 using System.Windows;
-using static LogInPage.MainWindow;
 using System.Xml.Serialization;
+using static LogInPage.MainWindow;
 
 namespace LogInPage
 {
     /// <summary>
-    /// Логика взаимодействия для ChangePasswordWindow.xaml
+    /// Change password window
     /// </summary>
     public partial class ChangePasswordWindow : Window
     {
+        /// <summary>
+        /// Current client
+        /// </summary>
         private readonly Client client;
+
+        /// <summary>
+        /// Class constructor
+        /// </summary>
+        /// <param name="client">
+        /// Current client
+        /// </param>
         public ChangePasswordWindow(Client client)
         {
             InitializeComponent();
@@ -20,6 +30,15 @@ namespace LogInPage
             this.client = client;
         }
 
+        /// <summary>
+        /// Button event
+        /// </summary>
+        /// <param name="sender">
+        /// Sender
+        /// </param>
+        /// <param name="e">
+        /// Event
+        /// </param>
         private void ContBtnLeft_Click(object sender, RoutedEventArgs e)
         {
             if (ContBtnLeft.Content is string str && str.Equals("Yes"))
@@ -27,11 +46,11 @@ namespace LogInPage
                 ContBtnLeft.Content = "Continue";
                 ContBtnRight.Content = "Cancel";
 
-                frame.Content = new change_password_window_fields(client);
+                frame.Content = new ChangePasswordWindowFields(client);
             }
             else 
             {
-                if (frame.Content is change_password_window_fields cpwf) 
+                if (frame.Content is ChangePasswordWindowFields cpwf) 
                 {
                     cpwf.ChangePassword();
 
@@ -51,13 +70,29 @@ namespace LogInPage
                 }
             }
         }
-
+        /// <summary>
+        /// Close button
+        /// </summary>
+        /// <param name="sender">
+        /// Sender
+        /// </param>
+        /// <param name="e">
+        /// Event
+        /// </param>
         private void ContBtnRight_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
-
-        private void Polygon_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        /// <summary>
+        /// Drag and move
+        /// </summary>
+        /// <param name="sender">
+        /// Sender
+        /// </param>
+        /// <param name="e">
+        /// Event
+        /// </param>
+        private void Border_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             this.DragMove();
         }

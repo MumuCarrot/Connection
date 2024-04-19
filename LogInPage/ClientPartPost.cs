@@ -2,6 +2,15 @@
 {
     public partial class Client
     {
+        /// <summary>
+        /// Post switch responce
+        /// </summary>
+        /// <param name="responce">
+        /// Responce from the server
+        /// </param>
+        /// <exception cref="Exception">
+        /// Server is not responding.
+        /// </exception>
         private void PostResponce(string responce)
         {
             int methodIndex = responce.IndexOf(' ');
@@ -15,7 +24,12 @@
                     break; // MSG
             }
         }
-
+        /// <summary>
+        /// Recive message from other user
+        /// </summary>
+        /// <param name="responce">
+        /// Responce from the server
+        /// </param>
         private void PostMessage(string responce)
         {
             Message? message = JsonExtractor<Message>(responce, "json", right: 1);

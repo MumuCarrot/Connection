@@ -1,14 +1,14 @@
-﻿using Newtonsoft.Json;
-using System.IO;
+﻿#define DEBUG
+
+using Newtonsoft.Json;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows;
 
-
 namespace LogInPage
 {
     /// <summary>
-    /// Static realisation of a CLIENT class
+    /// Realisation of a client
     /// </summary>
     public partial class Client
     {
@@ -16,42 +16,62 @@ namespace LogInPage
         /// <summary>
         /// Connection status shortcut
         /// </summary>
+        /// <remarks>
+        /// <c>True</c> if user connected
+        /// <br/>
+        /// <c>False</c> if user doesen't
+        /// </remarks>
         public static bool Connected { get { return (tcpClient is not null) && tcpClient.Connected; } }
-
+        /// </summary>
+        /// /// <summary>
+        /// If login and password fit
+        /// </summary>
+        /// <remarks>
+        /// <c>True</c> if user can log in
+        /// <br/>
+        /// <c>False</c> if login or password doesn't fit
+        /// </remarks>
         public bool ServerConfirmation { get; set; } = false;
         /// <summary>
-        /// Server ip
+        /// Indicates should apllication save information about user or not
         /// </summary>
-        public string HostName { get; } = "127.0.0.1";
+        /// <remarks>
+        /// <c>True</c> to save user
+        /// <br/>
+        /// <c>False</c> to do not save user
+        /// </remarks>
+        public bool StayInClient { get; set; }
         /// <summary>
-        /// Server port
-        /// </summary>
-        public int Port { get; } = 7007;
-        /// <summary>
-        /// Message size
-        /// </summary>
-        public int MessageSize { get; } = 10240;
-        /// <summary>
-        /// User class
+        /// Logged user in current usage
         /// </summary>
         public User? CurrentUser { get; set; } = null;
-
+        /// <summary>
+        /// Window that currently open
+        /// </summary>
         public Window? CurrenWindow { get; set; }
         /// <summary>
-        /// Server's answer
+        /// Users that was found in search
         /// </summary>
-        public string Answer { get; set; } = string.Empty;
-
-        public bool ImageSenderUnready { get; set; } = true;
-
-        public bool CloseClient { get; private set; } = false;
-
-        public bool StayInClient { get; set; }
-
         public List<Chat>? UserChatPreload { get; set; }
         #endregion
 
         #region PRIVATE FIELDS & PROPERTIES
+        /// <summary>
+        /// Terminates all processes if the client closes
+        /// </summary>
+        private bool CloseClient { get; set; } = false;
+        /// <summary>
+        /// Host address
+        /// </summary>
+        private string HostName { get; } = "127.0.0.1";
+        /// <summary>
+        /// Host port
+        /// </summary>
+        private int Port { get; } = 7007;
+        /// <summary>
+        /// Message size
+        /// </summary>
+        private int MessageSize { get; } = 10240;
         /// <summary>
         /// Connection
         /// </summary>
@@ -64,6 +84,10 @@ namespace LogInPage
         /// Initialization thread
         /// </summary>
         private static Thread? mainClientThread;
+        /// <summary>
+        /// Responce from the server
+        /// </summary>
+        private string Responce { get; set; } = string.Empty;
         #endregion
 
         /// <summary>
@@ -79,18 +103,74 @@ namespace LogInPage
             mainClientThread = new(new ThreadStart(ReadAnswer));
             mainClientThread?.Start();
         }
+        /// <summary>
+        /// Dispose client
+        /// </summary>
+        public void Close()
+        {
+            CloseClient = true;
+            stream?.Close();
+            tcpClient?.Close();
+        }
+        /// <summary>
+        /// Json extractor
+        /// </summary>
+        /// <typeparam name="T">
+        /// Type of instance that would be returned
+        /// </typeparam>
+        /// <param name="json">
+        /// String that contains json
+        /// </param>
+        /// <param name="keyWord">
+        /// The keyword by which the reading reference point will be set
+        /// </param>
+        /// <param name="left">
+        /// Left shift
+        /// </param>
+        /// <param name="right">
+        /// Right shift
+        /// </param>
+        /// <returns>
+        /// New instance converted from json
+        /// </returns>
+        /// <exception cref="Exception">
+        /// JSON start or end point wasn't found.
+        /// </exception>
+        private static T? JsonExtractor<T>(string json, string keyWord, int left = 0, int right = 0)
+        {
+            try
+            {
+                // Searching for JSON start point
+                int start = json.IndexOf($"{keyWord}{{") + $"{keyWord}{{".Length;
+                if (start == -1) throw new Exception("JSON start point wasn't found.");
+                int endpointStart = json.LastIndexOf("},") + "},".Length;
+                if (endpointStart == -1) endpointStart = start;
+                int end = json.IndexOf('}', endpointStart);
+                if (end == -1) throw new Exception("JSON end point wasn't found.");
 
+                string str = json[(start + left)..(end + right)];
+
+                return JsonConvert.DeserializeObject<T>(str);
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                MessageBox.Show(ex.Message);
+#endif
+                return default;
+            }
+        }
         /// <summary>
         /// Log In GET request
         /// </summary>
         /// <param name="login">
-        /// Login from LogInPage
+        /// Login
         /// </param>
         /// <param name="password">
-        /// Password from LogInPage
+        /// Password
         /// </param>
         /// <exception cref="Exception">
-        /// Server is not responding
+        /// Server is not responding.
         /// </exception>
         public void GetRequestLogIn(string login, string password)
         {
@@ -106,7 +186,15 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
-
+        /// <summary>
+        /// Log In GET request
+        /// </summary>
+        /// <param name="user">
+        /// User
+        /// </param>
+        /// <exception cref="Exception">
+        /// Server is not responding.
+        /// </exception>
         public void GetRequestLogIn(User user)
         {
             if (tcpClient is not null && Connected)
@@ -117,7 +205,15 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
-
+        /// <summary>
+        /// Search for users by <paramref name="character"/>
+        /// </summary>
+        /// <param name="character">
+        /// Character combination
+        /// </param>
+        /// <exception cref="Exception">
+        /// Server is not responding.
+        /// </exception>
         public void GetRequestUsersByLogin(string character)
         {
             if (tcpClient is not null && Connected)
@@ -128,7 +224,6 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
-
         /// <summary>
         /// Update messages in chat
         /// </summary>
@@ -136,7 +231,7 @@ namespace LogInPage
         /// How much messages should be added
         /// </param>
         /// <exception cref="Exception">
-        /// Server is not responding
+        /// Server is not responding.
         /// </exception>
         public void GetRequestUpdateChat(string chatId, int count = 50)
         {
@@ -148,7 +243,12 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
-
+        /// <summary>
+        /// Update's chat list of user gane last message, chatusers and last time of message
+        /// </summary>
+        /// <exception cref="Exception">
+        /// Server is not responding.
+        /// </exception>
         public void GetRequestUpdateChatList()
         {
             if (tcpClient is not null && Connected)
@@ -159,7 +259,6 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
-
         /// <summary>
         /// Sign Up GET request
         /// </summary>
@@ -170,13 +269,13 @@ namespace LogInPage
         /// Password from LogInPage
         /// </param>
         /// <exception cref="Exception">
-        /// Server is not responding
+        /// Server is not responding.
         /// </exception>
         public void PostRequestSignUp(string login, string password)
         {
             if (tcpClient is not null && Connected)
             {
-                Answer = string.Empty;
+                Responce = string.Empty;
 
                 User newUser = new()
                 {
@@ -186,9 +285,9 @@ namespace LogInPage
 
                 GetRequestLogIn(newUser);
 
-                while (Answer == string.Empty) ;
+                while (Responce == string.Empty) ;
 
-                if (Answer.Contains("ANSWER{status{false}}"))
+                if (Responce.Contains("ANSWER{status{false}}"))
                 {
                     string json = JsonConvert.SerializeObject(newUser);
 
@@ -197,7 +296,6 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
-
         /// <summary>
         /// Message POST request
         /// </summary>
@@ -208,7 +306,7 @@ namespace LogInPage
         /// Type of message
         /// </param>
         /// <exception cref="Exception">
-        /// Server is not responding
+        /// Server is not responding.
         /// </exception>
         public void PostRequestMessage(Message message, string chatId)
         {
@@ -220,7 +318,12 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
-
+        /// <summary>
+        /// Update user
+        /// </summary>
+        /// <exception cref="Exception">
+        /// Server is not responding.
+        /// </exception>
         public void PatchRequestUser()
         {
             if (tcpClient is not null && Connected)
@@ -231,8 +334,13 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
-
-        public void PatchProfilePicture() 
+        /// <summary>
+        /// Update profile picture
+        /// </summary>
+        /// <exception cref="Exception">
+        /// Server is not responding.
+        /// </exception>
+        public void PatchProfilePicture()
         {
             if (tcpClient is not null && Connected && CurrentUser is not null)
             {
@@ -243,7 +351,15 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
-
+        /// <summary>
+        /// Update password
+        /// </summary>
+        /// <param name="password">
+        /// Password
+        /// </param>
+        /// <exception cref="Exception">
+        /// Server is not responding.
+        /// </exception>
         public void PatchRequestPassword(string password)
         {
             if (tcpClient is not null && Connected)
@@ -255,7 +371,6 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
-
         /// <summary>
         /// Send method
         /// </summary>
@@ -263,7 +378,7 @@ namespace LogInPage
         /// Message that will be requested
         /// </param>
         /// <exception cref="Exception">
-        /// Stream is null
+        /// Stream is null.
         /// </exception>
         private static void SendRequest(string message)
         {
@@ -272,32 +387,6 @@ namespace LogInPage
                 stream.Write(reqBytes, 0, reqBytes.Length);
             else throw new Exception("Stream is null.");
         }
-
-        /// <summary>
-        /// Close client
-        /// </summary>
-        public void Close()
-        {
-            CloseClient = true;
-            stream?.Close();
-            tcpClient?.Close();
-        }
-
-        private static T? JsonExtractor<T>(string json, string keyWord, int left = 0, int right = 0)
-        {
-            // Searching for JSON start point
-            int start = json.IndexOf($"{keyWord}{{") + $"{keyWord}{{".Length;
-            if (start == -1) throw new Exception("JSON start point wasn't found.");
-            int endpointStart = json.LastIndexOf("},") + "},".Length;
-            if (endpointStart == -1) endpointStart = start;
-            int end = json.IndexOf('}', endpointStart);
-            if (end == -1) throw new Exception("JSON end point wasn't found.");
-
-            string str = json[(start + left)..(end + right)];
-
-            return JsonConvert.DeserializeObject<T>(str);
-        }
-
         /// <summary>
         /// Reading thread
         /// </summary>
@@ -334,27 +423,27 @@ namespace LogInPage
                         else throw new Exception("Stream is null.");
 
                         // Translating answer
-                        Answer = Encoding.UTF8.GetString(bytesBuff);
+                        Responce = Encoding.UTF8.GetString(bytesBuff);
 
                         // Searching for key word
-                        int keyWordIndex = Answer.IndexOf(' ');
+                        int keyWordIndex = Responce.IndexOf(' ');
                         if (keyWordIndex == -1) throw new Exception("Key word was not found.");
 
                         // Getting key word
-                        string keyWord = Answer[..keyWordIndex];
+                        string keyWord = Responce[..keyWordIndex];
 
                         // Switching key words
                         switch (keyWord)
                         {
                             // GET key word logic
                             case "GET":
-                                GetResponce(Answer[(keyWordIndex + 1)..]);
+                                GetResponce(Responce[(keyWordIndex + 1)..]);
                                 break; // GET
                             case "POST":
-                                PostResponce(Answer[(keyWordIndex + 1)..]);
+                                PostResponce(Responce[(keyWordIndex + 1)..]);
                                 break; // POST
                             case "PATCH":
-                                PatchResponce(Answer[(keyWordIndex + 1)..]);
+                                PatchResponce(Responce[(keyWordIndex + 1)..]);
                                 break; // PATCH
                         }
                     }
@@ -362,7 +451,9 @@ namespace LogInPage
             }
             catch (Exception ex)
             {
+#if DEBUG
                 MessageBox.Show("1. " + ex.Message);
+#endif
             }
         }
     }

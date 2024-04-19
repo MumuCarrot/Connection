@@ -8,28 +8,41 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="client_window_chat_frame">
 
-    <Grid Background="AliceBlue"
-          PreviewKeyDown="Grid_PreviewKeyDown">
+    <!--// Chat container //-->
+    
+    <Grid 
+        Background="AliceBlue"
+        PreviewKeyDown="Grid_PreviewKeyDown">
+        
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Row="0"
-                      x:Name="scrollViewer"
-                      Margin="0, 0, 0, 3">
-            <StackPanel x:Name="Table"
-                        VerticalAlignment="Bottom"/>
+        <!--// Scroll viewer //-->
+        
+        <ScrollViewer 
+            Grid.Row="0"
+            x:Name="scrollViewer"
+            Margin="0 0 0 3">
+            <StackPanel 
+                x:Name="Table"
+                VerticalAlignment="Bottom"/>
         </ScrollViewer>
-        <!-- TextBox -->
-        <Grid Grid.Row="1"
-              Background="#FFE2F4FF">
+        
+        <!--// Lower line //-->
+        
+        <Grid 
+            Grid.Row="1"
+            Background="#FFE2F4FF">
+            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
 
-            
+            <!--// Text input field //-->
+
             <TextBox 
                 x:Name="MessageTextBox" 
                 Margin="5 5 5 10"
@@ -42,31 +55,39 @@
                 TextChanged="MessageTextBox_TextChanged" 
                 VerticalAlignment="Bottom"/>
             
+            <!--// Send message button //-->
+            
             <Button 
-                x:Name="SendMsg"
                 Grid.Column="1"
-                Click="Send_Click" 
+                x:Name="SendMsg"
+                Margin="3" 
+                Height="{Binding ElementName=SendMsg, Path=ActualWidth}"
                 Background="#FFA2DCFF"
                 BorderBrush="Transparent" 
                 FontSize="24"
-                Margin="3" 
-                Height="{Binding ElementName=SendMsg, Path=ActualWidth}"
-                VerticalAlignment="Bottom">
+                VerticalAlignment="Bottom"
+                Click="Send_Click">
+                
                 <Button.Content>
-                    <Polygon Points="2,0 4,6 2,12 17,6" 
-                             Fill="GhostWhite"/>
+                    <Polygon 
+                        Points="2,0 4,6 2,12 17,6" 
+                        Fill="GhostWhite"/>
                 </Button.Content>
+                
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                            CornerRadius="50"
-                                            Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <Border 
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="50"
+                                        Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter 
+                                            HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
                                     </Border>
                                 </ControlTemplate>
                             </Setter.Value>

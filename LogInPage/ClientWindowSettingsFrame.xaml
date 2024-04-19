@@ -8,60 +8,86 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Settings" Loaded="Page_Loaded">
 
-    <!-- Frame -->
+    <!--// Main container //-->
+    
     <Grid>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="300"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <!-- User Account settings -->
+        
+        <!--// User account settings //-->
+        
         <Border 
             Grid.Column="1"
             x:Name="SettingsBorder"
             CornerRadius="16"
             Background="#FFBFE6FF"
             Margin="5">
+            
+            <!--// Main content //-->
+            
             <Grid Margin="5">
+                
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <!-- Avatar Name Login -->
+                
+                <!--// Profile picture / Username / Login //-->
+                
                 <Grid Margin="0 30 0 0">
+                
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="1.5*"/>
                     </Grid.ColumnDefinitions>
-                    <!-- Avatar -->
+                    
+                    <!--// Profile picture container //-->
+                    
                     <Grid Grid.Column="0">
+                        
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition Width="60"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
+                        
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition Height="60"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
+                        
+                        <!--// Profile picture //-->
+                        
                         <Border 
                             x:Name="ProfilePictureHolder"
                             Background="#FFDCF1FF" 
                             CornerRadius="60" 
                             Grid.Column="1"
                             Grid.Row="1">
+                            
                             <Grid>
+                            
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
+                                
+                                <!--// Profile picture image //-->
+                                
                                 <Image
                                     x:Name="PictureOfPPHolder"
                                     Grid.Row="0"
                                     Grid.RowSpan="2"
                                     Margin="8"/>
+                                
+                                <!--// Profile picture change button //-->
+
                                 <Button 
                                     x:Name="ChangeAvatar"
                                     Height="18"
@@ -70,35 +96,44 @@
                                     HorizontalAlignment="Right"
                                     BorderBrush="#FFBFE6FF"
                                     Background="#FFDCF1FF"
-                                    Click="ChangeAvatar_Click">
+                                    Click="ChangeProfilePicture_Click">
+
                                     <Button.Content>
                                         <Image 
                                             Margin="1"
                                             Source="/Source/service_48px/change_user_pp_x48px.png" />
                                     </Button.Content>
+
                                     <Button.Style>
                                         <Style TargetType="Button">
                                             <Setter Property="Template">
                                                 <Setter.Value>
                                                     <ControlTemplate TargetType="Button">
-                                                        <Border Background="{TemplateBinding Background}"
-                                                                BorderBrush="{TemplateBinding BorderBrush}"
-                                                                BorderThickness="{TemplateBinding BorderThickness}"
-                                                                CornerRadius="50"
-                                                                Padding="{TemplateBinding Padding}">
-                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        <Border 
+                                                            Background="{TemplateBinding Background}"
+                                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                                            CornerRadius="50"
+                                                            Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter 
+                                                                HorizontalAlignment="Center" 
+                                                                VerticalAlignment="Center"/>
                                                         </Border>
                                                     </ControlTemplate>
                                                 </Setter.Value>
                                             </Setter>
                                         </Style>
                                     </Button.Style>
+
                                 </Button>
                             </Grid>
                         </Border>
                     </Grid>
-                    <!-- Name Login -->
+                    
+                    <!--// Name / Login //-->
+                    
                     <Grid Grid.Column="1">
+                        
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
@@ -106,33 +141,56 @@
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
+                        
+                        <!--// Username text block //-->
+                        
                         <TextBlock 
                             Grid.Row="0"
                             Text="Username:" 
                             FontFamily="Cambria" 
                             VerticalAlignment="Bottom"/>
+                        
+                        <!--// Username text box //-->
+                        
                         <TextBox 
                             Grid.Row="1"
                             x:Name="UserName"
                             BorderBrush="Transparent"
                             Background="#FFDCF1FF"/>
+                        
+                        <!--// Login text block //-->
+                        
                         <TextBlock 
                             Grid.Row="2"
                             Text="Login:" 
                             FontFamily="Cambria" 
                             VerticalAlignment="Bottom"/>
+                        
+                        <!--// Login text box //-->
+                        
                         <TextBox 
                             Grid.Row="3"
                             x:Name="UserLogin"
                             BorderBrush="Transparent"
                             Background="#FFDCF1FF"/>
-                        </Grid>
+                        
                     </Grid>
+                    
+                </Grid>
+                
+                <!--// About me / Update profile button container //-->
+                
                 <StackPanel Grid.Row="1">
+                    
+                    <!--// About me text block //-->
+                    
                     <TextBlock
                         Text="About me:" 
                         FontFamily="Cambria" 
                         VerticalAlignment="Bottom"/>
+
+                    <!--// About me text box //-->
+
                     <TextBox Height="50"
                              x:Name="AboutMe"
                              VerticalAlignment="Top"
@@ -141,6 +199,8 @@
                              MaxLength="100"
                              TextWrapping="Wrap"/>
 
+                    <!--// Update profile button //-->
+                    
                     <Button x:Name="Update"
                             Height="25" 
                             Width="100" 

@@ -4,6 +4,15 @@ namespace LogInPage
 {
     public partial class Client
     {
+        /// <summary>
+        /// GET switch responce
+        /// </summary>
+        /// <param name="responce">
+        /// Responce from the server
+        /// </param>
+        /// <exception cref="Exception">
+        /// Server is not responding.
+        /// </exception>
         private void GetResponce(string responce)
         {
             int methodIndex = responce.IndexOf(' ');
@@ -26,19 +35,29 @@ namespace LogInPage
                     break; // --CHAT-LIST
             }
         }
-
+        /// <summary>
+        /// Check for user by login and password
+        /// </summary>
+        /// <param name="responce">
+        /// Responce from the server
+        /// </param>
         private void GetResponceUserCheck(string responce)
         {
             CurrentUser = JsonExtractor<User>(responce, "json", right: 2);
-            if (!Answer.Contains("FALSE")) 
+            if (!Responce.Contains("FALSE")) 
             { 
                 ServerConfirmation = true;
             }
         }
-
+        /// <summary>
+        /// Update chat
+        /// </summary>
+        /// <param name="responce">
+        /// Responce from the server
+        /// </param>
         private void GetResponceUpdateChat(string responce)
         {
-            List<Chat>? chatList = null;
+            List<Chat>? chatList;
             try
             {
                 chatList = JsonExtractor<List<Chat>>(responce, "json", right: 4);
@@ -62,7 +81,12 @@ namespace LogInPage
                 }
             }
         }
-
+        /// <summary>
+        /// Check for users by login
+        /// </summary>
+        /// <param name="responce">
+        /// Responce from the server
+        /// </param>
         private void GetResponceUserByLogin(string responce)
         {
             try
@@ -91,7 +115,12 @@ namespace LogInPage
                 }));
             }
         }
-
+        /// <summary>
+        /// Update chat list
+        /// </summary>
+        /// <param name="responce">
+        /// Responce from the server
+        /// </param>
         private void GetResponceUpdateChatList(string responce)
         {
             try 

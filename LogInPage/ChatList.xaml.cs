@@ -2,10 +2,23 @@
 
 namespace LogInPage
 {
-    public partial class chat_list : Page
+    /// <summary>
+    /// Chat list
+    /// </summary>
+    public partial class ChatList : Page
     {
-        private ClientWindow clientWindow;
-        public chat_list(ClientWindow cw)
+        /// <summary>
+        /// Current client window
+        /// </summary>
+        private readonly ClientWindow clientWindow;
+
+        /// <summary>
+        /// Class constructor
+        /// </summary>
+        /// <param name="cw">
+        /// Current client window
+        /// </param>
+        public ChatList(ClientWindow cw)
         {
             InitializeComponent();
 
@@ -31,11 +44,20 @@ namespace LogInPage
                         UnderlineText = chat.Messages?[0].Content?.Text ?? ""
                     };
                     newListButton.Click += ListButton_Click;
-                    ChatList.Children.Add(newListButton);
+                    chatList.Children.Add(newListButton);
                 }
             }
         }
 
+        /// <summary>
+        /// Button click route event
+        /// </summary>
+        /// <param name="sender">
+        /// Sender
+        /// </param>
+        /// <param name="e">
+        /// Event
+        /// </param>
         private void ListButton_Click(object? sender, EventArgs e)
         {
             if (clientWindow.clientWindowChatFrameList is not null && sender is ListButton lb && lb.Id is not null) 

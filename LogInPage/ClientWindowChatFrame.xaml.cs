@@ -6,14 +6,37 @@ using System.Windows.Media;
 
 namespace LogInPage
 {
+    /// <summary>
+    /// Client window chat frame
+    /// </summary>
     public partial class ClientWindowChatFrame : Page
     {
+        /// <summary>
+        /// If chat frame empty
+        /// </summary>
         public bool IsEmpty { get { return MessageTextBox.Text.Length == 0; } }
+        /// <summary>
+        /// Chat id from MongoDB
+        /// </summary>
         public string ChatId { get; private set; }
+        /// <summary>
+        /// Is content loaded
+        /// </summary>
         public bool IsContentLoaded { get; set; } = false;
-        private readonly SolidColorBrush mySolidColorBrush = new();
+        /// <summary>
+        /// Current client
+        /// </summary>
         private readonly Client client;
 
+        /// <summary>
+        /// Class constructor
+        /// </summary>
+        /// <param name="client">
+        /// Current client
+        /// </param>
+        /// <param name="chatId">
+        /// Chat id
+        /// </param>
         public ClientWindowChatFrame(Client client, string chatId)
         {
             InitializeComponent();
@@ -25,6 +48,15 @@ namespace LogInPage
             this.ChatId = chatId;
         }
 
+        /// <summary>
+        /// Send button click
+        /// </summary>
+        /// <param name="sender">
+        /// Sender
+        /// </param>
+        /// <param name="e">
+        /// Event
+        /// </param>
         private void Send_Click(object? sender, RoutedEventArgs? e)
         {
             Message message = new()
@@ -46,14 +78,30 @@ namespace LogInPage
 
             scrollViewer.ScrollToEnd();
         }
-
+        /// <summary>
+        /// Uploading message
+        /// </summary>
+        /// <param name="message">
+        /// Message
+        /// </param>
+        /// <param name="isMy">
+        /// Is my indicator
+        /// </param>
         public void UploadMessage(Message message, bool? isMy)
         {
             MessageFrame msg = new(message, isMy);
             
             Table.Children.Add(msg);
         }
-
+        /// <summary>
+        /// Escape preview
+        /// </summary>
+        /// <param name="sender">
+        /// Sender
+        /// </param>
+        /// <param name="e">
+        /// Event
+        /// </param>
         private void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (!IsEmpty) 
@@ -66,9 +114,18 @@ namespace LogInPage
                 }
             }
         }
-
+        /// <summary>
+        /// Message text changed
+        /// </summary>
+        /// <param name="sender">
+        /// Sender
+        /// </param>
+        /// <param name="e">
+        /// Event
+        /// </param>
         private void MessageTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            SolidColorBrush mySolidColorBrush = new();
             if (!IsEmpty)
             {
                 mySolidColorBrush.Color = Color.FromRgb(68, 181, 249);
@@ -85,7 +142,7 @@ namespace LogInPage
                         new NumberSubstitution(),
                         VisualTreeHelper.GetDpi(textBox).PixelsPerDip);
 
-                    int rowCount = 0;
+                    int rowCount;
                     if (textBox.LineCount > 6)
                     {
                         rowCount = 6;
