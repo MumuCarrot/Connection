@@ -19,9 +19,40 @@
     <None Remove="Source\service_48px\settings_x48px.png" />
     <None Remove="Source\settings_x48px.png" />
     <None Remove="Source\user_pp\default.png" />
+    <None Remove="Source\user_pp\user_pp_128px\angry_x128px.png" />
     <None Remove="Source\user_pp\user_pp_128px\default_x128px.png" />
+    <None Remove="Source\user_pp\user_pp_128px\dizzy_x128px.png" />
+    <None Remove="Source\user_pp\user_pp_128px\flushed_x128px.png" />
+    <None Remove="Source\user_pp\user_pp_128px\frown_x128px.png" />
+    <None Remove="Source\user_pp\user_pp_128px\grimace_x128px.png" />
+    <None Remove="Source\user_pp\user_pp_128px\grin_x128px.png" />
+    <None Remove="Source\user_pp\user_pp_128px\kissing_x128px.png" />
+    <None Remove="Source\user_pp\user_pp_128px\laughing_128px.png" />
+    <None Remove="Source\user_pp\user_pp_128px\laughing_x128px.png" />
+    <None Remove="Source\user_pp\user_pp_128px\smiling_x128px.png" />
+    <None Remove="Source\user_pp\user_pp_128px\tongued_x128px.png" />
+    <None Remove="Source\user_pp\user_pp_48px\angry_x48px.png" />
     <None Remove="Source\user_pp\user_pp_48px\default_x48px.png" />
+    <None Remove="Source\user_pp\user_pp_48px\dizzy_x48px.png" />
+    <None Remove="Source\user_pp\user_pp_48px\flushed_x48px.png" />
+    <None Remove="Source\user_pp\user_pp_48px\frown_x48px.png" />
+    <None Remove="Source\user_pp\user_pp_48px\grimace_x48px.png" />
+    <None Remove="Source\user_pp\user_pp_48px\grin_x48px.png" />
+    <None Remove="Source\user_pp\user_pp_48px\kissing_x48px.png" />
+    <None Remove="Source\user_pp\user_pp_48px\laughing_x48px.png" />
+    <None Remove="Source\user_pp\user_pp_48px\smiling_x48px.png" />
+    <None Remove="Source\user_pp\user_pp_48px\tongued_x48px.png" />
+    <None Remove="Source\user_pp\user_pp_64px\angry_x64px.png" />
     <None Remove="Source\user_pp\user_pp_64px\default_x64px.png" />
+    <None Remove="Source\user_pp\user_pp_64px\dizzy_x64px.png" />
+    <None Remove="Source\user_pp\user_pp_64px\flushed_x64px.png" />
+    <None Remove="Source\user_pp\user_pp_64px\frown_x64px.png" />
+    <None Remove="Source\user_pp\user_pp_64px\grimace_x64px.png" />
+    <None Remove="Source\user_pp\user_pp_64px\grin_x64px.png" />
+    <None Remove="Source\user_pp\user_pp_64px\kissing_x64px.png" />
+    <None Remove="Source\user_pp\user_pp_64px\laughing_x64px.png" />
+    <None Remove="Source\user_pp\user_pp_64px\smiling_x64px.png" />
+    <None Remove="Source\user_pp\user_pp_64px\tongued_x64px.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,13 +75,103 @@
     <Content Include="Source\service_48px\settings_x48px.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Source\user_pp\user_pp_128px\angry_x128px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Source\user_pp\user_pp_128px\default_x128px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_128px\dizzy_x128px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_128px\flushed_x128px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_128px\frown_x128px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_128px\grimace_x128px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_128px\grin_x128px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_128px\kissing_x128px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_128px\laughing_x128px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_128px\smiling_x128px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_128px\tongued_x128px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_48px\angry_x48px.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Source\user_pp\user_pp_48px\default_x48px.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Source\user_pp\user_pp_48px\dizzy_x48px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_48px\flushed_x48px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_48px\frown_x48px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_48px\grimace_x48px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_48px\grin_x48px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_48px\kissing_x48px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_48px\laughing_x48px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_48px\smiling_x48px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_48px\tongued_x48px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_64px\angry_x64px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Source\user_pp\user_pp_64px\default_x64px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_64px\dizzy_x64px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_64px\flushed_x64px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_64px\frown_x64px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_64px\grimace_x64px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_64px\grin_x64px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_64px\kissing_x64px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_64px\laughing_x64px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_64px\smiling_x64px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Source\user_pp\user_pp_64px\tongued_x64px.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

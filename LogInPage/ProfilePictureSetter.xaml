@@ -9,7 +9,8 @@
         ResizeMode="NoResize"
         Height="450" 
         Width="800" 
-        WindowStyle="None">
+        WindowStyle="None" 
+        FontFamily="Constantia">
     
     <!--// Main container //-->
     
@@ -100,30 +101,7 @@
                         Height="35"
                         Width="200"
                         Background="GhostWhite"
-                        Checked="TB_Checked">
-                        <ToggleButton.Style>
-                            <Style TargetType="ToggleButton">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="ToggleButton">
-                                            <Border 
-                                                Background="{TemplateBinding Background}"
-                                                BorderBrush="{TemplateBinding BorderBrush}"
-                                                BorderThickness="{TemplateBinding BorderThickness}"
-                                                Padding="{TemplateBinding Padding}">
-                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsChecked" Value="True">
-                                                    <Setter Property="Background" Value="#FFD2E5F1"/>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ToggleButton.Style>
-                    </ToggleButton>
+                        Checked="TB_Checked"/>
                     <ToggleButton
                         Grid.Column="1"
                         x:Name="PictureTB"
@@ -131,39 +109,17 @@
                         Height="35"
                         Width="200"
                         Background="GhostWhite"
-                        Checked="TB_Checked">
-                        <ToggleButton.Style>
-                            <Style TargetType="ToggleButton">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="ToggleButton">
-                                            <Border 
-                                                Background="{TemplateBinding Background}"
-                                                BorderBrush="{TemplateBinding BorderBrush}"
-                                                BorderThickness="{TemplateBinding BorderThickness}"
-                                                Padding="{TemplateBinding Padding}">
-                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsChecked" Value="True">
-                                                    <Setter Property="Background" Value="#FFD2E5F1"/>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ToggleButton.Style>
-                    </ToggleButton>
+                        Checked="TB_Checked"/>
 
                 </Grid>
 
                 <!--// Setter //-->
 
                 <Frame 
-                    x:Name="ChatFrame"
+                    x:Name="ScrollFrame"
                     Grid.Row="1"
-                    NavigationUIVisibility="Hidden"/>
+                    NavigationUIVisibility="Hidden"
+                    Source="PPS_ScrollPageBackground.xaml"/>
 
                 <!--// Confirmation bar //-->
                 
@@ -180,13 +136,17 @@
                         x:Name="ConfirmBtn"
                         Content="Confirm"
                         Height="25"
-                        Width="160"/>
+                        Width="160"
+                        Background="#FF8EECBB"
+                        BorderBrush="Transparent" Click="ConfirmBtn_Click"/>
                     <Button
                         Grid.Column="1"
                         x:Name="DeclineBtn"
                         Content="Decline"
                         Height="25"
                         Width="160" 
+                        Background="#FFECAC8E"
+                        BorderBrush="Transparent"
                         Click="DeclineBtn_Click"/>
 
                 </Grid>

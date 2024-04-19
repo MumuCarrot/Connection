@@ -11,12 +11,12 @@ namespace LogInPage
     {
         public readonly Client client;
         public readonly List<ClientWindowChatFrame>? clientWindowChatFrameList = [];
+        public readonly ClientWindowSettingsFrame? clientWindowSettingsFrame;
         public ClientWindowChatFrame? CurrentChat { get; set; }
         public user_list userList;
         public List<User> userSearchResult = [];
 
         private readonly client_window_nothing_frame? clientWindowNothingFrame;
-        private readonly ClientWindowSettingsFrame? clientWindowSettingsFrame;
         private readonly chat_list chatList;
 
         public ClientWindow(MainWindow mainWindow)
@@ -30,21 +30,21 @@ namespace LogInPage
             FrameList.Content = chatList = new chat_list(this);
             userList = new(this);
 
-            if (client.UserChatPreload is not null) 
+            if (client.UserChatPreload is not null)
             {
-                foreach (var chat in client.UserChatPreload) 
-                { 
+                foreach (var chat in client.UserChatPreload)
+                {
                     clientWindowChatFrameList.Add(new(client, chat.Id ?? ""));
                 }
             }
         }
 
-        public void UpdateChat(int toUpdate = 50) 
+        public void UpdateChat(int toUpdate = 50)
         {
-            if (CurrentChat is not null) 
+            if (CurrentChat is not null)
             {
                 if (!CurrentChat.IsContentLoaded)
-                { 
+                {
                     client.GetRequestUpdateChat(CurrentChat?.ChatId ?? "null", toUpdate);
                 }
             }

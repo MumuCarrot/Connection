@@ -1,18 +1,26 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace LogInPage
 {
-    public partial class user_bio_page : Page
+    public partial class userBioPage : Page
     {
-        public user_bio_page()
+        private User? _user = null;
+        public userBioPage(User user)
         {
             InitializeComponent();
+
+            _user = user;
+
+            PPHolder.Source = user.UserProfilePicture.ToSource(ProfilePictureSize.i64px);
+            Brush? convertedBrush = new BrushConverter().ConvertFrom(user.UserProfilePicture.PPColor) as SolidColorBrush;
+            if (convertedBrush is not null)
+            {
+                PPBackground.Background = convertedBrush;
+            }
+            UserName.Text = user.UserName;
+            UserLogin.Text = user.Login;
+            AboutMe.Text = user.AboutMe;
         }
-
-        public string Username { set { UserName.Text = value; } }
-
-        public string Login { set { UserLogin.Text = value; } }
-
-        public string Bio { set { AboutMe.Text = value; } }
     }
 }

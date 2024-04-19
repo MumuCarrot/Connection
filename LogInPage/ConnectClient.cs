@@ -17,6 +17,8 @@ namespace LogInPage
         /// Connection status shortcut
         /// </summary>
         public static bool Connected { get { return (tcpClient is not null) && tcpClient.Connected; } }
+
+        public bool ServerConfirmation { get; set; } = false;
         /// <summary>
         /// Server ip
         /// </summary>
@@ -47,8 +49,6 @@ namespace LogInPage
         public bool StayInClient { get; set; }
 
         public List<Chat>? UserChatPreload { get; set; }
-
-        public ProfilePicture UserProfilePicture { get; set; } = new();
         #endregion
 
         #region PRIVATE FIELDS & PROPERTIES
@@ -102,7 +102,7 @@ namespace LogInPage
                     Password = password
                 });
 
-                SendRequest($"GET --USER_CHECK json{{{json}}}");
+                SendRequest($"GET --LOG-IN json{{{json}}}");
             }
             else throw new Exception("Server is not responding.");
         }
@@ -113,7 +113,7 @@ namespace LogInPage
             {
                 string json = JsonConvert.SerializeObject(user);
 
-                SendRequest($"GET --USER_CHECK json{{{json}}}");
+                SendRequest($"GET --LOG-IN json{{{json}}}");
             }
             else throw new Exception("Server is not responding.");
         }
@@ -228,6 +228,18 @@ namespace LogInPage
                 string json = JsonConvert.SerializeObject(CurrentUser);
 
                 SendRequest($"PATCH --UPD_USER user{{{json}}}");
+            }
+            else throw new Exception("Server is not responding.");
+        }
+
+        public void PatchProfilePicture() 
+        {
+            if (tcpClient is not null && Connected && CurrentUser is not null)
+            {
+                CurrentUser.UserProfilePicture.Login = CurrentUser.Login;
+                string json = JsonConvert.SerializeObject(CurrentUser.UserProfilePicture);
+
+                SendRequest($"PATCH --PROFILE-PIC user{{{json}}}");
             }
             else throw new Exception("Server is not responding.");
         }

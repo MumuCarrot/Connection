@@ -1,4 +1,4 @@
-﻿<Page x:Class="LogInPage.user_bio_page"
+﻿<Page x:Class="LogInPage.userBioPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -64,11 +64,17 @@
 
                         <!--// Profile picture //-->
 
-                        <Border 
-                            Background="Black" 
-                            CornerRadius="60" 
+                        <Border
+                            Grid.Row="1"
                             Grid.Column="1"
-                            Grid.Row="1"/>
+                            x:Name="PPBackground"
+                            CornerRadius="60"
+                            Background="#FFDCF1FF">
+                            <Image
+                                x:Name="PPHolder"
+                                Margin="8"
+                                Source="/Source/user_pp/user_pp_64px/default_x64px.png"/>
+                        </Border>
 
                     </Grid>
 

@@ -1,31 +1,51 @@
 ﻿using System.IO;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace LogInPage
 {
-    /// <summary>
-    /// Логика взаимодействия для Settings.xaml
-    /// </summary>
     public partial class ClientWindowSettingsFrame : Page
     {
+        public Brush PPBackground { set { ProfilePictureHolder.Background = value; } }
+        public ProfilePicture PPPicture { set { PictureOfPPHolder.Source = value.ToSource(ProfilePictureSize.i64px); } }
+
         private ClientWindow RefClientWindow { get; set; }
+        private ProfilePicture? UserProfilePicture;
+
         public ClientWindowSettingsFrame(ClientWindow cw)
         {
             InitializeComponent();
+
             RefClientWindow = cw;
+
+            if (RefClientWindow.client.CurrentUser is not null) 
+            {
+                UserProfilePicture = (ProfilePicture)RefClientWindow.client.CurrentUser.UserProfilePicture.Clone();
+
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                { 
+                    PictureOfPPHolder.Source = UserProfilePicture.ToSource(ProfilePictureSize.i64px);
+                    Brush? convertedBrush = new BrushConverter().ConvertFrom(UserProfilePicture.PPColor) as SolidColorBrush;
+                    if (convertedBrush is not null) 
+                    {
+                        ProfilePictureHolder.Background = convertedBrush;
+                    }
+                }));
+            }
         }
 
-        private void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            UserName.Text = RefClientWindow.client.CurrentUser?.UserName;
-            UserLogin.Text = RefClientWindow.client.CurrentUser?.Login;
-            AboutMe.Text = RefClientWindow.client.CurrentUser?.AboutMe;
-
-            ProfilePictureHolder.Background = RefClientWindow.client.UserProfilePicture.PPColor;
-            PictureOfPPHolder.Source = RefClientWindow.client.UserProfilePicture?.ToSource(ProfilePictureSize.i64px);
+            if (RefClientWindow.client.CurrentUser is not null && UserProfilePicture is not null)
+            {
+                UserName.Text = RefClientWindow.client.CurrentUser.UserName;
+                UserLogin.Text = RefClientWindow.client.CurrentUser.Login;
+                AboutMe.Text = RefClientWindow.client.CurrentUser.AboutMe;
+            }
         }
 
-        private void Update_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void Update_Click(object sender, RoutedEventArgs e)
         {
             if (UserLogin.Text != RefClientWindow.client.CurrentUser?.Login ||
                 UserName.Text != RefClientWindow.client.CurrentUser?.UserName ||
@@ -41,20 +61,20 @@ namespace LogInPage
             }
         }
 
-        private void ChangeAvatar_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void ChangeAvatar_Click(object sender, RoutedEventArgs e)
         {
-            ProfilePictureSetter pps = new ProfilePictureSetter();
+            ProfilePictureSetter pps = new ProfilePictureSetter(RefClientWindow);
             pps.ShowDialog();
         }
 
-        private void ChangePasswordBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void ChangePasswordBtn_Click(object sender, RoutedEventArgs e)
         {
             ChangePasswordWindow cpw = new(RefClientWindow.client);
 
             cpw.ShowDialog();
         }
 
-        private void LeaveProfileBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void LeaveProfileBtn_Click(object sender, RoutedEventArgs e)
         {
             if (File.Exists("user_account_lock.xml"))
             {

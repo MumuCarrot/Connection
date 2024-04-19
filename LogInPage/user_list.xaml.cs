@@ -45,12 +45,7 @@ namespace LogInPage
 
                 if (user is not null)
                 {
-                    clientWindow.ChatFrame.Content = new user_bio_page
-                    {
-                        Login = user.Login,
-                        Username = user.UserName,
-                        Bio = user.AboutMe
-                    };
+                    clientWindow.ChatFrame.Content = new userBioPage(user);
                 }
             }
         }

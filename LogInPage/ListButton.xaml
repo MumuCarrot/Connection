@@ -47,10 +47,12 @@
 
         <Border
             Grid.Column="0"
+            x:Name="PPBackground"
             CornerRadius="60"
             Margin="5"
             Background="#FFDCF1FF">
             <Image
+                x:Name="PPHolder"
                 Margin="6"
                 Source="/Source/user_pp/user_pp_64px/default_x64px.png"/>
         </Border>

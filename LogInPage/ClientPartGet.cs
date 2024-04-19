@@ -12,9 +12,9 @@ namespace LogInPage
             string method = responce[..methodIndex];
             switch (method)
             {
-                case "--USER_CHECK":
+                case "--LOG-IN":
                     this.GetResponceUserCheck(responce);
-                    break; // --USER_CHECK
+                    break; // --LOG-IN
                 case "--CHAT-HISTORY":
                     this.GetResponceUpdateChat(responce);
                     break; // --CHAT-HISTORY
@@ -29,7 +29,11 @@ namespace LogInPage
 
         private void GetResponceUserCheck(string responce)
         {
-            CurrentUser = JsonExtractor<User>(responce, "json", right: 1);
+            CurrentUser = JsonExtractor<User>(responce, "json", right: 2);
+            if (!Answer.Contains("FALSE")) 
+            { 
+                ServerConfirmation = true;
+            }
         }
 
         private void GetResponceUpdateChat(string responce)
@@ -63,7 +67,7 @@ namespace LogInPage
         {
             try
             {
-                UserPackege? userPackege = JsonExtractor<UserPackege>(responce, "json", right: 3);
+                UserPackege? userPackege = JsonExtractor<UserPackege>(responce, "json", right: 4);
                 if (userPackege is not null && CurrenWindow is not null && CurrenWindow is ClientWindow cw)
                 {
                     Application.Current.Dispatcher.BeginInvoke(new Action(() =>
@@ -71,11 +75,7 @@ namespace LogInPage
                         cw.userSearchResult = userPackege.users;
                         foreach (var user in userPackege.users)
                         {
-                            cw.userList.Add(new ListButton
-                            {
-                                TitleText = user.Login,
-                                UnderlineText = user.AboutMe
-                            });
+                            cw.userList.Add(new ListButton(user));
                         }
                     }));
                 }

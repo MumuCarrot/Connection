@@ -21,7 +21,7 @@ namespace LogInPage
         public string Password { get; set; } = string.Empty;
         [JsonProperty("aboutme")]
         public string AboutMe { get; set; } = string.Empty;
-        [JsonProperty("profilepicturepath")]
-        public string ProfilePicturePath { get; set; } = string.Empty;
+        [JsonProperty("profilepicture")]
+        public ProfilePicture UserProfilePicture { get; set; } = new();
     }
 }

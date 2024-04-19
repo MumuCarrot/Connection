@@ -12,7 +12,6 @@ namespace LogInPage
     {
         /// <summary>
         /// Client for user using
-        /// FILENAME: ConnectClient.cs
         /// </summary>
         public readonly Client client;
 
@@ -34,8 +33,8 @@ namespace LogInPage
                 XmlSerializer x = new(typeof(UserLock));
 
                 UserLock? user = null;
-                using (FileStream fs = new("user_account_lock.xml", FileMode.Open)) 
-                { 
+                using (FileStream fs = new("user_account_lock.xml", FileMode.Open))
+                {
                     user = x.Deserialize(fs) as UserLock;
                 }
 
@@ -56,18 +55,19 @@ namespace LogInPage
 
 
                 // Wait for an answer status{true}
-                while (client.Answer.Length <= 0) Thread.Sleep(500);
-                if (client.Answer.Contains("status{true}"))
+                while (!client.ServerConfirmation)
                 {
-                    client.GetRequestUpdateChatList();
-                    while (client.UserChatPreload is null) Thread.Sleep(500);
-
-                    var clw = new ClientWindow(this);
-                    clw.Show();
-
-                    // If true end this window
-                    this.Close();
+                    Thread.Sleep(500);
                 }
+
+                client.GetRequestUpdateChatList();
+                while (client.UserChatPreload is null) Thread.Sleep(500);
+
+                var clw = new ClientWindow(this);
+                clw.Show();
+
+                // If true end this window
+                this.Close();
             }
 
             InitializeComponent();
@@ -173,7 +173,7 @@ namespace LogInPage
 
                                         using TextWriter writer = new StreamWriter("user_account_lock.xml");
                                         x.Serialize(writer, new UserLock
-                                        { 
+                                        {
                                             Login = signInPage.LoginTextBox.Text,
                                             Password = signInPage.PasswordTextBox.Password
                                         });
