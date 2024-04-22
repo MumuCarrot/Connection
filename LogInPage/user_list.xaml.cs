@@ -45,7 +45,7 @@ namespace LogInPage
 
                 if (user is not null)
                 {
-                    clientWindow.ChatFrame.Content = new userBioPage(user);
+                    clientWindow.ChatFrame.Content = new UserBioPage(user, clientWindow);
                 }
             }
         }

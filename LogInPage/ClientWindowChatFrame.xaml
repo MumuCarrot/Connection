@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:LogInPage"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="client_window_chat_frame">
+      Title="client_window_chat_frame" Loaded="Page_Loaded">
 
     <!--// Chat container //-->
     
@@ -15,14 +15,94 @@
         PreviewKeyDown="Grid_PreviewKeyDown">
         
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <!--// Chat information //-->
+
+        <Grid
+            Grid.Row="0"
+            x:Name="ChatInformationGrid">
+
+            <Button
+                Name="InformationButton"
+                Height="40"
+                Background="#FFBFE6FF">
+                
+                <!--// Button style //-->
+                
+                <Button.Style>
+
+                    <Style TargetType="Button">
+
+                        <Setter Property="Template">
+
+                            <Setter.Value>
+
+                                <ControlTemplate>
+
+                                    <Grid
+                                        Background="{TemplateBinding Property=Background}"
+                                        Height="{TemplateBinding Property=Height}"
+                                        Width="{TemplateBinding Property=Width}">
+
+                                        <ContentControl 
+                                            Content="{Binding ElementName=InformationButton, Path=Content}"/>
+
+                                    </Grid>
+
+                                    <ControlTemplate.Triggers>
+
+                                        <Trigger Property="IsMouseOver" Value="True">
+
+                                            <Setter Property="Cursor" Value="Hand"/>
+
+                                        </Trigger>
+
+                                    </ControlTemplate.Triggers>
+                                    
+                                </ControlTemplate>
+                                
+                            </Setter.Value>
+                            
+                        </Setter>
+                        
+                    </Style>
+                    
+                </Button.Style>
+                
+                <Button.Content>
+                    
+                    <!--// Button Content //-->
+                    
+                    <Grid>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock 
+                            x:Name="ChatName"
+                            Text="ChatName" 
+                            VerticalAlignment="Top" 
+                            HorizontalAlignment="Left"
+                            FontWeight="Bold"
+                            Margin="5"/>
+
+                    </Grid>
+                    
+                </Button.Content>
+                
+            </Button>
+            
+        </Grid>
+        
         <!--// Scroll viewer //-->
         
         <ScrollViewer 
-            Grid.Row="0"
+            Grid.Row="1"
             x:Name="scrollViewer"
             Margin="0 0 0 3">
             <StackPanel 
@@ -33,7 +113,7 @@
         <!--// Lower line //-->
         
         <Grid 
-            Grid.Row="1"
+            Grid.Row="2"
             Background="#FFE2F4FF">
             
             <Grid.ColumnDefinitions>
@@ -53,7 +133,37 @@
                 Background="Transparent"
                 TextWrapping="Wrap" 
                 TextChanged="MessageTextBox_TextChanged" 
-                VerticalAlignment="Bottom"/>
+                VerticalAlignment="Bottom">
+
+                <TextBox.Style>
+
+                    <Style TargetType="TextBox">
+
+                        <Setter Property="Template">
+
+                            <Setter.Value>
+
+                                <ControlTemplate TargetType="TextBox">
+
+                                    <Border 
+                                        BorderBrush="Transparent"
+                                        BorderThickness="0">
+                                        
+                                        <ScrollViewer x:Name="PART_ContentHost"/>
+
+                                    </Border>
+
+                                </ControlTemplate>
+                                
+                            </Setter.Value>
+                            
+                        </Setter>
+                        
+                    </Style>
+                    
+                </TextBox.Style>
+                
+            </TextBox>
             
             <!--// Send message button //-->
             

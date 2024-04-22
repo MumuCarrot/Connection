@@ -1,6 +1,4 @@
-﻿#define DEBUG
-
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows;
@@ -138,27 +136,17 @@ namespace LogInPage
         /// </exception>
         private static T? JsonExtractor<T>(string json, string keyWord, int left = 0, int right = 0)
         {
-            try
-            {
-                // Searching for JSON start point
-                int start = json.IndexOf($"{keyWord}{{") + $"{keyWord}{{".Length;
-                if (start == -1) throw new Exception("JSON start point wasn't found.");
-                int endpointStart = json.LastIndexOf("},") + "},".Length;
-                if (endpointStart == -1) endpointStart = start;
-                int end = json.IndexOf('}', endpointStart);
-                if (end == -1) throw new Exception("JSON end point wasn't found.");
+            // Searching for JSON start point
+            int start = json.IndexOf($"{keyWord}{{") + $"{keyWord}{{".Length;
+            if (start == -1) throw new Exception("JSON start point wasn't found.");
+            int endpointStart = json.LastIndexOf("},") + "},".Length;
+            if (endpointStart == -1) endpointStart = start;
+            int end = json.IndexOf('}', endpointStart);
+            if (end == -1) throw new Exception("JSON end point wasn't found.");
 
-                string str = json[(start + left)..(end + right)];
+            string str = json[(start + left)..(end + right)];
 
-                return JsonConvert.DeserializeObject<T>(str);
-            }
-            catch (Exception ex)
-            {
-#if DEBUG
-                MessageBox.Show(ex.Message);
-#endif
-                return default;
-            }
+            return JsonConvert.DeserializeObject<T>(str);
         }
         /// <summary>
         /// Log In GET request
@@ -312,7 +300,9 @@ namespace LogInPage
         {
             if (tcpClient is not null && Connected && CurrentUser is not null)
             {
-                string json = JsonConvert.SerializeObject(message);
+                KeyValuePair<string, Message> kvp = new(chatId, message);
+
+                string json = JsonConvert.SerializeObject(kvp);
 
                 SendRequest($"POST --MSG json{{{json}}}");
             }

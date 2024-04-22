@@ -8,5 +8,10 @@ namespace LogInPage
         {
             InitializeComponent();
         }
+
+        private void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            LoginTextBox.Focus();
+        }
     }
 }

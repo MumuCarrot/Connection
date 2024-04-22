@@ -16,38 +16,74 @@ namespace LogInPage
         /// </summary>
         public bool IsEmpty { get { return MessageTextBox.Text.Length == 0; } }
         /// <summary>
-        /// Chat id from MongoDB
-        /// </summary>
-        public string ChatId { get; private set; }
-        /// <summary>
         /// Is content loaded
         /// </summary>
         public bool IsContentLoaded { get; set; } = false;
         /// <summary>
+        /// Client window
+        /// </summary>
+        private readonly ClientWindow clientWindow;
+        /// <summary>
         /// Current client
         /// </summary>
         private readonly Client client;
+        /// <summary>
+        /// Current chat
+        /// </summary>
+        public readonly Chat chat;
 
         /// <summary>
         /// Class constructor
         /// </summary>
-        /// <param name="client">
-        /// Current client
+        /// <param name="clientWindow">
+        /// Client Window
         /// </param>
         /// <param name="chatId">
         /// Chat id
         /// </param>
-        public ClientWindowChatFrame(Client client, string chatId)
+        public ClientWindowChatFrame(ClientWindow clientWindow, Chat chat)
         {
             InitializeComponent();
 
             MessageTextBox.Focus();
             scrollViewer.ScrollToEnd();
 
-            this.client = client;
-            this.ChatId = chatId;
+            this.clientWindow = clientWindow;
+            client = clientWindow.client;
+            this.chat = chat;
         }
 
+        /// <summary>
+        /// Set information about chat and create rules
+        /// </summary>
+        /// <param name="sender">
+        /// Sender
+        /// </param>
+        /// <param name="e">
+        /// Event
+        /// </param>
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            clientWindow.CurrentChat = this;
+            clientWindow.UpdateChat();
+            clientWindow.CurrentChat.IsContentLoaded = true;
+
+            string chatName = string.Empty;
+
+            if (chat.Chatusers is not null) 
+            {
+                foreach (var i in chat.Chatusers) 
+                {
+                    if (client.CurrentUser is not null && !i.Equals(client.CurrentUser.Login)) 
+                    { 
+                        chatName = i.ToString();
+                        break;
+                    }
+                }
+            }
+
+            ChatName.Text = chatName;
+        }
         /// <summary>
         /// Send button click
         /// </summary>
@@ -72,7 +108,7 @@ namespace LogInPage
 
             UploadMessage(message, true);
 
-            client.PostRequestMessage(message, ChatId);
+            client.PostRequestMessage(message, chat.Id ?? "undefined");
 
             MessageTextBox.Text = string.Empty;
 

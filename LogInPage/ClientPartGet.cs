@@ -44,8 +44,8 @@ namespace LogInPage
         private void GetResponceUserCheck(string responce)
         {
             CurrentUser = JsonExtractor<User>(responce, "json", right: 2);
-            if (!Responce.Contains("FALSE")) 
-            { 
+            if (!Responce.Contains("FALSE"))
+            {
                 ServerConfirmation = true;
             }
         }
@@ -57,14 +57,25 @@ namespace LogInPage
         /// </param>
         private void GetResponceUpdateChat(string responce)
         {
-            List<Chat>? chatList;
-            try
+            List<Chat>? chatList = null;
+
+            bool readed = false;
+            int shift = 4;
+            while (!readed)
             {
-                chatList = JsonExtractor<List<Chat>>(responce, "json", right: 4);
-            }
-            catch
-            {
-                chatList = JsonExtractor<List<Chat>>(responce, "json", right: 2);
+                try
+                {
+                    chatList = JsonExtractor<List<Chat>>(responce, "json", right: shift);
+                    readed = true;
+                }
+                catch
+                {
+                    if (shift == 0)
+                    {
+                        throw new Exception("Message can't be readed.");
+                    }
+                    else shift -= 1;
+                }
             }
 
             if (chatList is not null && CurrenWindow is not null && CurrenWindow is ClientWindow cw)
@@ -123,13 +134,13 @@ namespace LogInPage
         /// </param>
         private void GetResponceUpdateChatList(string responce)
         {
-            try 
-            { 
-                UserChatPreload = JsonExtractor<List<Chat>>(responce, "json", right:4);
+            try
+            {
+                UserChatPreload = JsonExtractor<List<Chat>>(responce, "json", right: 4);
             }
-            catch 
-            { 
-                UserChatPreload = JsonExtractor<List<Chat>>(responce, "json", right:2);
+            catch
+            {
+                UserChatPreload = JsonExtractor<List<Chat>>(responce, "json", right: 2);
             }
         }
     }

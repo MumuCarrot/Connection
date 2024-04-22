@@ -164,7 +164,8 @@
 
             <Frame x:Name="ConnectionFrame"
                    Grid.Row="2"
-                   NavigationUIVisibility="Hidden"/>
+                   NavigationUIVisibility="Hidden"
+                   IsTabStop="false"/>
 
             <!--// Log In and Sign Up button //-->
 

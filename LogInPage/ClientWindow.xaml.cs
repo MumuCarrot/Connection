@@ -12,12 +12,14 @@ namespace LogInPage
         public readonly Client client;
         public readonly List<ClientWindowChatFrame>? clientWindowChatFrameList = [];
         public readonly ClientWindowSettingsFrame? clientWindowSettingsFrame;
+        public readonly ChatList chatList;
         public ClientWindowChatFrame? CurrentChat { get; set; }
         public user_list userList;
         public List<User> userSearchResult = [];
 
-        private readonly client_window_nothing_frame? clientWindowNothingFrame;
-        private readonly chat_list chatList;
+        private readonly ClientWindowNothingFrame? clientWindowNothingFrame;
+
+        public string? SearchBox { get { return SerchTextBox.Text; } set { SerchTextBox.Text = value; } }
 
         public ClientWindow(MainWindow mainWindow)
         {
@@ -27,14 +29,14 @@ namespace LogInPage
             clientWindowNothingFrame = new();
             clientWindowSettingsFrame = new(this);
             client.CurrenWindow = this;
-            FrameList.Content = chatList = new chat_list(this);
+            FrameList.Content = chatList = new ChatList(this);
             userList = new(this);
 
             if (client.UserChatPreload is not null)
             {
                 foreach (var chat in client.UserChatPreload)
                 {
-                    clientWindowChatFrameList.Add(new(client, chat.Id ?? ""));
+                    clientWindowChatFrameList.Add(new(this, chat));
                 }
             }
         }
@@ -45,7 +47,7 @@ namespace LogInPage
             {
                 if (!CurrentChat.IsContentLoaded)
                 {
-                    client.GetRequestUpdateChat(CurrentChat?.ChatId ?? "null", toUpdate);
+                    client.GetRequestUpdateChat(CurrentChat?.chat.Id ?? "null", toUpdate);
                 }
             }
         }

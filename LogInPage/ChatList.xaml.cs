@@ -64,11 +64,9 @@ namespace LogInPage
             {
                 foreach (var ch in clientWindow.clientWindowChatFrameList) 
                 { 
-                    if (ch.ChatId.Equals(lb.Id)) 
+                    if (ch.chat.Id is not null && ch.chat.Id.Equals(lb.Id)) 
                     {
-                        clientWindow.ChatFrame.Content = clientWindow.CurrentChat = ch;
-                        clientWindow.UpdateChat();
-                        clientWindow.CurrentChat.IsContentLoaded = true;
+                        clientWindow.ChatFrame.Content = ch;
                         break;
                     }
                 }

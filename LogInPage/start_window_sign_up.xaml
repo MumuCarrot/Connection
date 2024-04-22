@@ -7,7 +7,8 @@
       mc:Ignorable="d" 
       d:DesignHeight="160"
       d:DesignWidth="350"
-      Title="SingUpPage">
+      Title="SingUpPage" 
+      Loaded="Page_Loaded">
 
     <Grid>
         <Canvas>
