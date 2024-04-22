@@ -134,14 +134,30 @@ namespace LogInPage
         /// </param>
         private void GetResponceUpdateChatList(string responce)
         {
+            List<Chat>? chat;
             try
             {
-                UserChatPreload = JsonExtractor<List<Chat>>(responce, "json", right: 4);
+                chat = JsonExtractor<List<Chat>>(responce, "json", right: 4);
             }
             catch
             {
-                UserChatPreload = JsonExtractor<List<Chat>>(responce, "json", right: 2);
+                chat = JsonExtractor<List<Chat>>(responce, "json", right: 2);
             }
+
+            UserChatPreload = chat;
+
+            if (chat is not null)
+            {
+                if (UserChatPreloadSaveOutOfChanges is not null && UserChatPreloadSaveOutOfChanges.Count > 0)
+                {
+                    foreach (var c in chat) 
+                    {
+                        NewChat = c;
+                    }
+                }
+            }
+
+            PreloadChatIsReady = true;
         }
     }
 }

@@ -58,7 +58,7 @@ namespace LogInPage
         /// <param name="e">
         /// Event
         /// </param>
-        private void ListButton_Click(object? sender, EventArgs e)
+        public void ListButton_Click(object? sender, EventArgs e)
         {
             if (clientWindow.clientWindowChatFrameList is not null && sender is ListButton lb && lb.Id is not null) 
             {

@@ -20,7 +20,10 @@
             switch (method)
             {
                 case "--MSG":
-                    PostMessage(responce);
+                    PostResponceMessage(responce);
+                    break; // MSG
+                case "--CHAT":
+                    PostResponceChat(responce);
                     break; // MSG
             }
         }
@@ -30,7 +33,7 @@
         /// <param name="responce">
         /// Responce from the server
         /// </param>
-        private void PostMessage(string responce)
+        private void PostResponceMessage(string responce)
         {
             Message? message = JsonExtractor<Message>(responce, "json", right: 1);
 
@@ -38,6 +41,27 @@
             {
                 cw.UploadMessage(message, message.Username?.Equals(CurrentUser?.Login));
             }
+        }
+        /// <summary>
+        /// Recive status of posting chat
+        /// </summary>
+        /// <param name="responce">
+        /// Responce from the server
+        /// </param>
+        /// <exception cref="Exception">
+        /// If status was false
+        /// </exception>
+        private void PostResponceChat(string responce)
+        {
+            UserChatPreloadSaveOutOfChanges = UserChatPreload;
+
+            bool answer = responce.Contains("TRUE");
+
+            if (answer)
+            {
+                GetRequestUpdateChatList();
+            }
+            else throw new Exception("Chat creation failed!");
         }
     }
 }

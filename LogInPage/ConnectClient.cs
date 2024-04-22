@@ -31,6 +31,10 @@ namespace LogInPage
         /// </remarks>
         public bool ServerConfirmation { get; set; } = false;
         /// <summary>
+        /// Preload is ready
+        /// </summary>
+        public bool PreloadChatIsReady = false;
+        /// <summary>
         /// Indicates should apllication save information about user or not
         /// </summary>
         /// <remarks>
@@ -50,7 +54,15 @@ namespace LogInPage
         /// <summary>
         /// Users that was found in search
         /// </summary>
-        public List<Chat>? UserChatPreload { get; set; }
+        public List<Chat>? UserChatPreload { get; set; } = [];
+        /// <summary>
+        /// Previous save of preload
+        /// </summary>
+        public List<Chat>? UserChatPreloadSaveOutOfChanges { get; set; } = [];
+        /// <summary>
+        /// Last added chat
+        /// </summary>
+        public Chat? NewChat { get; set; }
         #endregion
 
         #region PRIVATE FIELDS & PROPERTIES
@@ -305,6 +317,35 @@ namespace LogInPage
                 string json = JsonConvert.SerializeObject(kvp);
 
                 SendRequest($"POST --MSG json{{{json}}}");
+            }
+            else throw new Exception("Server is not responding.");
+        }
+        /// <summary>
+        /// POST new chat
+        /// </summary>
+        /// <param name="currentUser">
+        /// Current user
+        /// </param>
+        /// <param name="otherUsers">
+        /// Users to be added to the chat
+        /// </param>
+        /// <exception cref="Exception">
+        /// Server is not responding.
+        /// </exception>
+        public void PostRequestChat(string currentUser, params string[] otherUsers)
+        {
+            if (tcpClient is not null && Connected && CurrentUser is not null)
+            {
+                List<string> userList = [currentUser];
+
+                foreach (var user in otherUsers)
+                {
+                    userList.Add(user);
+                }
+
+                string json = JsonConvert.SerializeObject(userList);
+
+                SendRequest($"POST --CHAT json{{{json}}}");
             }
             else throw new Exception("Server is not responding.");
         }

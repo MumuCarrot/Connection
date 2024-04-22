@@ -61,7 +61,7 @@ namespace LogInPage
                 }
 
                 client.GetRequestUpdateChatList();
-                while (client.UserChatPreload is null) Thread.Sleep(500);
+                while (!client.PreloadChatIsReady) Thread.Sleep(500);
 
                 var clw = new ClientWindow(this);
                 clw.Show();
@@ -182,7 +182,7 @@ namespace LogInPage
                                     }
 
                                     client.GetRequestUpdateChatList();
-                                    while (client.UserChatPreload is null) Thread.Sleep(500);
+                                    while (!client.PreloadChatIsReady) Thread.Sleep(500);
 
                                     var clw = new ClientWindow(this);
                                     clw.Show();
