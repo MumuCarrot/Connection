@@ -5,9 +5,22 @@ using Connect.profilePicture;
 
 namespace LogInPage
 {
+    /// <summary>
+    /// Profile picture window
+    /// </summary>
     public partial class ProfilePictureSetter : Window
     {
+        /// <summary>
+        /// Current client window
+        /// </summary>
         private ClientWindow clientWindow;
+
+        /// <summary>
+        /// Class constructor
+        /// </summary>
+        /// <param name="clientWindow">
+        /// Client window
+        /// </param>
         public ProfilePictureSetter(ClientWindow clientWindow)
         {
             InitializeComponent();
@@ -16,6 +29,15 @@ namespace LogInPage
             this.clientWindow = clientWindow;
         }
 
+        /// <summary>
+        /// Switch page event
+        /// </summary>
+        /// <param name="sender">
+        /// Sender
+        /// </param>
+        /// <param name="e">
+        /// Element
+        /// </param>
         private void TB_Checked(object sender, RoutedEventArgs e)
         {
             if (sender is ToggleButton tb)
@@ -34,12 +56,28 @@ namespace LogInPage
                 }
             }
         }
-
+        /// <summary>
+        /// Drcline
+        /// </summary>
+        /// <param name="sender">
+        /// Sender
+        /// </param>
+        /// <param name="e">
+        /// Event
+        /// </param>
         private void DeclineBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
-
+        /// <summary>
+        /// Drag and move
+        /// </summary>
+        /// <param name="sender">
+        /// Sender
+        /// </param>
+        /// <param name="e">
+        /// Event
+        /// </param>
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -47,7 +85,15 @@ namespace LogInPage
                 this.DragMove();
             }
         }
-
+        /// <summary>
+        /// Confirm
+        /// </summary>
+        /// <param name="sender">
+        /// Sender
+        /// </param>
+        /// <param name="e">
+        /// Event
+        /// </param>
         private void ConfirmBtn_Click(object sender, RoutedEventArgs e)
         {
             if (clientWindow.client.CurrentUser is not null) 

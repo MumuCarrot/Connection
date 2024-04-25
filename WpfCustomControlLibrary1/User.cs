@@ -3,14 +3,17 @@ using Newtonsoft.Json;
 
 namespace Connect.user
 {
-    public class UserPackege
+    /// <summary>
+    /// User package
+    /// </summary>
+    public class UserPackage
     {
         [JsonProperty("users")]
         public List<User> users = [];
     }
 
     /// <summary>
-    /// An implementation of user
+    /// User implementation
     /// </summary>
     public class User
     {

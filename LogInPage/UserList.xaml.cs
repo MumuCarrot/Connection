@@ -4,16 +4,33 @@ using Connect.user;
 
 namespace LogInPage
 {
-    public partial class user_list : Page
+    /// <summary>
+    /// Class of user list
+    /// </summary>
+    public partial class UserList : Page
     {
+        /// <summary>
+        /// Current client window
+        /// </summary>
         ClientWindow clientWindow;
-        public user_list(ClientWindow cw)
+        
+        /// <summary>
+        /// Class constructor
+        /// </summary>
+        /// <param name="cw">
+        /// Client window
+        /// </param>
+        public UserList(ClientWindow cw)
         {
             clientWindow = cw;
 
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Add ui element to user list
+        /// </summary>
+        /// <param name="obj"></param>
         public void Add(UIElement obj)
         {
             try
@@ -21,7 +38,7 @@ namespace LogInPage
                 if (obj is ListButton lb)
                 {
                     lb.Click += Button_CLick;
-                    UserList.Children.Add(obj);
+                    userList.Children.Add(obj);
                 }
             }
             catch (Exception ex)
@@ -29,7 +46,15 @@ namespace LogInPage
                 MessageBox.Show(ex.Message);
             }
         }
-
+        /// <summary>
+        /// Click
+        /// </summary>
+        /// <param name="sender">
+        /// Sender
+        /// </param>
+        /// <param name="e">
+        /// Element
+        /// </param>
         private void Button_CLick(object? sender, EventArgs e)
         {
             if (sender is ListButton lb)

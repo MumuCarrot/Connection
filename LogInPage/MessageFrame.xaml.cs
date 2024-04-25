@@ -4,8 +4,20 @@ using Connect.message;
 
 namespace LogInPage
 {
+    /// <summary>
+    /// Message frame realisation
+    /// </summary>
     public partial class MessageFrame : UserControl
     {
+        /// <summary>
+        /// Class constructor
+        /// </summary>
+        /// <param name="message">
+        /// Content
+        /// </param>
+        /// <param name="isMy">
+        /// Is message of current user or not
+        /// </param>
         public MessageFrame(Message message, bool? isMy)
         {
             InitializeComponent();

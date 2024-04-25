@@ -104,7 +104,7 @@ namespace LogInPage
         {
             try
             {
-                UserPackege? userPackege = JsonExtractor<UserPackege>(responce, "json", right: 4);
+                UserPackage? userPackege = JsonExtractor<UserPackage>(responce, "json", right: 4);
                 if (userPackege is not null && CurrenWindow is not null && CurrenWindow is ClientWindow cw)
                 {
                     Application.Current.Dispatcher.BeginInvoke(new Action(() =>
@@ -123,7 +123,7 @@ namespace LogInPage
                 {
                     if (CurrenWindow is not null && CurrenWindow is ClientWindow cw)
                     {
-                        cw.userList = new user_list(cw);
+                        cw.userList = new UserList(cw);
                     }
                 }));
             }
