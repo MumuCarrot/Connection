@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using Connect.user;
+using Connect.message;
 
 namespace LogInPage
 {

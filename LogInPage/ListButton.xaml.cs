@@ -1,5 +1,7 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Media;
+using Connect.profilePicture;
+using Connect.user;
 
 namespace LogInPage
 {

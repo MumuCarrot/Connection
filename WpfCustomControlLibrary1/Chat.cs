@@ -1,20 +1,12 @@
-﻿using Newtonsoft.Json;
-
-namespace LogInPage
+﻿namespace Connect.message
 {
-    public class MessageConteiner() 
-    {
-        [JsonProperty("messages")]
-        public List<Message> Messages { get; set; } = [];
-    }
-
     public class Chat
     {
         public string? Id { get; set; }
 
-        public string[]? Chatusers { get; set; }
+        public string[] Chatusers { get; set; } = new string[0];
 
-        public Message[]? Messages { get; set; }
+        public Message[] Messages { get; set; } = new Message[0];
     }
 
     public class Message

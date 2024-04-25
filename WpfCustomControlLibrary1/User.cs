@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Connect.profilePicture;
+using Newtonsoft.Json;
 
-namespace LogInPage
+namespace Connect.user
 {
     public class UserPackege
     {

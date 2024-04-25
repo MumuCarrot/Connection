@@ -1,4 +1,6 @@
-﻿namespace LogInPage
+﻿using Connect.message;
+
+namespace LogInPage
 {
     public partial class Client
     {

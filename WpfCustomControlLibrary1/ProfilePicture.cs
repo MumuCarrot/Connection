@@ -2,7 +2,7 @@
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace LogInPage
+namespace Connect.profilePicture
 {
     /// <summary>
     /// Size of profile picture
@@ -44,7 +44,7 @@ namespace LogInPage
         /// </summary>
         [JsonProperty("login")]
         public string? Login { get; set; } = null;
-        
+
         /// <summary>
         /// Returns image sources by current name and size
         /// </summary>

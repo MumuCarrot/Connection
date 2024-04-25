@@ -176,4 +176,8 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WpfCustomControlLibrary1\ConnectContainers.csproj" />
+  </ItemGroup>
+
 </Project>
