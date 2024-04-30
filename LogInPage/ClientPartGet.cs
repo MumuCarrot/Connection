@@ -1,6 +1,9 @@
-﻿using System.Windows;
+﻿using Connect.message;
+using Connect.profilePicture;
 using Connect.user;
-using Connect.message;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace LogInPage
 {
@@ -35,6 +38,9 @@ namespace LogInPage
                 case "--CHAT-LIST":
                     this.GetResponceUpdateChatList(responce);
                     break; // --CHAT-LIST
+                case "--CHAT-PICTURE":
+                    this.GetResponceUpdateChatPicture(responce);
+                    break; // --CHAT-PICTURE
             }
         }
         /// <summary>
@@ -152,7 +158,7 @@ namespace LogInPage
             {
                 if (UserChatPreloadSaveOutOfChanges is not null && UserChatPreloadSaveOutOfChanges.Count > 0)
                 {
-                    foreach (var c in chat) 
+                    foreach (var c in chat)
                     {
                         NewChat = c;
                     }
@@ -160,6 +166,43 @@ namespace LogInPage
             }
 
             PreloadChatIsReady = true;
+        }
+
+        private void GetResponceUpdateChatPicture(string responce)
+        {
+            Dictionary<string, (string, string)>? answer;
+            try
+            {
+                answer = JsonExtractor<Dictionary<string, (string, string)>>(responce, "json", right: 2);
+            }
+            catch
+            {
+                answer = JsonExtractor<Dictionary<string, (string, string)>>(responce, "json", right: 0);
+            }
+
+            if (answer is not null)
+            {
+                if (CurrenWindow is ClientWindow clientWindow && clientWindow is not null)
+                {
+                    if (answer.Count > 0)
+                    {
+                        var d = Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            foreach (var a in answer)
+                            {
+                                if (clientWindow.chatList.ContainsId(a.Key))
+                                {
+                                    if (clientWindow.chatList[a.Key] is ListButton lb)
+                                    {
+                                        lb.ProfilePictureSource = a.Value.Item1.ToSource(ProfilePictureSize.i64px);
+                                        lb.ProfilePictureBackground = new BrushConverter().ConvertFrom(a.Value.Item2) as SolidColorBrush ?? new SolidColorBrush(Color.FromArgb(255, 220, 241, 255));
+                                    }
+                                }
+                            }
+                        }));
+                    }
+                }
+            }
         }
     }
 }

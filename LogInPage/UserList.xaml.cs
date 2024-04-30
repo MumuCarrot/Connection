@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using Connect.user;
+using Connect.profilePicture;
 
 namespace LogInPage
 {
@@ -12,7 +13,7 @@ namespace LogInPage
         /// <summary>
         /// Current client window
         /// </summary>
-        ClientWindow clientWindow;
+        private readonly ClientWindow clientWindow;
         
         /// <summary>
         /// Class constructor

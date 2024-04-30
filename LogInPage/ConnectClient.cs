@@ -261,6 +261,18 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
+
+        public void GetRequestUpdateChatPictures(List<ListButton> listButtonList) 
+        {
+            if (tcpClient is not null && Connected)
+            {
+                (string?, string?[]) deq = (CurrentUser?.Login, listButtonList.Select(x => x.Id).ToArray());
+                string json = JsonConvert.SerializeObject(deq);
+
+                SendRequest($"GET --CHAT-PICTURE json{{{json}}}");
+            }
+            else throw new Exception("Server is not responding.");
+        }
         /// <summary>
         /// Sign Up GET request
         /// </summary>
