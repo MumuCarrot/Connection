@@ -1,8 +1,5 @@
 ﻿using Connect.message;
-using Connect.profilePicture;
 using Connect.user;
-using System.Windows;
-using System.Windows.Media;
 
 namespace LogInPage
 {
@@ -42,7 +39,6 @@ namespace LogInPage
                     break; // --CHAT-PICTURE
             }
         }
-
         /// <summary>
         /// Check for user by login and password
         /// </summary>
@@ -57,7 +53,6 @@ namespace LogInPage
                 ServerConfirmation = true;
             }
         }
-
         /// <summary>
         /// Update chat
         /// </summary>
@@ -66,7 +61,7 @@ namespace LogInPage
         /// </param>
         private void GetResponceUpdateChat(string responce)
         {
-            List<Chat>? chatList = null;
+            /*List<Chat>? chatList = null;
 
             bool readed = false;
             int shift = 4;
@@ -99,9 +94,8 @@ namespace LogInPage
                         }
                     }
                 }
-            }
+            }*/
         }
-
         /// <summary>
         /// Check for users by login
         /// </summary>
@@ -112,7 +106,7 @@ namespace LogInPage
         {
             try
             {
-                UserPackage? userPackege = JsonExtractor<UserPackage>(responce, "json", right: 4);
+                /*UserPackage? userPackege = JsonExtractor<UserPackage>(responce, "json", right: 4);
                 if (userPackege is not null && CurrenWindow is not null && CurrenWindow is ClientWindow cw)
                 {
                     Application.Current.Dispatcher.BeginInvoke(new Action(() =>
@@ -123,20 +117,19 @@ namespace LogInPage
                             cw.userList.Add(new ListButton(user));
                         }
                     }));
-                }
+                }*/
             }
             catch
             {
-                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                /*Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     if (CurrenWindow is not null && CurrenWindow is ClientWindow cw)
                     {
                         cw.userList = new UserList(cw);
                     }
-                }));
+                }));*/
             }
         }
-
         /// <summary>
         /// Update chat list
         /// </summary>
@@ -171,15 +164,9 @@ namespace LogInPage
             PreloadChatIsReady = true;
         }
 
-        /// <summary>
-        /// Update profile picture for chats
-        /// </summary>
-        /// <param name="responce">
-        /// Responce from the server
-        /// </param>
         private void GetResponceUpdateChatPicture(string responce)
         {
-            Dictionary<string, (string, string)>? answer;
+            /*Dictionary<string, (string, string)>? answer;
             try
             {
                 answer = JsonExtractor<Dictionary<string, (string, string)>>(responce, "json", right: 2);
@@ -211,7 +198,7 @@ namespace LogInPage
                         }));
                     }
                 }
-            }
+            }*/
         }
     }
 }

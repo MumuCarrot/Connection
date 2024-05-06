@@ -29,7 +29,6 @@ namespace LogInPage
                     break; // MSG
             }
         }
-
         /// <summary>
         /// Recive message from other user
         /// </summary>
@@ -40,12 +39,11 @@ namespace LogInPage
         {
             Message? message = JsonExtractor<Message>(responce, "json", right: 1);
 
-            if (message is not null && CurrenWindow is not null && CurrenWindow is ClientWindow cw)
+            /*if (message is not null && CurrenWindow is not null && CurrenWindow is ClientWindow cw)
             {
                 cw.UploadMessage(message, message.Username?.Equals(CurrentUser?.Login));
-            }
+            }*/
         }
-
         /// <summary>
         /// Recive status of posting chat
         /// </summary>

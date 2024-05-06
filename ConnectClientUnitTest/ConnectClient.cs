@@ -1,9 +1,9 @@
-﻿using Connect.message;
-using Connect.user;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows;
+using Connect.user;
+using Connect.message;
 
 namespace LogInPage
 {
@@ -21,14 +21,7 @@ namespace LogInPage
         /// <br/>
         /// <c>False</c> if user doesen't
         /// </remarks>
-        public static bool Connected
-        {
-            get
-            {
-                return (tcpClient is not null) && tcpClient.Connected;
-            }
-        }
-
+        public static bool Connected { get { return (tcpClient is not null) && tcpClient.Connected; } }
         /// </summary>
         /// /// <summary>
         /// If login and password fit
@@ -39,12 +32,10 @@ namespace LogInPage
         /// <c>False</c> if login or password doesn't fit
         /// </remarks>
         public bool ServerConfirmation { get; set; } = false;
-
         /// <summary>
         /// Preload is ready
         /// </summary>
         public bool PreloadChatIsReady = false;
-
         /// <summary>
         /// Indicates should apllication save information about user or not
         /// </summary>
@@ -54,27 +45,22 @@ namespace LogInPage
         /// <c>False</c> to do not save user
         /// </remarks>
         public bool StayInClient { get; set; }
-
         /// <summary>
         /// Logged user in current usage
         /// </summary>
         public User? CurrentUser { get; set; } = null;
-
         /// <summary>
         /// Window that currently open
         /// </summary>
-        public Window? CurrenWindow { get; set; }
-
+        //public Window? CurrenWindow { get; set; }
         /// <summary>
         /// Users that was found in search
         /// </summary>
         public List<Chat>? UserChatPreload { get; set; } = [];
-
         /// <summary>
         /// Previous save of preload
         /// </summary>
         public List<Chat>? UserChatPreloadSaveOutOfChanges { get; set; } = [];
-
         /// <summary>
         /// Last added chat
         /// </summary>
@@ -85,38 +71,31 @@ namespace LogInPage
         /// <summary>
         /// Terminates all processes if the client closes
         /// </summary>
-        private bool CloseClient { get; set; } = false;
-
+        public bool CloseClient { get; set; } = false;
         /// <summary>
         /// Host address
         /// </summary>
         private string HostName { get; } = "127.0.0.1";
-
         /// <summary>
         /// Host port
         /// </summary>
-        private int Port { get; } = 7007;
-
+        private int Port { get; } = 7777;
         /// <summary>
         /// Message size
         /// </summary>
         private int MessageSize { get; } = 10240;
-
         /// <summary>
         /// Connection
         /// </summary>
         private static TcpClient? tcpClient;
-
         /// <summary>
         /// Stream
         /// </summary>
         private static NetworkStream? stream;
-
         /// <summary>
         /// Initialization thread
         /// </summary>
         private static Thread? mainClientThread;
-
         /// <summary>
         /// Responce from the server
         /// </summary>
@@ -136,7 +115,6 @@ namespace LogInPage
             mainClientThread = new(new ThreadStart(ReadAnswer));
             mainClientThread?.Start();
         }
-
         /// <summary>
         /// Dispose client
         /// </summary>
@@ -146,7 +124,6 @@ namespace LogInPage
             stream?.Close();
             tcpClient?.Close();
         }
-
         /// <summary>
         /// Json extractor
         /// </summary>
@@ -185,7 +162,6 @@ namespace LogInPage
 
             return JsonConvert.DeserializeObject<T>(str);
         }
-
         /// <summary>
         /// Log In GET request
         /// </summary>
@@ -212,7 +188,6 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
-
         /// <summary>
         /// Log In GET request
         /// </summary>
@@ -232,7 +207,6 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
-
         /// <summary>
         /// Search for users by <paramref name="character"/>
         /// </summary>
@@ -252,7 +226,6 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
-
         /// <summary>
         /// Update messages in chat
         /// </summary>
@@ -272,9 +245,8 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
-
         /// <summary>
-        /// Update chat list of user gane last message, chatusers and last time of message
+        /// Update's chat list of user gane last message, chatusers and last time of message
         /// </summary>
         /// <exception cref="Exception">
         /// Server is not responding.
@@ -290,16 +262,7 @@ namespace LogInPage
             else throw new Exception("Server is not responding.");
         }
 
-        /// <summary>
-        /// Update profile picture of current user
-        /// </summary>
-        /// <param name="listButtonList">
-        /// list of chats that need to be update profile pictures
-        /// </param>
-        /// <exception cref="Exception">
-        /// Server is not responding.
-        /// </exception>
-        public void GetRequestUpdateChatPictures(List<ListButton> listButtonList)
+        /*public void GetRequestUpdateChatPictures(List<ListButton> listButtonList) 
         {
             if (tcpClient is not null && Connected)
             {
@@ -309,8 +272,7 @@ namespace LogInPage
                 SendRequest($"GET --CHAT-PICTURE json{{{json}}}");
             }
             else throw new Exception("Server is not responding.");
-        }
-
+        }*/
         /// <summary>
         /// Sign Up GET request
         /// </summary>
@@ -348,7 +310,6 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
-
         /// <summary>
         /// Message POST request
         /// </summary>
@@ -373,7 +334,6 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
-
         /// <summary>
         /// POST new chat
         /// </summary>
@@ -403,7 +363,6 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
-
         /// <summary>
         /// Update user
         /// </summary>
@@ -420,7 +379,6 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
-
         /// <summary>
         /// Update profile picture
         /// </summary>
@@ -438,7 +396,6 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
-
         /// <summary>
         /// Update password
         /// </summary>
@@ -459,7 +416,6 @@ namespace LogInPage
             }
             else throw new Exception("Server is not responding.");
         }
-
         /// <summary>
         /// Send method
         /// </summary>
@@ -476,7 +432,6 @@ namespace LogInPage
                 stream.Write(reqBytes, 0, reqBytes.Length);
             else throw new Exception("Stream is null.");
         }
-
         /// <summary>
         /// Reading thread
         /// </summary>
@@ -542,7 +497,7 @@ namespace LogInPage
             catch (Exception ex)
             {
 #if DEBUG
-                MessageBox.Show("1. " + ex.Message);
+                //MessageBox.Show("1. " + ex.Message);
 #endif
             }
         }

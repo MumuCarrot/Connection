@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Blend for Visual Studio Version 17
+# Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogInPage", "LogInPage\LogInPage.csproj", "{938DFA48-727F-40FC-A10F-31546AB36E97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectContainers", "WpfCustomControlLibrary1\ConnectContainers.csproj", "{5ACB4391-21A1-4449-BCF5-5B3B902FFB89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConnectContainers", "WpfCustomControlLibrary1\ConnectContainers.csproj", "{5ACB4391-21A1-4449-BCF5-5B3B902FFB89}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerPart", "..\..\ServerPart\ServerPart\ServerPart.csproj", "{611F0CAD-9A28-4D20-8AC8-CA182DB90719}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectServerUnitTest", "ConnectUnitTest\ConnectServerUnitTest.csproj", "{97A1A3A0-2F0B-4CDE-84FB-526469FA31EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectClientUnitTest", "ConnectClientUnitTest\ConnectClientUnitTest.csproj", "{DC8A3A76-6702-41D5-B452-60BE2D222B95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,18 @@ Global
 		{5ACB4391-21A1-4449-BCF5-5B3B902FFB89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ACB4391-21A1-4449-BCF5-5B3B902FFB89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5ACB4391-21A1-4449-BCF5-5B3B902FFB89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{611F0CAD-9A28-4D20-8AC8-CA182DB90719}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{611F0CAD-9A28-4D20-8AC8-CA182DB90719}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{611F0CAD-9A28-4D20-8AC8-CA182DB90719}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{611F0CAD-9A28-4D20-8AC8-CA182DB90719}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97A1A3A0-2F0B-4CDE-84FB-526469FA31EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97A1A3A0-2F0B-4CDE-84FB-526469FA31EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97A1A3A0-2F0B-4CDE-84FB-526469FA31EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97A1A3A0-2F0B-4CDE-84FB-526469FA31EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC8A3A76-6702-41D5-B452-60BE2D222B95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC8A3A76-6702-41D5-B452-60BE2D222B95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC8A3A76-6702-41D5-B452-60BE2D222B95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC8A3A76-6702-41D5-B452-60BE2D222B95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
