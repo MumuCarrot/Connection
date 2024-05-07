@@ -15,34 +15,42 @@ namespace LogInPage
         /// Current client
         /// </summary>
         public readonly Client client;
+
         /// <summary>
         /// Client window hello page
         /// </summary>
         private readonly ClientWindowNothingFrame? clientWindowNothingFrame;
+
         /// <summary>
         /// Chat's of current user
         /// </summary>
         public readonly List<ClientWindowChatFrame>? clientWindowChatFrameList = [];
+
         /// <summary>
         /// User settings page
         /// </summary>
         public readonly ClientWindowSettingsFrame? clientWindowSettingsFrame;
+
         /// <summary>
         /// Current open chat
         /// </summary>
         public ClientWindowChatFrame? CurrentChat { get; set; }
+
         /// <summary>
         /// Found users
         /// </summary>
         public List<User> userSearchResult = [];
+
         /// <summary>
         /// List of chat buttons
         /// </summary>
         public readonly ChatList chatList;
+
         /// <summary>
         /// List of user buttons
         /// </summary>
         public UserList userList;
+
         /// <summary>
         /// SearchTextBox alias
         /// </summary>

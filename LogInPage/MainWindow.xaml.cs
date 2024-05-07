@@ -53,12 +53,13 @@ namespace LogInPage
 
                 client.GetRequestLogIn(user?.Login ?? "undef", user?.Password ?? "undef");
 
-
                 // Wait for an answer status{true}
                 while (!client.ServerConfirmation)
                 {
                     Thread.Sleep(500);
                 }
+
+                client.StayInClient = true;
 
                 client.GetRequestUpdateChatList();
                 while (!client.PreloadChatIsReady) Thread.Sleep(500);
@@ -275,6 +276,8 @@ namespace LogInPage
                                                 Login = signUpPage.LoginTextBox.Text,
                                                 Password = signUpPage.PasswordTextBox.Password
                                             });
+
+                                            client.StayInClient = (bool)StayCheck.IsChecked;
                                         }
 
                                         // If true end this window

@@ -58,7 +58,7 @@ namespace LogInPage
                     {
                         XmlSerializer x = new(typeof(UserLock));
 
-                        using TextWriter writer = new StreamWriter("userlock.xml");
+                        using TextWriter writer = new StreamWriter("user_account_lock.xml");
                         x.Serialize(writer, new UserLock
                         {
                             Login = client.CurrentUser.Login,

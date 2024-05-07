@@ -303,10 +303,13 @@ namespace LogInPage
         {
             if (tcpClient is not null && Connected)
             {
-                (string?, string?[]) deq = (CurrentUser?.Login, listButtonList.Select(x => x.Id).ToArray());
-                string json = JsonConvert.SerializeObject(deq);
+                if (UserChatPreload?.Count > 0)
+                {
+                    (string?, string?[]) deq = (CurrentUser?.Login, listButtonList.Select(x => x.Id).ToArray());
+                    string json = JsonConvert.SerializeObject(deq);
 
-                SendRequest($"GET --CHAT-PICTURE json{{{json}}}");
+                    SendRequest($"GET --CHAT-PICTURE json{{{json}}}");
+                }
             }
             else throw new Exception("Server is not responding.");
         }
@@ -339,9 +342,12 @@ namespace LogInPage
 
                 while (Responce == string.Empty) ;
 
-                if (Responce.Contains("ANSWER{status{false}}"))
+                if (Responce.Contains("FALSE"))
                 {
                     string json = JsonConvert.SerializeObject(newUser);
+
+                    newUser.UserName = newUser.Login;
+                    CurrentUser = newUser;
 
                     SendRequest($"POST --USER json{{{json}}}");
                 }

@@ -51,9 +51,9 @@ namespace LogInPage
         /// </param>
         private void GetResponceUserCheck(string responce)
         {
-            CurrentUser = JsonExtractor<User>(responce, "json", right: 2);
             if (!Responce.Contains("FALSE"))
             {
+                CurrentUser = JsonExtractor<User>(responce, "json", right: 2);
                 ServerConfirmation = true;
             }
         }
@@ -145,30 +145,42 @@ namespace LogInPage
         /// </param>
         private void GetResponceUpdateChatList(string responce)
         {
-            List<Chat>? chat;
-            try
-            {
-                chat = JsonExtractor<List<Chat>>(responce, "json", right: 4);
-            }
-            catch
-            {
-                chat = JsonExtractor<List<Chat>>(responce, "json", right: 2);
-            }
+            List<Chat>? chat = null;
 
-            UserChatPreload = chat;
-
-            if (chat is not null)
+            bool readed = false;
+            int shift = 4;
+            while (!readed)
             {
-                if (UserChatPreloadSaveOutOfChanges is not null && UserChatPreloadSaveOutOfChanges.Count > 0)
+                try
                 {
-                    foreach (var c in chat)
-                    {
-                        NewChat = c;
-                    }
+                    chat = JsonExtractor<List<Chat>>(responce, "json", right: shift);
+                    break;
+                }
+                catch
+                {
+                    shift--;
+                    if (shift < 0) throw new Exception("Shift wasn't found.");
                 }
             }
 
-            PreloadChatIsReady = true;
+            if (chat is not null)
+            {
+                bool? userIsChatFree = UserChatPreload?.Count == 0;
+                UserChatPreload = chat;
+
+                if (chat is not null)
+                {
+                    if (UserChatPreloadSaveOutOfChanges is not null && UserChatPreloadSaveOutOfChanges.Count > 0 || userIsChatFree is not null && userIsChatFree == true)
+                    {
+                        foreach (var c in chat)
+                        {
+                            NewChat = c;
+                        }
+                    }
+                }
+
+                PreloadChatIsReady = true;
+            }
         }
 
         /// <summary>
